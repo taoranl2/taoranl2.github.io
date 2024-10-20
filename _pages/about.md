@@ -40,8 +40,6 @@ Miscellaneous
 ======
 I enjoy cooking Chinese food with my friends. Additionally, I have a passion for hiking and photography, especially in natural environments. I have had the opportunity to visit several national parks, where I capture the beauty of the landscapes through my lens. Some of the national parks I have visited include:
 
-<ul style="font-size: 0.9em;">
-  <li>Grand Canyon National Park</li>
-  <li>Great Smoky Mountains National Park</li>
-  <li>Rocky Mountain National Park</li>
-</ul>
+- Grand Canyon National Park
+- Great Smoky Mountains National Park
+- Rocky Mountain National Park
