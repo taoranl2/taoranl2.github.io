@@ -9,7 +9,6 @@ redirect_from:
 
 Bio
 ======
-
 I am currently a second-year Master's student in [Computer Engineering](https://ece.illinois.edu/) at the [University of Illinois Urbana-Champaign](https://illinois.edu/), working with Prof. [Varun Chandrasekaran](https://chandrasekaran-group.github.io/). Before joining UIUC in 2023, I earned my Bachelor's degree in Computer Engineering through a joint program between the [University of Illinois Urbana-Champaign](https://illinois.edu/) and [Zhejiang University](https://www.zju.edu.cn/english/). During my undergraduate studies, I had the privilege of working with Prof. [Wee-Liat Ong](https://zjui.intl.zju.edu.cn/en/node/781), Prof. [Gaoang Wang](https://zjui.intl.zju.edu.cn/en/node/780), and Prof. Thomas Honold.
 
 Education
@@ -24,14 +23,16 @@ Education
 *Bachelor of Science in Computer Engineering*
 
 
-Getting started
+Research Interests
 ======
-1. Register a GitHub account if you don't have one and confirm your e-mail (required!)
-1. Fork [this repository](https://github.com/academicpages/academicpages.github.io) by clicking the "fork" button in the top right. 
-1. Go to the repository's settings (rightmost item in the tabs that start with "Code", should be below "Unwatch"). Rename the repository "[your GitHub username].github.io", which will also be your website's URL.
-1. Set site-wide configuration and create content & metadata (see below -- also see [this set of diffs](http://archive.is/3TPas) showing what files were changed to set up [an example site](https://getorg-testacct.github.io) for a user with the username "getorg-testacct")
-1. Upload any files (like PDFs, .zip files, etc.) to the files/ directory. They will appear at https://[your GitHub username].github.io/files/example.pdf.  
-1. Check status by going to the repository settings, in the "GitHub pages" section
+- **Computer Security and Privacy**
+  - Secure multi-party computation (MPC)
+  - Cryptography, Zero-knowledge Proof
+  - Data privacy in machine learning
+
+- **Trustworthy Machine Learning**
+  - Model explanation and transparency
+  - Machine unlearning techniques
 
 Site-wide configuration
 ------
