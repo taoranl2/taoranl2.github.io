@@ -42,6 +42,7 @@ I enjoy cooking Chinese food with my friends. Additionally, I have a passion for
 
 - Grand Canyon National Park
 - Joshua Tree National Park
+- Indiana Dunes National Park
 - Grand Teton National Park
 - Yellowstone National Park
 - Great Sand Dunes National Park and Preserve
