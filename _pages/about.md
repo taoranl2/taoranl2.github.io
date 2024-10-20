@@ -38,8 +38,11 @@ Research Interests
 
 Miscellaneous
 ======
-I enjoy cooking Chinese food with my friends. Additionally, I have a passion for hiking and photography, especially in natural environments. I have had the opportunity to visit several national parks, where I capture the beauty of the landscapes through my lens. Some of the national parks I have visited include:
+I enjoy cooking Chinese food with my friends. Additionally, I have a passion for hiking and photography, especially in natural environments. I have had the opportunity to visit several national parks, where I capture the beauty of the landscapes through my lens. The national parks I have visited include:
 
 - Grand Canyon National Park
-- Great Smoky Mountains National Park
+- Joshua Tree National Park
+- Grand Teton National Park
+- Yellowstone National Park
+- Great Sand Dunes National Park and Preserve
 - Rocky Mountain National Park
