@@ -12,7 +12,7 @@ redirect_from:
 ## Education
 * **M.Eng. in Computer Engineering**, University of Illinois Urbana-Champaign, Expected Dec. 2024
 * **B.S. in Computer Engineering**, University of Illinois Urbana-Champaign, 2018 - 2023
-* **B.S. in Computer Engineering**, Zhejiang University, 2018 - 2023
+* **B.E. in Computer Engineering**, Zhejiang University, 2018 - 2023
 
 ## Skills
 * **Computer Security & Privacy**
