@@ -25,9 +25,7 @@ redirect_from:
   * PyTorch, CUDA, Git, LaTeX
 
 ## Publications
-<ul>{% for post in site.publications reversed %}
-  {% include archive-single-cv.html %}
-{% endfor %}</ul>
+
 
 ## Projects
 * **Checking Consistency Is Not Good Enough** (Jan. 2024 - May. 2024)
