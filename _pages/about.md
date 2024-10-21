@@ -34,8 +34,9 @@ Research Interests
   - Data privacy in machine learning
 
 - **Trustworthy Machine Learning**
-  - Model explanation and transparency
+  - Detecting and mitigating data poisoning attacks
   - Machine unlearning techniques
+  - Privacy risks and membership inference attacks
 
 Miscellaneous
 ======
