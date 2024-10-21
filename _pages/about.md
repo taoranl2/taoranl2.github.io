@@ -1,6 +1,6 @@
 ---
 permalink: /
-title: "Taoran Li's Academic Website"
+title: ""
 author_profile: true
 redirect_from: 
   - /about/
