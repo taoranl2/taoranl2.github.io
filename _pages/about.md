@@ -37,8 +37,8 @@ Research Interests
   - Model explanation and transparency
   - Machine unlearning techniques
 
-### Miscellaneous
-
+Miscellaneous
+======
 I enjoy cooking Chinese food with my friends. Additionally, I have a passion for hiking and photography, especially in natural environments. I have had the opportunity to visit several national parks, where I capture the beauty of the landscapes through my lens. The national parks I have visited include:
 
 - Grand Canyon National Park
