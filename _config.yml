@@ -8,7 +8,7 @@
 
 # Basic Site Settings
 locale                   : "en-US"
-title                    : "Taoran Li's Academic Website"
+title                    : "Taoran Li's Homepage"
 title_separator          : "-"
 name                     : &name "Taoran Li"
 description              : &description "personal description"
