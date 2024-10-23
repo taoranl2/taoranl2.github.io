@@ -12,7 +12,6 @@ About Me
 
 I am currently a second-year Master's student in [Computer Engineering](https://ece.illinois.edu/) at the [University of Illinois Urbana-Champaign](https://illinois.edu/), working with Prof. [Varun Chandrasekaran](https://chandrasekaran-group.github.io/). Before joining UIUC in 2023, I earned my Bachelor's degree in Computer Engineering through a joint program between the [University of Illinois Urbana-Champaign](https://illinois.edu/) and [Zhejiang University](https://www.zju.edu.cn/english/). During my undergraduate studies, I had the privilege of working with Prof. [Wee-Liat Ong](https://zjui.intl.zju.edu.cn/en/node/781), Prof. [Gaoang Wang](https://zjui.intl.zju.edu.cn/en/node/780), and Prof. Thomas Honold.
 
-You can find my CV here: [Taoran Li's Curriculum Vitae](../assets/CV.pdf).
 
 Education
 ======
