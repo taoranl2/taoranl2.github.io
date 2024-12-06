@@ -42,9 +42,10 @@ I have broadly interests in the area of computer security and privacy. Some of t
   - Integrating cryptographic protocols with machine learning models
   - Developing secure and practical AI systems
  
- - **Security and Privacy of IoT and Cyber-Physical Systems**
+- **Security and Privacy of IoT and Cyber-Physical Systems**
   - Integrating secure AI into robotics and autonomous vehicles
   - Enhancing the safety and resilience of interconnected systems
+
     
 Miscellaneous
 ======
