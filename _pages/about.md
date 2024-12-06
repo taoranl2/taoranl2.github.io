@@ -28,16 +28,24 @@ Education
 Research Interests
 ======
 I have broadly interests in the area of computer security and privacy. Some of the main aspects are:
-- **Computer Security and Privacy**
+- **Cryptography**
   - Secure multi-party computation (MPC)
-  - Cryptography, Zero-knowledge Proof
-  - Data privacy in machine learning
+  - Zero-knowledge Proof (zk-SNARK)
+  - Data privacy and scalable cryptographic solutions
 
-- **Trustworthy Machine Learning**
+- **Interaction of Cryptography and Machine Learning**
   - Detecting and mitigating data poisoning attacks
-  - Machine unlearning techniques
-  - Privacy risks and membership inference attacks
-
+  - Machine unlearning techniques for secure AI systems
+  - Privacy-preserving techniques, including federated learning and differential privacy
+    
+- **Trustworthy Machine Learning**
+  - Integrating cryptographic protocols with machine learning models
+  - Developing secure and practical AI systems
+ 
+ - **Security and Privacy of IoT and Cyber-Physical Systems**
+  - Integrating secure AI into robotics and autonomous vehicles
+  - Enhancing the safety and resilience of interconnected systems
+    
 Miscellaneous
 ======
 I enjoy cooking Chinese food with my friends. Additionally, I have a passion for hiking and photography, especially in natural environments. I have had the opportunity to visit several national parks, where I capture the beauty of the landscapes through my lens. The national parks I have visited include:
