@@ -12,7 +12,7 @@ About Me
 
 I am currently a second-year Master's student in [Computer Engineering](https://ece.illinois.edu/) at the [University of Illinois Urbana-Champaign](https://illinois.edu/), working with Prof. [Varun Chandrasekaran](https://chandrasekaran-group.github.io/). I feel fortunate to have met many kind and talented professors who have supported and inspired my journey. I am grateful to Prof. [David Heath](https://daheath.web.illinois.edu/), whose guidance introduced me to the fascinating world of cryptography, and to Prof. [Varun Chandrasekaran](https://chandrasekaran-group.github.io/), whose mentorship has been invaluable in beginning my academic journey.
 
-Before joining UIUC in 2023, I earned my Bachelor's degree in Computer Engineering through a joint program between the [University of Illinois Urbana-Champaign](https://illinois.edu/) and [Zhejiang University](https://www.zju.edu.cn/english/). During my undergraduate studies, I had the privilege of working with Prof. [Wee-Liat Ong](https://zjui.intl.zju.edu.cn/en/node/781), Prof. [Gaoang Wang](https://zjui.intl.zju.edu.cn/en/node/780), and Prof. Thomas Honold.
+Before joining UIUC in 2023, I earned my Bachelor's degree in Computer Engineering through a joint program between the [University of Illinois Urbana-Champaign](https://illinois.edu/) and [Zhejiang University](https://www.zju.edu.cn/english/). During my undergraduate studies, I had the privilege of working with Prof. [Wee-Liat Ong](https://zjui.intl.zju.edu.cn/en/node/781), Prof. [Gaoang Wang](https://cvnext.github.io/), and Prof. Thomas Honold.
 
 Education
 ======
