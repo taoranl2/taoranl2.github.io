@@ -39,7 +39,7 @@ My research broadly covers computer security and privacy, focusing on robust, sc
   - **Integrating Cryptographic Protocols with ML Models**: Utilizing cryptographic solutions like MPC and zero-knowledge proofs to develop privacy-preserving machine learning frameworks.
   - **Secure and Practical AI Systems**: Creating robust, resilient AI models that withstand adversarial attacks and maintain user data privacy.
   - **Machine Unlearning**: Investigating efficient algorithms and frameworks for safely removing data from trained machine learning models, ensuring regulatory compliance and privacy protection.
-  - **AI/LLM for Code Generation, Debugging, Translation, and Vulnerability Detection**: Leveraging large language models to automate secure coding practices, improve debugging effectiveness, facilitate code translation, and identify potential security vulnerabilities.
+  - **AI for Code Generation, Debugging, Translation, and Vulnerability Detection**: Leveraging large language models to automate secure coding practices, improve debugging effectiveness, facilitate code translation, and identify potential security vulnerabilities.
 
 - **Security and Privacy of IoT and Cyber-Physical Systems**
   - **Secure AI Integration in Robotics and Autonomous Vehicles**: Developing secure, resilient AI solutions to ensure reliable operation and safety in robotic systems and autonomous transportation.
