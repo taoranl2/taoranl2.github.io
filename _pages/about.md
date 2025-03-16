@@ -27,24 +27,24 @@ Education
 
 Research Interests
 ======
-I have broadly interests in the area of computer security and privacy. Some of the main aspects are:
-- **Cryptography**
-  - Secure multi-party computation (MPC)
-  - Zero-knowledge Proof (zk-SNARK)
-  - Data privacy and scalable cryptographic solutions
 
-- **Interaction of Cryptography and Machine Learning**
-  - Detecting and mitigating data poisoning attacks
-  - Machine unlearning techniques for secure AI systems
-  - Privacy-preserving techniques, including federated learning and differential privacy
-    
+My research broadly covers computer security and privacy, focusing on robust, scalable, and practical solutions in the following domains:
+
+- **Cryptography**
+  - Secure Multi-party Computation (MPC): Developing efficient MPC protocols to enable privacy-preserving analytics for sensitive data, such as healthcare records or financial transactions.
+  - Zero-knowledge Proofs (zk-SNARK): Designing and optimizing efficient, scalable zk-SNARK solutions for privacy-preserving applications in blockchain and decentralized systems.
+  - Data Privacy: Building scalable cryptographic mechanisms that protect privacy without compromising data utility or performance.
+
 - **Trustworthy Machine Learning**
-  - Integrating cryptographic protocols with machine learning models
-  - Developing secure and practical AI systems
- 
+  - Integrating Cryptographic Protocols with ML Models: Utilizing cryptographic solutions like MPC and zero-knowledge proofs to develop privacy-preserving machine learning frameworks.
+  - Secure and Practical AI Systems: Creating robust, resilient AI models that withstand adversarial attacks and maintain user data privacy.
+  - Machine Unlearning: Investigating efficient algorithms and frameworks for safely removing data from trained machine learning models, ensuring regulatory compliance and privacy protection.
+  - AI/LLM for Code Generation, Debugging, Translation, and Vulnerability Detection: Leveraging large language models to automate secure coding practices, improve debugging effectiveness, facilitate code translation, and identify potential security vulnerabilities.
+
 - **Security and Privacy of IoT and Cyber-Physical Systems**
-  - Integrating secure AI into robotics and autonomous vehicles
-  - Enhancing the safety and resilience of interconnected systems
+  - Secure AI Integration in Robotics and Autonomous Vehicles: Developing secure, resilient AI solutions to ensure reliable operation and safety in robotic systems and autonomous transportation.
+  - Enhancing Safety and Resilience of Interconnected Systems: Strengthening security frameworks for IoT-enabled smart infrastructures, enhancing their capability to resist cyber-attacks and privacy breaches.
+
 
     
 Miscellaneous
