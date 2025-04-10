@@ -32,6 +32,12 @@ Education
 **University of Illinois, Urbana-Champaign**, 2018 - 2023  
 *Bachelor of Science in Computer Engineering*
 
+<blockquote style="font-style: italic; font-size: 1.1em; margin-top: 1em;">
+  “纸上得来终觉浅，绝知此事要躬行。”
+  <br>
+  <span style="font-size: 0.9em; color: #666;">— 陆游《冬夜读书示子聿》</span>
+</blockquote>
+
 Research Interests
 ======
 
