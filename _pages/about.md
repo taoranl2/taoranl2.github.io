@@ -14,6 +14,8 @@ I am currently a second-year Master's student in [Computer Engineering](https://
 
 Before joining UIUC in 2023, I earned my Bachelor's degree in Computer Engineering through a joint program between the [University of Illinois Urbana-Champaign](https://illinois.edu/) and [Zhejiang University](https://www.zju.edu.cn/english/). During my undergraduate studies, I had the privilege of working with Prof. [Wee-Liat Ong](https://person.zju.edu.cn/en/owl), Prof. [Gaoang Wang](https://cvnext.github.io/), and Prof. [Thomas Honold](https://zjui.intl.zju.edu.cn/en/node/775).
 
+I'm open to collaborating on interesting research ideas. If you are interested in Trustworthy ML/AI Safety and seek collaboration, please feel free to contact me at taoranl2 [at] illinois [dot] edu.
+
 <blockquote style="font-style: italic; font-size: 1.1em; margin-top: 1em;">
   “Stay hungry, stay foolish.”
   <br>
