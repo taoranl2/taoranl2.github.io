@@ -20,6 +20,9 @@ main:
   - title: "CV"
     url: /files/CV.pdf
     
+  - title: "Misc"
+    url: /misc/
+    
   # - title: "Portfolio"
   #   url: /portfolio/
         
