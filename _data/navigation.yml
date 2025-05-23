@@ -21,7 +21,7 @@ main:
     url: /files/CV.pdf
     
   - title: "Misc"
-    url: /misc/
+    url: /miscellaneous/
     
   # - title: "Portfolio"
   #   url: /portfolio/
