@@ -11,7 +11,7 @@ author_profile: true
 Xiaomin Li\*, Mingye Gao\*, Yuexing Hao, **Taoran Li**, Guangya Wan, Zihan Wang, Yijun Wang. \
 *Under Review at NeurIPS 2025*
 
-* SoK: Understanding Security Across AI4Code Use Cases — Generation, Detection, and Translation \
+* SoK: Understanding (New) Security Issues Across AI4Code Use Cases  \
 Qilong Wu\*, **Taoran Li\***, Tianyang Zhou\*, Varun Chandrasekaran. \
 *Under review at USENIX Security Symposium 2026*
 
