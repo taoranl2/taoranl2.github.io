@@ -9,7 +9,7 @@ redirect_from:
 
 About Me
 ======
-I am currently a first-year PhD student in [Computer Science](https://engineering.tamu.edu/cse/index.html) at [Texas A&N University](https://www.tamu.edu/index.html), advised by Prof. [Zhiyuan Yu](https://zhiyuanyu.org/). My research interests include Trustworthy ML, AI Safety and Applied Cryptography.
+I am currently a first-year PhD student in [Computer Science](https://engineering.tamu.edu/cse/index.html) at [Texas A&M University](https://www.tamu.edu/index.html), advised by Prof. [Zhiyuan Yu](https://zhiyuanyu.org/). My research interests include Trustworthy ML, AI Safety and Applied Cryptography.
 
 Previously, I earned my Master's degree in [Computer Engineering](https://ece.illinois.edu/) at [University of Illinois Urbana-Champaign](https://illinois.edu/), advised with Prof. [Varun Chandrasekaran](https://chandrasekaran-group.github.io/). I feel fortunate to have met many kind and talented professors who have supported and inspired my journey. I am grateful to Prof. [David Heath](https://daheath.web.illinois.edu/) and Prof. [Yupeng Zhang](https://zhangyp.web.illinois.edu/), whose guidance introduced me to the fascinating world of cryptography, and to Prof. [Varun Chandrasekaran](https://chandrasekaran-group.github.io/), whose mentorship has been invaluable in beginning my academic journey.
 
