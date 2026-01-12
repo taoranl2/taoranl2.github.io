@@ -9,12 +9,12 @@ author_profile: true
 
 * [MedGUIDE: Benchmarking Clinical Decision-Making in Large Language Models](https://arxiv.org/abs/2505.11613) \
 Xiaomin Li\*, Mingye Gao\*, Yuexing Hao, **Taoran Li**, Guangya Wan, Zihan Wang, Yijun Wang. \
-*Under Review at NeurIPS 2025*
+*NeurIPS GenAI4Health Workshop 2025*
 
-* SoK: Understanding (New) Security Issues Across AI4Code Use Cases  \
+* [SoK: Understanding (New) Security Issues Across AI4Code Use Cases](https://arxiv.org/abs/2512.18456)  \
 Qilong Wu\*, **Taoran Li\***, Tianyang Zhou\*, Varun Chandrasekaran. \
-*Under review at USENIX Security Symposium 2026*
+*Under review at Network and Distributed System Security Symposium 2026*
 
-* The Metric Mirage: A False Sense of Unlearning \
+* [The Erasure Illusion: Stress-Testing the Generalization of LLM Forgetting Evaluation](https://arxiv.org/abs/2512.19025) \
 Hengrui Jia, **Taoran Li**, Jonas Guan, Varun Chandrasekaran. \
-*Under review at USENIX Security Symposium 2026*
+*Under review at ACM Conference on Computer and Communications Security 2026*
