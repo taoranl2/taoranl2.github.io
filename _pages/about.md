@@ -65,6 +65,8 @@ My research broadly covers computer security and privacy, focusing on robust, sc
   - Zero-knowledge proofs (zk-SNARKs)
   - Privacy-preserving data analytics
 
+Visitor Map
+======
 
 <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=bGKewJOsjLTpoFqZqp6HoTS81pqPc7LTZA9_DZC2PQA&cl=ffffff&w=a"></script>
 
