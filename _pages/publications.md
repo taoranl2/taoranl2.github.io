@@ -18,3 +18,7 @@ Qilong Wu\*, **Taoran Li\***, Tianyang Zhou\*, Varun Chandrasekaran. \
 * [The Erasure Illusion: Stress-Testing the Generalization of LLM Forgetting Evaluation](https://arxiv.org/abs/2512.19025) \
 Hengrui Jia, **Taoran Li**, Jonas Guan, Varun Chandrasekaran. \
 *Under review at ACM Conference on Computer and Communications Security 2026*
+
+* [Layer-Targeted Multilingual Knowledge Erasure in Large Language Models](https://arxiv.org/abs/2602.22562) \
+**Taoran Li**, Varun Chandrasekaran, Zhiyuan Yu. \
+*Under review at 43rd International Conference on Machine Learning (ICML 2026)*
