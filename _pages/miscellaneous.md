@@ -15,6 +15,6 @@ I enjoy cooking Chinese food with my friends. Additionally, I have a passion for
 - Grand Teton National Park (5/31/2024)
 - Yellowstone National Park (6/2/2024)
 - Great Sand Dunes National Park and Preserve (7/5/2024)
-- Rocky Mountain National Park (7/7/2024)
+- Rocky Mountain National Park (7/7/2024, 6/3/2026)
 - Yosimite National Park (7/14/2025)
 - Denali National Park and Preserve (12/26/2025)
