@@ -68,5 +68,5 @@ My research broadly covers computer security and privacy, focusing on robust, sc
 Visitor Map
 ======
 
-<script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=bGKewJOsjLTpoFqZqp6HoTS81pqPc7LTZA9_DZC2PQA&cl=ffffff&w=a"></script>
+<script type="text/javascript" id="mmvst_globe" src="//mapmyvisitors.com/globe.js?d=0aeMOYirDcdr3HGJ7sHVlKRtGZiQo5xeqp7zdBSRwkE"></script>
 
