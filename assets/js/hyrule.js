@@ -244,6 +244,248 @@
   }
 
   /* ----------------------------------------------------------------------
+     National-park map
+
+     A port of d3-geo's geoAlbersUsa: a conic equal-area projection for the
+     lower 48, with Alaska and Hawaii as separately-parameterised insets, each
+     valid only inside its own box. Same constants as tools/gen_us_map.py, which
+     generated the state outlines — the two must agree or pins drift off the
+     coastline.
+     ---------------------------------------------------------------------- */
+
+  var DEG = Math.PI / 180;
+  var TAU = Math.PI * 2;
+
+  function conicEqualArea(parallel0, parallel1) {
+    var y0 = parallel0 * DEG;
+    var sy0 = Math.sin(y0);
+    var n = (sy0 + Math.sin(parallel1 * DEG)) / 2;
+    var c = 1 + sy0 * (2 * n - sy0);
+    var r0 = Math.sqrt(c) / n;
+
+    return function (lambda, phi) {
+      var r = Math.sqrt(c - 2 * n * Math.sin(phi)) / n;
+      var a = lambda * n;
+      return [r * Math.sin(a), r0 - r * Math.cos(a)];
+    };
+  }
+
+  function albers(parallels, rotateLon, center, scale, translate) {
+    var raw = conicEqualArea(parallels[0], parallels[1]);
+    var deltaLambda = rotateLon * DEG;
+    /* d3 takes `center` in post-rotation coordinates, so it is not rotated. */
+    var c = raw(center[0] * DEG, center[1] * DEG);
+    var dx = translate[0] - scale * c[0];
+    var dy = translate[1] + scale * c[1];
+
+    return function (lon, lat) {
+      var lambda = lon * DEG + deltaLambda;
+      if (lambda > Math.PI) lambda -= TAU;
+      else if (lambda < -Math.PI) lambda += TAU;
+      var p = raw(lambda, lat * DEG);
+      return [dx + scale * p[0], dy - scale * p[1]];
+    };
+  }
+
+  function albersUsa(scale, translate) {
+    var k = scale;
+    var x = translate[0];
+    var y = translate[1];
+
+    var parts = [
+      { project: albers([29.5, 45.5], 96, [-0.6, 38.7], k, [x, y]),
+        clip: [x - 0.455 * k, y - 0.238 * k, x + 0.455 * k, y + 0.238 * k] },
+      { project: albers([55, 65], 154, [-2, 58.5], k * 0.35, [x - 0.307 * k, y + 0.201 * k]),
+        clip: [x - 0.425 * k, y + 0.120 * k, x - 0.214 * k, y + 0.234 * k] },
+      { project: albers([8, 18], 157, [-3, 19.9], k, [x - 0.205 * k, y + 0.212 * k]),
+        clip: [x - 0.214 * k, y + 0.166 * k, x - 0.115 * k, y + 0.234 * k] }
+    ];
+
+    /* Try each sub-projection in turn and keep the first whose box contains the
+       result — that is what decides Alaska belongs in the inset. */
+    return function (lon, lat) {
+      for (var i = 0; i < parts.length; i++) {
+        var p = parts[i].project(lon, lat);
+        var box = parts[i].clip;
+        if (p[0] >= box[0] && p[0] <= box[2] && p[1] >= box[1] && p[1] <= box[3]) {
+          return p;
+        }
+      }
+      return null;
+    };
+  }
+
+  /* Pin drawn with its tip at the local origin, so the artwork's bottom edge is
+     the point being marked. */
+  var PIN_SVG =
+    '<svg viewBox="-9 -18.5 18 18.5" aria-hidden="true" focusable="false">' +
+      '<circle class="hy-map__pin-halo" cx="0" cy="-9.2" r="7.4"></circle>' +
+      '<path class="hy-map__pin-body" d="M0,0C-1.6,-3.2 -5,-5.6 -5,-9.2A5,5 0 1,1 5,-9.2C5,-5.6 1.6,-3.2 0,0Z"></path>' +
+      '<circle class="hy-map__pin-dot" cx="0" cy="-9.2" r="2.1"></circle>' +
+    '</svg>';
+
+  function buildParkMap() {
+    var figure = document.querySelector("[data-hy-map]");
+    if (!figure) return;
+
+    var svg = figure.querySelector(".hy-map__svg");
+    var layer = figure.querySelector(".hy-map__pins");
+    var tip = figure.querySelector(".hy-map__tip");
+    var tipName = figure.querySelector(".hy-map__tip-name");
+    var tipDates = figure.querySelector(".hy-map__tip-dates");
+    if (!svg || !layer || !tip) return;
+
+    var parks;
+    try {
+      parks = JSON.parse(figure.getAttribute("data-parks") || "[]");
+    } catch (e) {
+      return;   /* leave the plain map rather than a half-built one */
+    }
+
+    var viewBox = (svg.getAttribute("viewBox") || "").split(/[\s,]+/).map(Number);
+    if (viewBox.length !== 4 || !viewBox[2]) return;
+
+    var project = albersUsa(1070, [480, 250]);
+    var anchors = [];
+    var locked = null;
+    var GAP = 10;    /* px between the pin and the tooltip */
+    var EDGE = 6;    /* px the tooltip keeps clear of the panel edge */
+
+    parks.forEach(function (park, index) {
+      if (typeof park.lat !== "number" || typeof park.lon !== "number") return;
+      var point = project(park.lon, park.lat);
+      if (!point) return;
+
+      var label = park.name + (park.dates ? ", visited " + park.dates : "");
+
+      var pin = document.createElement("button");
+      pin.type = "button";
+      pin.className = "hy-map__pin";
+      pin.setAttribute("aria-label", label);
+      pin.title = park.name + (park.dates ? " — " + park.dates : "");
+      pin.style.setProperty("--i", String(index));
+      /* Percentages of the viewBox, so the pin tracks the map as it resizes. */
+      pin.style.left = ((point[0] - viewBox[0]) / viewBox[2] * 100).toFixed(3) + "%";
+      pin.style.top = ((point[1] - viewBox[1]) / viewBox[3] * 100).toFixed(3) + "%";
+      pin.innerHTML = PIN_SVG;
+
+      layer.appendChild(pin);
+      anchors.push({ pin: pin, park: park });
+
+      pin.addEventListener("mouseenter", function () {
+        if (locked && locked !== pin) return;
+        showTip(pin, park);
+      });
+      pin.addEventListener("mouseleave", function () {
+        /* Any locked tooltip owns the display — including one belonging to a
+           different pin, so moving the mouse across its neighbours must not
+           close it. */
+        if (locked) return;
+        hideTip();
+      });
+      pin.addEventListener("focus", function () {
+        if (locked && locked !== pin) locked = null;
+        showTip(pin, park);
+      });
+      pin.addEventListener("blur", function () {
+        if (locked !== pin) hideTip();
+      });
+
+      /* A real <button> already fires click on Enter and Space, so there is no
+         key handling to write. Click pins the tooltip open, which is what makes
+         this work on touch, where there is no hover. */
+      pin.addEventListener("click", function (event) {
+        event.stopPropagation();
+        if (locked === pin) {
+          locked = null;
+          hideTip();
+        } else {
+          locked = pin;
+          showTip(pin, park);
+        }
+      });
+    });
+
+    if (!anchors.length) return;
+
+    function showTip(pin, park) {
+      /* The active pin is raised with z-index in CSS — no DOM reordering, which
+         would blur a keyboard-focused pin and hide the tooltip it just opened. */
+      anchors.forEach(function (a) { a.pin.classList.remove("is-active"); });
+      pin.classList.add("is-active");
+
+      tipName.textContent = park.name;
+      tipDates.textContent = park.dates || "";
+      tip.hidden = false;
+
+      var figureBox = figure.getBoundingClientRect();
+      var pinBox = pin.getBoundingClientRect();
+
+      /* offsetWidth/Height are layout values, so they ignore the translate
+         already on the card from the previous pin — no stale measurement. */
+      var width = tip.offsetWidth;
+      var height = tip.offsetHeight;
+
+      var pinCentre = pinBox.left + pinBox.width / 2 - figureBox.left;
+      var pinTop = pinBox.top - figureBox.top;
+      var pinBottom = pinBox.bottom - figureBox.top;
+
+      /* Flip under the pin when there isn't room above — otherwise the card
+         escapes the panel and covers the heading, since nothing clips it. */
+      var below = pinTop - height - GAP < EDGE;
+      var y = below ? pinBottom + GAP : pinTop - GAP - height;
+
+      var left = pinCentre - width / 2;
+      var maxLeft = figureBox.width - width - EDGE;
+      left = maxLeft < EDGE ? EDGE : Math.min(Math.max(left, EDGE), maxLeft);
+
+      /* The card may have been nudged sideways to stay in the panel, so point
+         the arrow at the pin rather than at the card's middle. */
+      var arrow = Math.min(Math.max(pinCentre - left, 12), Math.max(width - 12, 12));
+
+      tip.classList.toggle("is-below", below);
+      tip.style.setProperty("--tip-arrow", arrow.toFixed(1) + "px");
+      tip.style.transform = "translate(" + left.toFixed(1) + "px," + y.toFixed(1) + "px)";
+    }
+
+    function hideTip() {
+      tip.hidden = true;
+      anchors.forEach(function (a) { a.pin.classList.remove("is-active"); });
+    }
+
+    /* Pins are positioned in percentages, so resizing needs no relayout — only
+       the tooltip's pixel offsets go stale. */
+    window.addEventListener("resize", function () {
+      if (tip.hidden) return;
+      locked = null;
+      hideTip();
+    });
+
+    document.addEventListener("click", function () {
+      locked = null;
+      hideTip();
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        locked = null;
+        hideTip();
+      }
+    });
+
+    /* Drop the pins in when the map first comes into view. */
+    if (!reduceMotion && "IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          anchors.forEach(function (a) { a.pin.classList.add("hy-map__pin--drop"); });
+          io.disconnect();
+        });
+      }, { threshold: 0.15 });
+      io.observe(svg);
+    }
+  }
+
+  /* ----------------------------------------------------------------------
      Boot
      ---------------------------------------------------------------------- */
 
@@ -251,6 +493,7 @@
     guardGreedyNav();
     buildThemeToggle();
     revealOnScroll();
+    buildParkMap();
     placeSprite();
     settleNav();
 

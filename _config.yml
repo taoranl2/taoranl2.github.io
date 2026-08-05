@@ -173,6 +173,7 @@ exclude:
   - README
   - tmp
   - vendor
+  - tools
 keep_files:
   - .git
   - .svn

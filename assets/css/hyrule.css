@@ -67,6 +67,11 @@
   --hy-hill-mid:    #96d09c;
   --hy-hill-near:   #6fb57d;
   --hy-tree:        #4c8c5c;
+
+  /* Map pins get their own colours: --hy-pink over the pale state fills is only
+     2.4:1, under the 3:1 a non-text control needs. These clear 4:1. */
+  --hy-map-pin:        #d0356b;
+  --hy-map-pin-active: var(--hy-teal-deep);
 }
 
 :root[data-hy-theme="night"] {
@@ -109,6 +114,10 @@
   --hy-hill-mid:    #1a2c3e;
   --hy-hill-near:   #142333;
   --hy-tree:        #0e1926;
+
+  /* On the dark map the bright palette pinks and teals already clear 5:1. */
+  --hy-map-pin:        var(--hy-pink);
+  --hy-map-pin-active: var(--hy-teal);
 }
 
 /* --------------------------------------------------------------------------
@@ -802,6 +811,267 @@ body:not(:has(.hy-hero)) #main {
   border-color: var(--pub-accent, var(--hy-teal));
   background: var(--hy-teal-soft);
   transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   9a. National-park map
+   -------------------------------------------------------------------------- */
+
+.hy-map {
+  /* The theme makes every <figure> a flex container and every <figcaption>
+     Georgia — neither is wanted here. */
+  display: block;
+  position: relative;
+  margin: 1.8em 0 1.6em;
+  padding: 1.1em 1.2em .9em;
+  background: var(--hy-card);
+  border: 2px solid var(--hy-line);
+  border-radius: var(--hy-radius);
+  box-shadow: var(--hy-shadow);
+}
+
+/* The canvas is the shared coordinate space: the SVG sizes itself from the
+   viewBox aspect ratio, and the pin layer overlays it exactly, so pins can be
+   positioned in percentages and stay put at any width. */
+.hy-map__canvas {
+  position: relative;
+}
+
+.hy-map__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.hy-map__pins {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hy-map__state {
+  fill: var(--hy-paper-deep);
+  stroke: var(--hy-line-strong);
+  stroke-width: .7;
+  stroke-linejoin: round;
+  transition: fill .25s ease;
+}
+
+.hy-map__state.is-visited {
+  fill: var(--hy-green-soft);
+  stroke: var(--hy-green);
+}
+
+:root[data-hy-theme="night"] .hy-map__state {
+  fill: var(--hy-paper-deep);
+  stroke: #35485a;
+}
+
+:root[data-hy-theme="night"] .hy-map__state.is-visited {
+  fill: #24422a;
+  stroke: var(--hy-green);
+}
+
+/* Pins ------------------------------------------------------------------- */
+
+.hy-map__pin {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  pointer-events: auto;
+  display: grid;
+  place-items: end center;
+  /* Anchors the button's bottom-centre — the pin tip — on the coordinate. */
+  transform: translate(-50%, -100%);
+  transform-origin: 50% 100%;
+  transition: transform .18s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+.hy-map__pin > svg {
+  display: block;
+  width: 21px;
+  height: 21.6px;
+  overflow: visible;
+}
+
+.hy-map__pin-body {
+  fill: var(--hy-map-pin);
+  stroke: var(--hy-card);
+  stroke-width: 1.6;
+  paint-order: stroke;
+}
+
+.hy-map__pin-dot { fill: var(--hy-card); }
+
+.hy-map__pin:hover,
+.hy-map__pin:focus-visible,
+.hy-map__pin.is-active {
+  transform: translate(-50%, -100%) scale(1.32);
+  outline: none;
+  z-index: 2;
+}
+
+.hy-map__pin:hover .hy-map__pin-body,
+.hy-map__pin:focus-visible .hy-map__pin-body,
+.hy-map__pin.is-active .hy-map__pin-body {
+  fill: var(--hy-map-pin-active);
+}
+
+.hy-map__pin:focus-visible .hy-map__pin-halo,
+.hy-map__pin.is-active .hy-map__pin-halo {
+  opacity: 1;
+}
+
+.hy-map__pin-halo {
+  fill: none;
+  stroke: var(--hy-map-pin-active);
+  stroke-width: 2;
+  opacity: 0;
+  transition: opacity .18s ease;
+}
+
+/* Keyboard focus needs a ring that reads on both themes; the scale and halo
+   alone are too subtle to serve as the only focus indicator. */
+.hy-map__pin:focus-visible .hy-map__pin-body {
+  stroke: var(--hy-ink);
+  stroke-width: 2.4;
+}
+
+/* Drop-in on first paint, staggered by --i from the script. */
+.hy-map__pin--drop {
+  animation: hy-pin-drop .42s cubic-bezier(.34, 1.4, .64, 1) backwards;
+  animation-delay: calc(var(--i, 0) * 40ms);
+}
+
+@keyframes hy-pin-drop {
+  0%   { transform: translate(-50%, -100%) translateY(-14px) scale(.4); opacity: 0; }
+  100% { transform: translate(-50%, -100%) translateY(0) scale(1); opacity: 1; }
+}
+
+/* Tooltip ---------------------------------------------------------------- */
+
+.hy-map__tip {
+  position: absolute;
+  z-index: 5;
+  /* Pinned at the origin and moved with a translate: a transform does not feed
+     back into layout, so the card always lays out at its natural width. Setting
+     `left` instead would shrink-to-fit against the remaining space, making the
+     width depend on the position — and the position depends on the width. */
+  left: 0;
+  top: 0;
+  width: max-content;
+  max-width: 15em;
+  padding: .45em .8em .5em;
+  background: var(--hy-card);
+  border: 2px solid var(--hy-teal);
+  border-radius: var(--hy-radius-sm);
+  box-shadow: var(--hy-shadow);
+  pointer-events: none;
+  text-align: center;
+}
+
+.hy-map__tip[hidden] { display: none; }
+
+/* Arrow: below the card by default, above it when the card flips under the pin.
+   --tip-arrow is the pin's offset within the card, set by the script. */
+.hy-map__tip::after {
+  content: "";
+  position: absolute;
+  left: var(--tip-arrow, 50%);
+  bottom: -7px;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  background: var(--hy-card);
+  border-right: 2px solid var(--hy-teal);
+  border-bottom: 2px solid var(--hy-teal);
+  transform: rotate(45deg);
+}
+
+.hy-map__tip.is-below::after {
+  bottom: auto;
+  top: -7px;
+  border-right: 0;
+  border-bottom: 0;
+  border-left: 2px solid var(--hy-teal);
+  border-top: 2px solid var(--hy-teal);
+}
+
+.hy-map__tip-name {
+  display: block;
+  font-family: var(--hy-font-display);
+  font-weight: 700;
+  font-size: .92rem;
+  line-height: 1.3;
+  color: var(--hy-ink);
+}
+
+.hy-map__tip-dates {
+  display: block;
+  font-size: .78rem;
+  color: var(--hy-ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Legend ----------------------------------------------------------------- */
+
+.hy-map__legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .4em 1.1em;
+  margin-top: .7em;
+  font-family: var(--hy-font-body);
+  font-size: .8rem;
+  font-style: normal;
+  color: var(--hy-ink-faint);
+  text-align: left;
+}
+
+.hy-map__key {
+  display: inline-flex;
+  align-items: center;
+  gap: .42em;
+}
+
+.hy-map__key-state,
+.hy-map__key-pin {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 4px;
+  background: var(--hy-green-soft);
+  border: 2px solid var(--hy-green);
+}
+
+:root[data-hy-theme="night"] .hy-map__key-state { background: #24422a; }
+
+.hy-map__key-pin {
+  width: 11px;
+  height: 11px;
+  border: 0;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: var(--hy-map-pin);
+}
+
+.hy-map__hint { font-style: italic; }
+
+@media (max-width: 600px) {
+  .hy-map { padding: .8em .7em .7em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hy-map__pin,
+  .hy-map__pin--drop {
+    animation: none;
+    transition: none;
+  }
 }
 
 /* --------------------------------------------------------------------------

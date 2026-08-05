@@ -1,0 +1,63 @@
+{%- comment -%}
+  Interactive map of visited national parks.
+
+  State outlines come from _data/us_states.yml (generated — see the header of
+  that file). Pins are placed in the browser by projecting each park's lat/lon
+  from _data/parks.yml, so adding a park needs no regeneration.
+
+  Without JavaScript the map still renders and the visited states stay tinted;
+  the pins and tooltips are the enhancement, and the full list sits below.
+{%- endcomment -%}
+
+{%- comment -%}
+  Build a pipe-delimited set of visited states. Both the dedup test below and
+  the lookup further down must include the delimiters, or a state whose name is
+  a substring of another already in the set is silently skipped — "Virginia"
+  inside "West Virginia" is the one such pair among the 50 states.
+{%- endcomment -%}
+{%- assign visited = "|" -%}
+{%- for park in site.data.parks -%}
+  {%- assign probe = park.state | prepend: "|" | append: "|" -%}
+  {%- unless visited contains probe -%}
+    {%- assign visited = visited | append: park.state | append: "|" -%}
+  {%- endunless -%}
+{%- endfor -%}
+
+<figure class="hy-map" data-hy-map data-parks='{{ site.data.parks | jsonify | escape }}'>
+  <div class="hy-map__canvas">
+    {%- comment -%}
+      The pins are HTML buttons layered over this SVG rather than <g> elements
+      inside it: a focusable SVG group takes focus but fires no focus event in
+      some engines, so keyboard users would never see a tooltip. Percentage
+      positioning over the same box keeps them aligned at any width.
+    {%- endcomment -%}
+    <svg class="hy-map__svg"
+         viewBox="25 5 847 499"
+         aria-hidden="true"
+         focusable="false">
+      <g class="hy-map__states">
+        {%- for state in site.data.us_states -%}
+          {%- assign key = state.name | prepend: "|" | append: "|" -%}
+          <path class="hy-map__state{% if visited contains key %} is-visited{% endif %}" d="{{ state.d }}"></path>
+        {%- endfor -%}
+      </g>
+    </svg>
+    <div class="hy-map__pins"></div>
+  </div>
+
+  <p class="screen-reader-text">
+    Map of the United States marking the {{ site.data.parks | size }} national parks visited.
+    Every park and its dates are also listed below the map.
+  </p>
+
+  <div class="hy-map__tip" role="status" hidden>
+    <span class="hy-map__tip-name"></span>
+    <span class="hy-map__tip-dates"></span>
+  </div>
+
+  <figcaption class="hy-map__legend">
+    <span class="hy-map__key"><i class="hy-map__key-state" aria-hidden="true"></i>States visited</span>
+    <span class="hy-map__key"><i class="hy-map__key-pin" aria-hidden="true"></i>National park</span>
+    <span class="hy-map__hint">Hover or tap a pin for details</span>
+  </figcaption>
+</figure>

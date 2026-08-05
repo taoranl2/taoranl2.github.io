@@ -1,25 +1,78 @@
-# National parks visited, newest first. `dates` is free text — list several
-# visits separated by commas if you've been back.
+# National parks visited, newest first.
+#
+#   name   full park name
+#   dates  free text — list several visits separated by commas
+#   state  must match a name in _data/us_states.yml; tints that state on the map
+#   lat    decimal degrees, north positive
+#   lon    decimal degrees, WEST NEGATIVE (e.g. -113.787)
+#
+# lat/lon place the pin on the map on /miscellaneous/. They're projected in the
+# browser (assets/js/hyrule.js), so adding a park is just adding an entry here —
+# nothing to regenerate. Coordinates only need to be roughly right; anywhere
+# inside the park is fine. Alaska and Hawaii work too: they land in the insets.
 
 - name: "Glacier National Park"
   dates: "07/12/2026"
+  state: "Montana"
+  lat: 48.7596
+  lon: -113.7870
+
 - name: "Rocky Mountain National Park"
   dates: "07/07/2024, 06/03/2026"
+  state: "Colorado"
+  lat: 40.3428
+  lon: -105.6836
+
 - name: "Denali National Park and Preserve"
   dates: "12/26/2025"
+  state: "Alaska"
+  lat: 63.1148
+  lon: -151.1926
+
 - name: "Hot Springs National Park"
   dates: "09/06/2025"
+  state: "Arkansas"
+  lat: 34.5217
+  lon: -93.0424
+
 - name: "Yosemite National Park"
   dates: "07/14/2025"
+  state: "California"
+  lat: 37.8651
+  lon: -119.5383
+
 - name: "Great Sand Dunes National Park and Preserve"
   dates: "07/05/2024"
+  state: "Colorado"
+  lat: 37.7916
+  lon: -105.5943
+
 - name: "Yellowstone National Park"
   dates: "06/02/2024"
+  state: "Wyoming"
+  lat: 44.4280
+  lon: -110.5885
+
 - name: "Grand Teton National Park"
   dates: "05/31/2024"
+  state: "Wyoming"
+  lat: 43.7904
+  lon: -110.6818
+
 - name: "Indiana Dunes National Park"
   dates: "03/09/2024"
+  state: "Indiana"
+  lat: 41.6533
+  lon: -87.0524
+
 - name: "Joshua Tree National Park"
   dates: "12/28/2023"
+  state: "California"
+  lat: 33.8734
+  lon: -115.9010
+
 - name: "Grand Canyon National Park"
   dates: "12/20/2023"
+  state: "Arizona"
+  lat: 36.0544
+  lon: -112.1401
