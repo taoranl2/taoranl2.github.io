@@ -1,0 +1,1390 @@
+/* ==========================================================================
+   Hyrule skin — custom theme layer for taoranl2.github.io
+   Loaded after main.css so it overrides the Minimal Mistakes defaults.
+
+   Original artwork and styling inspired by the look and feel of open-world
+   adventure games (parchment maps, glowing runes, rolling hills). No
+   third-party character art, logos, or assets are used or reproduced.
+
+   Plain CSS on purpose: GitHub Pages copies this file verbatim, so a typo
+   can never break the Jekyll build.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design tokens
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Surfaces — warm parchment */
+  --hy-paper:       #fdf7ea;
+  --hy-paper-deep:  #f6ecd8;
+  --hy-card:        #fffdf7;
+  --hy-line:        #e6d7b8;
+  --hy-line-strong: #d3bf98;
+
+  /* Ink */
+  --hy-ink:         #40382a;
+  --hy-ink-soft:    #7d6d55;
+  --hy-ink-faint:   #a2937c;
+
+  /* Accents */
+  --hy-teal:        #1f9b98;
+  --hy-teal-deep:   #147d7b;
+  --hy-teal-soft:   #d7f1ef;
+  --hy-glow:        #67e0dc;
+
+  --hy-pink:        #ee6e97;
+  --hy-pink-soft:   #ffe1eb;
+
+  --hy-gold:        #d99a2b;
+  --hy-gold-soft:   #fbeac6;
+
+  --hy-green:       #63a24a;
+  --hy-green-soft:  #e2f1d6;
+
+  --hy-purple:      #8d6fce;
+  --hy-purple-soft: #ece4fb;
+
+  /* Chunky game-UI shadow */
+  --hy-shadow:      0 3px 0 var(--hy-line-strong), 0 10px 24px rgba(97, 78, 44, .13);
+  --hy-shadow-soft: 0 2px 0 var(--hy-line), 0 6px 16px rgba(97, 78, 44, .09);
+  --hy-shadow-lift: 0 6px 0 var(--hy-line-strong), 0 18px 34px rgba(97, 78, 44, .18);
+
+  --hy-radius:      20px;
+  --hy-radius-sm:   13px;
+
+  /* Type */
+  --hy-font-display: "Baloo 2", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  --hy-font-body:    "Nunito", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  --hy-font-rune:    "Cinzel", "Baloo 2", Georgia, serif;
+
+  --hy-hero-sky-1:  #cdeef3;
+  --hy-hero-sky-2:  #fbe7cf;
+  --hy-hero-sky-3:  #ffe9ef;
+
+  /* Hero scene */
+  --hy-hill-far:    #c3e3c4;
+  --hy-hill-mid:    #96d09c;
+  --hy-hill-near:   #6fb57d;
+  --hy-tree:        #4c8c5c;
+}
+
+:root[data-hy-theme="night"] {
+  --hy-paper:       #16202b;
+  --hy-paper-deep:  #101821;
+  --hy-card:        #1e2b38;
+  --hy-line:        #2f4152;
+  --hy-line-strong: #223140;
+
+  --hy-ink:         #e9f2f7;
+  --hy-ink-soft:    #a6bccb;
+  --hy-ink-faint:   #7b93a3;
+
+  --hy-teal:        #5cdad6;
+  --hy-teal-deep:   #8ff0ec;
+  --hy-teal-soft:   #17383d;
+  --hy-glow:        #8ff5f1;
+
+  --hy-pink:        #ff9dbe;
+  --hy-pink-soft:   #3d2331;
+
+  --hy-gold:        #f0c46a;
+  --hy-gold-soft:   #3a2f19;
+
+  --hy-green:       #8ed070;
+  --hy-green-soft:  #22331d;
+
+  --hy-purple:      #b49af0;
+  --hy-purple-soft: #2b2440;
+
+  --hy-shadow:      0 3px 0 #0d151d, 0 10px 26px rgba(0, 0, 0, .45);
+  --hy-shadow-soft: 0 2px 0 #0d151d, 0 6px 16px rgba(0, 0, 0, .35);
+  --hy-shadow-lift: 0 6px 0 #0d151d, 0 18px 36px rgba(0, 0, 0, .5);
+
+  --hy-hero-sky-1:  #16202b;
+  --hy-hero-sky-2:  #1d2b3c;
+  --hy-hero-sky-3:  #2a2440;
+
+  --hy-hill-far:    #21374c;
+  --hy-hill-mid:    #1a2c3e;
+  --hy-hill-near:   #142333;
+  --hy-tree:        #0e1926;
+}
+
+/* --------------------------------------------------------------------------
+   2. Base
+   -------------------------------------------------------------------------- */
+
+html {
+  background-color: var(--hy-paper);
+}
+
+body {
+  background-color: var(--hy-paper);
+  /* Faint paper grain, drawn with gradients so there is no image to load. */
+  background-image:
+    radial-gradient(circle at 18% 12%, rgba(103, 224, 220, .07), transparent 42%),
+    radial-gradient(circle at 84% 8%, rgba(238, 110, 151, .06), transparent 40%),
+    radial-gradient(circle at 50% 96%, rgba(99, 162, 74, .06), transparent 46%);
+  background-attachment: fixed;
+  color: var(--hy-ink);
+  font-family: var(--hy-font-body);
+  line-height: 1.72;
+}
+
+body,
+.page__content,
+.archive,
+.page__content p,
+.page__content li {
+  font-family: var(--hy-font-body);
+  color: var(--hy-ink);
+}
+
+h1, h2, h3, h4, h5, h6,
+.page__title,
+.archive__item-title {
+  font-family: var(--hy-font-display);
+  color: var(--hy-ink);
+  letter-spacing: .01em;
+  line-height: 1.28;
+}
+
+a {
+  color: var(--hy-teal-deep);
+  text-decoration: none;
+  background-image: linear-gradient(var(--hy-glow), var(--hy-glow));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 2px;
+  transition: background-size .18s ease, color .18s ease;
+}
+
+a:hover,
+a:focus-visible {
+  color: var(--hy-pink);
+  background-image: linear-gradient(var(--hy-pink), var(--hy-pink));
+  background-size: 100% 40%;
+  border-radius: 3px;
+}
+
+/* Links that are really components shouldn't get the underline treatment. */
+.hy-chip, .hy-link-pill, .pub-card__link, .masthead a,
+.hy-park__card, .hy-theme-toggle, .hy-quest a, .page__footer a {
+  background-image: none;
+}
+
+::selection {
+  background: var(--hy-teal-soft);
+  color: var(--hy-ink);
+}
+
+/* --------------------------------------------------------------------------
+   3. Masthead
+   -------------------------------------------------------------------------- */
+
+/* Keep the theme's fixed positioning — only the chrome changes. */
+.masthead {
+  border-bottom: 0;
+  background: transparent;
+  z-index: 40;
+}
+
+.masthead__inner-wrap {
+  max-width: 1180px;
+  padding: .9em 1.2em;
+}
+
+.greedy-nav {
+  background: color-mix(in srgb, var(--hy-card) 88%, transparent);
+  border: 2px solid var(--hy-line);
+  border-radius: 999px;
+  box-shadow: var(--hy-shadow-soft);
+  padding: .28em .5em;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.greedy-nav a {
+  color: var(--hy-ink-soft);
+  font-family: var(--hy-font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: .42em .95em;
+  border-radius: 999px;
+  transition: color .18s ease, background-color .18s ease, transform .18s ease;
+}
+
+.greedy-nav a:hover {
+  color: var(--hy-ink);
+  background-color: var(--hy-teal-soft);
+  transform: translateY(-1px);
+}
+
+.greedy-nav .site-title,
+.greedy-nav .masthead__menu-item--lg a {
+  color: var(--hy-ink);
+  font-weight: 800;
+}
+
+.greedy-nav .visible-links li::before {
+  display: none;
+}
+
+.greedy-nav button {
+  background: var(--hy-teal);
+  border-radius: 999px;
+}
+
+.greedy-nav .hidden-links {
+  background: var(--hy-card);
+  border: 2px solid var(--hy-line);
+  border-radius: var(--hy-radius-sm);
+  box-shadow: var(--hy-shadow);
+}
+
+.greedy-nav .hidden-links::before,
+.greedy-nav .hidden-links::after {
+  display: none;
+}
+
+/* Day / night switch ------------------------------------------------------ */
+
+.hy-theme-toggle {
+  position: fixed;
+  right: 1.1rem;
+  bottom: 1.1rem;
+  z-index: 60;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--hy-line);
+  border-radius: 50%;
+  background: var(--hy-card);
+  box-shadow: var(--hy-shadow-soft);
+  cursor: pointer;
+  color: var(--hy-gold);
+  transition: transform .2s ease, box-shadow .2s ease, color .2s ease;
+}
+
+.hy-theme-toggle:hover {
+  transform: translateY(-2px) rotate(-12deg);
+  box-shadow: var(--hy-shadow);
+  color: var(--hy-teal);
+}
+
+.hy-theme-toggle svg { width: 22px; height: 22px; }
+.hy-theme-toggle .hy-icon-moon { display: none; }
+:root[data-hy-theme="night"] .hy-theme-toggle .hy-icon-moon { display: block; }
+:root[data-hy-theme="night"] .hy-theme-toggle .hy-icon-sun  { display: none; }
+
+/* --------------------------------------------------------------------------
+   4. Hero
+   -------------------------------------------------------------------------- */
+
+/* The theme reserves 70px of body padding for its fixed masthead. On a page
+   with a hero we want the artwork to start at the very top and the (still
+   sticky) nav to float over it, so drop that reserved strip. */
+body:has(.hy-hero) {
+  padding-top: 0;
+}
+
+/* Inner pages: a little breathing room under the floating nav pill. */
+body:not(:has(.hy-hero)) #main {
+  padding-top: 1.1em;
+}
+
+.hy-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 8.2em 1.2em 3.4em;
+  background: linear-gradient(180deg,
+    var(--hy-hero-sky-1) 0%,
+    var(--hy-hero-sky-2) 52%,
+    var(--hy-hero-sky-3) 78%,
+    var(--hy-paper) 100%);
+}
+
+.hy-hero__scene {
+  position: absolute;
+  inset: auto 0 0 0;
+  width: 100%;
+  height: auto;
+  display: block;
+  pointer-events: none;
+}
+
+.hy-hero__orb {
+  position: absolute;
+  top: 5%;
+  right: 6%;
+  width: 128px;
+  height: 128px;
+  pointer-events: none;
+  animation: hy-float 11s ease-in-out infinite;
+}
+
+@keyframes hy-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+
+.hy-hero__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Sun by day, moon and stars by night. */
+.hy-sky-night { display: none; }
+:root[data-hy-theme="night"] .hy-sky-day   { display: none; }
+:root[data-hy-theme="night"] .hy-sky-night { display: block; }
+
+.hy-motes circle {
+  opacity: .55;
+  animation: hy-drift 9s ease-in-out infinite;
+}
+.hy-motes circle:nth-child(2) { animation-duration: 11s; animation-delay: -3s; }
+.hy-motes circle:nth-child(3) { animation-duration: 8s;  animation-delay: -1.5s; }
+.hy-motes circle:nth-child(4) { animation-duration: 13s; animation-delay: -6s; }
+.hy-motes circle:nth-child(5) { animation-duration: 10s; animation-delay: -4s; }
+
+@keyframes hy-drift {
+  0%, 100% { transform: translateY(0);     opacity: .25; }
+  50%      { transform: translateY(-16px); opacity: .8; }
+}
+
+/* The homepage has no sidebar, so the article should span the full column
+   instead of the 75% Minimal Mistakes reserves for content next to one. */
+.hy-page-full {
+  float: none;
+  width: 100%;
+  padding-right: 0;
+  margin-right: 0;
+}
+
+/* Portrait medallion */
+.hy-avatar {
+  position: relative;
+  width: 152px;
+  height: 152px;
+  margin: 0 auto 1.1em;
+}
+
+.hy-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid var(--hy-card);
+  box-shadow: 0 0 0 3px var(--hy-teal), 0 14px 30px rgba(58, 44, 20, .22);
+  position: relative;
+  z-index: 2;
+}
+
+.hy-avatar::after {
+  content: "";
+  position: absolute;
+  inset: -13px;
+  border-radius: 50%;
+  border: 2px dashed var(--hy-teal);
+  opacity: .5;
+  animation: hy-spin 26s linear infinite;
+}
+
+@keyframes hy-spin { to { transform: rotate(360deg); } }
+
+.hy-eyebrow {
+  font-family: var(--hy-font-rune);
+  font-size: .8rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--hy-teal-deep);
+  margin: 0 0 .5em;
+}
+
+.hy-name {
+  font-size: 3.1rem;
+  font-weight: 800;
+  margin: 0 0 .12em;
+  line-height: 1.1;
+  color: var(--hy-ink);
+}
+
+.hy-pronouns {
+  display: inline-block;
+  font-size: .78rem;
+  font-weight: 700;
+  padding: .15em .7em;
+  border-radius: 999px;
+  background: var(--hy-pink-soft);
+  color: var(--hy-pink);
+  vertical-align: middle;
+  margin-left: .5em;
+  letter-spacing: .04em;
+}
+
+.hy-role {
+  font-family: var(--hy-font-display);
+  font-size: 1.22rem;
+  font-weight: 600;
+  color: var(--hy-ink-soft);
+  margin: 0 0 .35em;
+}
+
+.hy-role a { font-weight: 700; }
+
+.hy-tagline {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--hy-ink-faint);
+  margin: 0 auto 1.3em;
+  max-width: 34em;
+}
+
+/* Research-area chips */
+.hy-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5em;
+  justify-content: center;
+  margin: 0 0 1.5em;
+  padding: 0;
+  list-style: none;
+}
+
+.hy-chips li::before { display: none; }
+
+.hy-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .4em;
+  font-family: var(--hy-font-display);
+  font-size: .9rem;
+  font-weight: 700;
+  padding: .34em .95em;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background: var(--hy-card);
+  box-shadow: var(--hy-shadow-soft);
+  color: var(--hy-ink);
+}
+
+.hy-chip--teal   { border-color: var(--hy-teal);   background: var(--hy-teal-soft); }
+.hy-chip--pink   { border-color: var(--hy-pink);   background: var(--hy-pink-soft); }
+.hy-chip--gold   { border-color: var(--hy-gold);   background: var(--hy-gold-soft); }
+.hy-chip--green  { border-color: var(--hy-green);  background: var(--hy-green-soft); }
+.hy-chip--purple { border-color: var(--hy-purple); background: var(--hy-purple-soft); }
+
+/* Social / contact pills */
+.hy-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55em;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hy-links li::before { display: none; }
+
+.hy-link-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .45em;
+  font-family: var(--hy-font-display);
+  font-weight: 700;
+  font-size: .93rem;
+  color: var(--hy-ink);
+  padding: .45em 1.05em;
+  border: 2px solid var(--hy-line);
+  border-radius: 999px;
+  background: var(--hy-card);
+  box-shadow: var(--hy-shadow-soft);
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease, color .16s ease;
+}
+
+.hy-link-pill:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--hy-shadow);
+  border-color: var(--hy-teal);
+  color: var(--hy-teal-deep);
+}
+
+.hy-link-pill i { font-size: 1rem; }
+
+/* Scroll cue */
+.hy-scroll-cue {
+  display: block;
+  width: 26px;
+  height: 26px;
+  margin: 2.4em auto 0;
+  color: var(--hy-teal-deep);
+  animation: hy-bob 2.4s ease-in-out infinite;
+}
+
+@keyframes hy-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(7px); }
+}
+
+/* --------------------------------------------------------------------------
+   5. Section furniture
+   -------------------------------------------------------------------------- */
+
+#main.hy-home {
+  max-width: 1020px;
+}
+
+.hy-section {
+  margin: 3.3em 0;
+}
+
+.hy-section__head {
+  display: flex;
+  align-items: center;
+  gap: .6em;
+  margin: 0 0 1.2em;
+}
+
+.hy-section__head h2 {
+  font-size: 1.7rem;
+  font-weight: 800;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.hy-section__head::after {
+  content: "";
+  flex: 1;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--hy-line) 0%, transparent 100%);
+}
+
+/* Small rotated diamond used as a bullet / ornament */
+.hy-gem {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 13px;
+  transform: rotate(45deg);
+  border-radius: 3px;
+  background: var(--hy-teal);
+  box-shadow: 0 0 0 3px var(--hy-teal-soft);
+}
+
+.hy-gem--pink  { background: var(--hy-pink);  box-shadow: 0 0 0 3px var(--hy-pink-soft); }
+.hy-gem--gold  { background: var(--hy-gold);  box-shadow: 0 0 0 3px var(--hy-gold-soft); }
+.hy-gem--green { background: var(--hy-green); box-shadow: 0 0 0 3px var(--hy-green-soft); }
+
+/* Generic panel */
+.hy-panel {
+  background: var(--hy-card);
+  border: 2px solid var(--hy-line);
+  border-radius: var(--hy-radius);
+  box-shadow: var(--hy-shadow);
+  padding: 1.5em 1.7em;
+}
+
+/* --------------------------------------------------------------------------
+   6. Adventurer profile card
+   -------------------------------------------------------------------------- */
+
+.hy-quest {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
+  gap: 1.1em;
+}
+
+.hy-quest__item {
+  background: var(--hy-card);
+  border: 2px solid var(--hy-line);
+  border-radius: var(--hy-radius-sm);
+  box-shadow: var(--hy-shadow-soft);
+  padding: 1.05em 1.15em;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.hy-quest__item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--hy-shadow);
+}
+
+.hy-quest__label {
+  display: flex;
+  align-items: center;
+  gap: .45em;
+  font-family: var(--hy-font-rune);
+  font-size: .68rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--hy-ink-faint);
+  margin: 0 0 .35em;
+}
+
+.hy-quest__value {
+  font-family: var(--hy-font-display);
+  font-weight: 700;
+  font-size: 1.02rem;
+  color: var(--hy-ink);
+  margin: 0;
+  line-height: 1.45;
+}
+
+/* Decorative heart row */
+.hy-hearts {
+  display: flex;
+  gap: .3em;
+  justify-content: center;
+  margin: 2.6em 0;
+  color: var(--hy-pink);
+}
+
+.hy-hearts svg { width: 20px; height: 20px; }
+.hy-hearts svg:nth-child(2) { animation: hy-beat 2.6s ease-in-out infinite .2s; }
+.hy-hearts svg:nth-child(4) { animation: hy-beat 2.6s ease-in-out infinite .5s; }
+
+@keyframes hy-beat {
+  0%, 100% { transform: scale(1); }
+  18%      { transform: scale(1.22); }
+  36%      { transform: scale(1); }
+}
+
+/* --------------------------------------------------------------------------
+   7. Adventure log (news timeline)
+   -------------------------------------------------------------------------- */
+
+.hy-log {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 1.9em;
+  list-style: none;
+}
+
+.hy-log::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: .6em;
+  bottom: .6em;
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--hy-teal), var(--hy-pink));
+  opacity: .38;
+}
+
+.hy-log li {
+  position: relative;
+  margin: 0 0 1.05em;
+  padding: 0;
+}
+
+.hy-log li::before {
+  content: "";
+  position: absolute;
+  left: -1.9em;
+  top: .52em;
+  width: 13px;
+  height: 13px;
+  transform: rotate(45deg);
+  border-radius: 3px;
+  background: var(--hy-card);
+  border: 3px solid var(--hy-teal);
+}
+
+.hy-log li:nth-child(3n+2)::before { border-color: var(--hy-pink); }
+.hy-log li:nth-child(3n+3)::before { border-color: var(--hy-gold); }
+
+.hy-log__date {
+  display: inline-block;
+  font-family: var(--hy-font-rune);
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--hy-ink-faint);
+  margin-right: .6em;
+}
+
+/* --------------------------------------------------------------------------
+   8. Publication cards
+   -------------------------------------------------------------------------- */
+
+.pub-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1em;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pub-list > li::before { display: none; }
+
+.pub-card {
+  position: relative;
+  background: var(--hy-card);
+  border: 2px solid var(--hy-line);
+  border-radius: var(--hy-radius);
+  box-shadow: var(--hy-shadow-soft);
+  padding: 1.25em 1.5em 1.3em;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.pub-card::before {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: 18px;
+  bottom: 18px;
+  width: 5px;
+  border-radius: 999px;
+  background: var(--pub-accent, var(--hy-teal));
+}
+
+.pub-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--hy-shadow-lift);
+  border-color: var(--pub-accent, var(--hy-teal));
+}
+
+.pub-card__title {
+  font-family: var(--hy-font-display);
+  font-size: 1.16rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0 0 .35em;
+}
+
+.pub-card__title a { color: var(--hy-ink); background-image: none; }
+.pub-card__title a:hover { color: var(--pub-accent, var(--hy-teal-deep)); }
+
+.pub-card__authors {
+  font-size: .95rem;
+  color: var(--hy-ink-soft);
+  margin: 0 0 .6em;
+  line-height: 1.6;
+}
+
+.pub-card__authors b,
+.pub-card__authors strong {
+  color: var(--hy-ink);
+  background: linear-gradient(transparent 62%, var(--hy-gold-soft) 62%);
+  padding: 0 .12em;
+  border-radius: 2px;
+}
+
+.pub-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5em;
+}
+
+.pub-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .35em;
+  font-family: var(--hy-font-display);
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .03em;
+  padding: .24em .8em;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--pub-accent, var(--hy-teal));
+  white-space: nowrap;
+}
+
+:root[data-hy-theme="night"] .pub-badge { color: #101821; }
+
+.pub-badge--pending {
+  background: transparent;
+  color: var(--hy-ink-faint);
+  border: 2px solid var(--hy-line);
+  padding: .1em .7em;
+  font-weight: 700;
+}
+
+:root[data-hy-theme="night"] .pub-badge--pending { color: var(--hy-ink-faint); }
+
+.pub-venue {
+  font-size: .9rem;
+  font-style: italic;
+  color: var(--hy-ink-soft);
+}
+
+.pub-card__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .42em;
+  margin-top: .85em;
+}
+
+.pub-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: .32em;
+  font-family: var(--hy-font-display);
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--hy-ink-soft);
+  padding: .26em .78em;
+  border: 2px solid var(--hy-line);
+  border-radius: 999px;
+  transition: color .16s ease, border-color .16s ease, background-color .16s ease, transform .16s ease;
+}
+
+.pub-card__link:hover {
+  color: var(--pub-accent, var(--hy-teal-deep));
+  border-color: var(--pub-accent, var(--hy-teal));
+  background: var(--hy-teal-soft);
+  transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   9. National-park grid
+   -------------------------------------------------------------------------- */
+
+.hy-park-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(228px, 1fr));
+  gap: 1em;
+  margin: 1.6em 0 2.4em;
+  padding: 0;
+  list-style: none;
+}
+
+.hy-park-grid > li::before { display: none; }
+
+.hy-park__card {
+  display: flex;
+  align-items: flex-start;
+  gap: .8em;
+  height: 100%;
+  background: var(--hy-card);
+  border: 2px solid var(--hy-line);
+  border-radius: var(--hy-radius-sm);
+  box-shadow: var(--hy-shadow-soft);
+  padding: .95em 1em;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.hy-park__card:hover {
+  transform: translateY(-4px) rotate(-.6deg);
+  box-shadow: var(--hy-shadow);
+  border-color: var(--hy-green);
+}
+
+.hy-park__icon {
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--hy-green-soft);
+  color: var(--hy-green);
+}
+
+.hy-park__icon svg { width: 20px; height: 20px; }
+
+.hy-park__name {
+  font-family: var(--hy-font-display);
+  font-weight: 700;
+  font-size: .98rem;
+  line-height: 1.35;
+  color: var(--hy-ink);
+  display: block;
+}
+
+.hy-park__dates {
+  font-size: .8rem;
+  color: var(--hy-ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.hy-park__count {
+  display: inline-flex;
+  align-items: center;
+  gap: .4em;
+  font-family: var(--hy-font-display);
+  font-weight: 800;
+  font-size: .85rem;
+  color: var(--hy-green);
+  background: var(--hy-green-soft);
+  border-radius: 999px;
+  padding: .25em .9em;
+}
+
+/* --------------------------------------------------------------------------
+   10. Long-form content
+   -------------------------------------------------------------------------- */
+
+.page__content h2 {
+  font-size: 1.62rem;
+  font-weight: 800;
+  margin-top: 1.9em;
+  padding-bottom: .3em;
+  border-bottom: 3px solid var(--hy-line);
+  position: relative;
+}
+
+.page__content h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 68px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--hy-teal);
+}
+
+.page__content h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 1.5em;
+}
+
+.page__content ul > li::before {
+  color: var(--hy-teal);
+}
+
+.page__content blockquote {
+  position: relative;
+  border-left: 0;
+  background: var(--hy-paper-deep);
+  border: 2px solid var(--hy-line);
+  border-radius: var(--hy-radius-sm);
+  padding: 1.1em 1.3em 1.1em 2.6em;
+  margin: 1.6em 0;
+  color: var(--hy-ink-soft);
+  box-shadow: var(--hy-shadow-soft);
+}
+
+.page__content blockquote::before {
+  content: "";
+  position: absolute;
+  left: 1.05em;
+  top: 1.35em;
+  width: 11px;
+  height: 11px;
+  transform: rotate(45deg);
+  border-radius: 3px;
+  background: var(--hy-gold);
+  box-shadow: 0 0 0 3px var(--hy-gold-soft);
+}
+
+.page__title {
+  font-size: 2.15rem;
+  font-weight: 800;
+  border-bottom: 0;
+  padding-bottom: 0;
+  margin-bottom: .1em;
+}
+
+.page__title::after {
+  content: "";
+  display: block;
+  width: 78px;
+  height: 5px;
+  border-radius: 5px;
+  margin-top: .35em;
+  background: linear-gradient(90deg, var(--hy-teal), var(--hy-pink));
+}
+
+.page__lead {
+  font-size: 1.05rem;
+  color: var(--hy-ink-soft);
+  max-width: 42em;
+}
+
+/* Education timeline ------------------------------------------------------ */
+
+.hy-edu {
+  list-style: none;
+  margin: 1.5em 0 2.4em;
+  padding: 0;
+  display: grid;
+  gap: .75em;
+}
+
+.hy-edu > li::before { display: none; }
+
+.hy-edu__item {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  grid-template-areas:
+    "years school"
+    "years degree";
+  align-items: baseline;
+  gap: 0 1.1em;
+  background: var(--hy-card);
+  border: 2px solid var(--hy-line);
+  border-left: 6px solid var(--hy-teal);
+  border-radius: var(--hy-radius-sm);
+  box-shadow: var(--hy-shadow-soft);
+  padding: .85em 1.15em;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.hy-edu__item:nth-child(2) { border-left-color: var(--hy-pink); }
+.hy-edu__item:nth-child(3) { border-left-color: var(--hy-gold); }
+.hy-edu__item:nth-child(4) { border-left-color: var(--hy-green); }
+
+.hy-edu__item:hover {
+  transform: translateX(4px);
+  box-shadow: var(--hy-shadow);
+}
+
+.hy-edu__years {
+  grid-area: years;
+  align-self: center;
+  font-family: var(--hy-font-rune);
+  font-size: .78rem;
+  letter-spacing: .06em;
+  color: var(--hy-ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.hy-edu__school {
+  grid-area: school;
+  font-family: var(--hy-font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--hy-ink);
+}
+
+.hy-edu__degree {
+  grid-area: degree;
+  font-size: .92rem;
+  font-style: italic;
+  color: var(--hy-ink-soft);
+}
+
+@media (max-width: 600px) {
+  .hy-edu__item {
+    grid-template-columns: 1fr;
+    grid-template-areas: "years" "school" "degree";
+    gap: .1em;
+  }
+  .hy-edu__years { align-self: start; }
+}
+
+/* Research-interest cards ------------------------------------------------- */
+
+.hy-focus-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(272px, 1fr));
+  gap: 1.1em;
+  margin: 1.6em 0 2.4em;
+}
+
+.hy-focus-card {
+  --focus: var(--hy-teal);
+  --focus-soft: var(--hy-teal-soft);
+  background: var(--hy-card);
+  border: 2px solid var(--hy-line);
+  border-radius: var(--hy-radius);
+  box-shadow: var(--hy-shadow-soft);
+  padding: 1.35em 1.4em 1.2em;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.hy-focus-card--pink { --focus: var(--hy-pink); --focus-soft: var(--hy-pink-soft); }
+.hy-focus-card--gold { --focus: var(--hy-gold); --focus-soft: var(--hy-gold-soft); }
+
+.hy-focus-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--hy-shadow-lift);
+  border-color: var(--focus);
+}
+
+.hy-focus-card__icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: var(--focus-soft);
+  color: var(--focus);
+  margin-bottom: .7em;
+}
+
+.hy-focus-card__icon svg { width: 26px; height: 26px; }
+
+.page__content .hy-focus-card h3 {
+  margin: 0 0 .5em;
+  font-size: 1.06rem;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--hy-ink);
+}
+
+.page__content .hy-focus-card ul {
+  margin: 0;
+  padding-left: 1.15em;
+  list-style: none;
+}
+
+.page__content .hy-focus-card li {
+  position: relative;
+  font-size: .93rem;
+  line-height: 1.62;
+  color: var(--hy-ink-soft);
+  margin-bottom: .18em;
+}
+
+.page__content .hy-focus-card li::before {
+  content: "";
+  position: absolute;
+  left: -1.05em;
+  top: .62em;
+  width: 7px;
+  height: 7px;
+  transform: rotate(45deg);
+  border-radius: 2px;
+  background: var(--focus);
+}
+
+/* --------------------------------------------------------------------------
+   11. Sidebar author card (inner pages)
+   -------------------------------------------------------------------------- */
+
+.sidebar .author__avatar img {
+  border-radius: 50%;
+  border: 3px solid var(--hy-card);
+  box-shadow: 0 0 0 3px var(--hy-teal);
+  max-width: 130px;
+}
+
+.sidebar .author__name {
+  font-family: var(--hy-font-display);
+  font-weight: 800;
+  color: var(--hy-ink);
+}
+
+.sidebar .author__pronouns {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 700;
+  padding: .1em .6em;
+  border-radius: 999px;
+  background: var(--hy-pink-soft);
+  color: var(--hy-pink);
+}
+
+.sidebar .author__bio {
+  font-style: italic;
+  color: var(--hy-ink-faint);
+}
+
+.sidebar .author__urls-wrapper .btn {
+  border-radius: 999px;
+  font-family: var(--hy-font-display);
+  font-weight: 700;
+}
+
+.sidebar .author__urls {
+  border: 2px solid var(--hy-line);
+  border-radius: var(--hy-radius-sm);
+  background: var(--hy-card);
+  box-shadow: var(--hy-shadow-soft);
+  padding: .7em .6em;
+}
+
+.sidebar .author__urls::before,
+.sidebar .author__urls::after { display: none; }
+
+.sidebar .author__urls li {
+  padding: .16em 0;
+}
+
+.sidebar .author__urls a {
+  color: var(--hy-ink-soft);
+  background-image: none;
+  border-radius: 8px;
+  padding: .18em .4em;
+  display: inline-block;
+  transition: color .16s ease, background-color .16s ease;
+}
+
+.sidebar .author__urls a:hover {
+  color: var(--hy-teal-deep);
+  background: var(--hy-teal-soft);
+}
+
+.sidebar .icon-pad-right { color: var(--hy-teal); }
+
+/* --------------------------------------------------------------------------
+   12. Footer
+   -------------------------------------------------------------------------- */
+
+.page__footer {
+  margin-top: 3.5em;
+  background: var(--hy-paper-deep);
+  border-top: 2px solid var(--hy-line);
+  color: var(--hy-ink-soft);
+}
+
+.page__footer footer {
+  max-width: 1000px;
+  padding: 1.6em 1.2em 2.2em;
+}
+
+.page__footer a { color: var(--hy-teal-deep); }
+.page__footer a:hover { color: var(--hy-pink); }
+
+.page__footer-copyright {
+  font-size: .78rem;
+  color: var(--hy-ink-faint);
+}
+
+.hy-footer-sig {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5em;
+  font-family: var(--hy-font-display);
+  font-weight: 700;
+  color: var(--hy-ink-soft);
+  margin-bottom: .7em;
+}
+
+.hy-footer-sig svg { width: 18px; height: 18px; color: var(--hy-green); }
+
+/* --------------------------------------------------------------------------
+   13. Hidden forest sprite (click-to-find easter egg)
+   -------------------------------------------------------------------------- */
+
+.hy-sprite {
+  position: absolute;
+  z-index: 20;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  opacity: .28;
+  transition: opacity .25s ease, transform .25s ease;
+}
+
+.hy-sprite:hover {
+  opacity: 1;
+  transform: scale(1.18) rotate(-8deg);
+}
+
+.hy-sprite.is-found {
+  animation: hy-pop .5s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes hy-pop {
+  0%   { transform: scale(1);   opacity: 1; }
+  45%  { transform: scale(1.5) rotate(14deg); opacity: 1; }
+  100% { transform: scale(0)   rotate(40deg); opacity: 0; }
+}
+
+.hy-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 2.2rem;
+  transform: translate(-50%, 22px);
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: .55em;
+  font-family: var(--hy-font-display);
+  font-weight: 800;
+  color: var(--hy-ink);
+  background: var(--hy-card);
+  border: 2px solid var(--hy-green);
+  border-radius: 999px;
+  box-shadow: var(--hy-shadow);
+  padding: .55em 1.25em;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease, transform .3s ease;
+}
+
+.hy-toast.is-on {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.hy-spark {
+  position: fixed;
+  z-index: 65;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: hy-spark-out .75s ease-out forwards;
+}
+
+@keyframes hy-spark-out {
+  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   14. Scroll reveal
+   -------------------------------------------------------------------------- */
+
+.hy-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .55s ease, transform .55s ease;
+}
+
+.hy-reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   15. Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .hy-name { font-size: 2.4rem; }
+  .hy-hero { padding-top: 6.2em; }
+}
+
+@media (max-width: 600px) {
+  /* Keep the sun/moon from colliding with the portrait. */
+  .hy-hero__orb { width: 76px; height: 76px; top: 5.6em; right: 4%; }
+  .hy-name { font-size: 2rem; }
+  .hy-role { font-size: 1.05rem; }
+  .hy-avatar { width: 118px; height: 118px; }
+  .hy-hero { padding: 5.4em 1em 2.4em; }
+  .hy-panel { padding: 1.2em 1.15em; }
+  .pub-card { padding: 1.05em 1.15em 1.15em; }
+  .hy-theme-toggle { right: .75rem; bottom: .75rem; }
+}
+
+/* --------------------------------------------------------------------------
+   16. Reduced motion
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .hy-avatar::after,
+  .hy-scroll-cue,
+  .hy-hearts svg,
+  .hy-hero__orb,
+  .hy-motes circle {
+    animation: none;
+  }
+  .hy-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  * { scroll-behavior: auto !important; }
+}

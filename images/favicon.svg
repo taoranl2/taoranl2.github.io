@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="A teal gem with a leaf">
+  <rect width="64" height="64" rx="14" fill="#fdf7ea"/>
+  <!-- gem -->
+  <rect x="17" y="17" width="30" height="30" rx="6" transform="rotate(45 32 32)" fill="#1f9b98"/>
+  <rect x="23" y="23" width="18" height="18" rx="4" transform="rotate(45 32 32)" fill="#67e0dc" opacity=".65"/>
+  <!-- leaf -->
+  <path d="M32 12c7 0 12 4.6 12 10.4 0 3-2.4 5.6-5.6 5.6-3.6 0-6.4-3-6.4-7 0-3.4 0-6.6 0-9z" fill="#63a24a"/>
+  <path d="M32 12c0 4.4 1.5 10.6 5 16" stroke="#4a7d38" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <!-- sparkle -->
+  <path d="M50 40l1.5 4.5L56 46l-4.5 1.5L50 52l-1.5-4.5L44 46l4.5-1.5z" fill="#d99a2b"/>
+</svg>

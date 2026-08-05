@@ -1,0 +1,99 @@
+# Publications shown on /publications/.
+#
+# Fields
+#   title    required
+#   url      optional — makes the title clickable
+#   authors  Markdown; wrap your own name in ** ** to highlight it.
+#            Escape equal-contribution stars as \* so they aren't read as italics.
+#   badge    short venue tag shown in the coloured pill
+#   venue    full venue line under the title
+#   pending  true for work under review (adds the muted "Under review" pill)
+#   accent   teal | pink | gold | green | purple — the card's colour
+#   links    list of { label, url, icon }; icon is any Font Awesome or
+#            Academicons class, e.g. "ai ai-arxiv", "fas fa-file-pdf",
+#            "fab fa-github", "fas fa-display"
+
+- title: "AutoDojo: Adaptive Attacks Expose Superficial Defenses and User-Underspecification Limits in LLM Agents"
+  url: "https://arxiv.org/abs/2606.15057"
+  authors: 'Xinhang Ma, **Taoran Li**, Chaowei Xiao, Zhiyuan Yu, Ning Zhang, Yevgeniy Vorobeychik.'
+  badge: "IEEE S&P 2027"
+  venue: "48th IEEE Symposium on Security and Privacy"
+  pending: true
+  accent: "teal"
+  links:
+    - label: "arXiv"
+      url: "https://arxiv.org/abs/2606.15057"
+      icon: "ai ai-arxiv"
+
+- title: "Chain of Risk: Safety Failures in Large Reasoning Models and Mitigation via Adaptive Multi-Principle Steering"
+  url: "https://arxiv.org/abs/2605.05678"
+  authors: 'Xiaomin Li, Jianheng Hou, Zheyuan Deng, Zhiwei Zhang, **Taoran Li**, Binghang Lu, Bing Hu, Yunhan Zhao, Yuexing Hao.'
+  badge: "NeurIPS 2026"
+  venue: "Fortieth Annual Conference on Neural Information Processing Systems"
+  pending: true
+  accent: "purple"
+  links:
+    - label: "arXiv"
+      url: "https://arxiv.org/abs/2605.05678"
+      icon: "ai ai-arxiv"
+
+- title: "Same Answer, Different Reasons: Trace-Level Divergence in Multilingual Large Language Models"
+  authors: 'Rui Sun, Peizhao Mei, Xiwei Cheng, Kaizhuo Chen, **Taoran Li**, Zhiyuan Yu, Varun Chandrasekaran.'
+  badge: "NeurIPS 2026"
+  venue: "Fortieth Annual Conference on Neural Information Processing Systems"
+  pending: true
+  accent: "purple"
+
+- title: "CounterFlow: Securing LLM Agents via Graph Counterfactuals"
+  authors: '**Taoran Li**, Zhiyuan Yu.'
+  badge: "ACM CCS 2026"
+  venue: "33rd ACM Conference on Computer and Communications Security"
+  pending: true
+  accent: "teal"
+
+- title: "Layer-Targeted Multilingual Knowledge Erasure in Large Language Models"
+  url: "https://arxiv.org/abs/2602.22562"
+  authors: '**Taoran Li**, Varun Chandrasekaran, Zhiyuan Yu.'
+  badge: "ICML 2026"
+  venue: "43rd International Conference on Machine Learning"
+  pending: true
+  accent: "pink"
+  links:
+    - label: "arXiv"
+      url: "https://arxiv.org/abs/2602.22562"
+      icon: "ai ai-arxiv"
+
+- title: "The Erasure Illusion: Stress-Testing the Generalization of LLM Forgetting Evaluation"
+  url: "https://arxiv.org/abs/2512.19025"
+  authors: 'Hengrui Jia, **Taoran Li**, Jonas Guan, Varun Chandrasekaran.'
+  badge: "ACM CCS 2026"
+  venue: "ACM Conference on Computer and Communications Security"
+  pending: true
+  accent: "teal"
+  links:
+    - label: "arXiv"
+      url: "https://arxiv.org/abs/2512.19025"
+      icon: "ai ai-arxiv"
+
+- title: "SoK: Understanding (New) Security Issues Across AI4Code Use Cases"
+  url: "https://arxiv.org/abs/2512.18456"
+  authors: 'Qilong Wu\*, **Taoran Li\***, Tianyang Zhou\*, Varun Chandrasekaran.'
+  badge: "NDSS 2026"
+  venue: "Network and Distributed System Security Symposium"
+  pending: true
+  accent: "teal"
+  links:
+    - label: "arXiv"
+      url: "https://arxiv.org/abs/2512.18456"
+      icon: "ai ai-arxiv"
+
+- title: "MedGUIDE: Benchmarking Clinical Decision-Making in Large Language Models"
+  url: "https://arxiv.org/abs/2505.11613"
+  authors: 'Xiaomin Li\*, Mingye Gao\*, Yuexing Hao, **Taoran Li**, Guangya Wan, Zihan Wang, Yijun Wang.'
+  badge: "NeurIPS 2025"
+  venue: "NeurIPS GenAI4Health Workshop"
+  accent: "green"
+  links:
+    - label: "arXiv"
+      url: "https://arxiv.org/abs/2505.11613"
+      icon: "ai ai-arxiv"

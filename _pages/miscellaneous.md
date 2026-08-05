@@ -5,18 +5,41 @@ permalink: /miscellaneous/
 author_profile: true
 ---
 
-{% include base_path %}  
+{% include base_path %}
 
-I enjoy cooking Chinese food with my friends. Additionally, I have a passion for hiking and photography, especially in natural environments. I have had the opportunity to visit several national parks, where I capture the beauty of the landscapes through my lens. The national parks I have visited include:
+<p class="page__lead">
+  I enjoy cooking Chinese food with my friends. Additionally, I have a passion for hiking and
+  photography, especially in natural environments. I have had the opportunity to visit several
+  national parks, where I capture the beauty of the landscapes through my lens.
+</p>
 
-- Grand Canyon National Park (12/20/2023)
-- Joshua Tree National Park (12/28/2023)
-- Indiana Dunes National Park (3/9/2024)
-- Grand Teton National Park (5/31/2024)
-- Yellowstone National Park (6/2/2024)
-- Great Sand Dunes National Park and Preserve (7/5/2024)
-- Rocky Mountain National Park (7/7/2024, 6/3/2026)
-- Yosimite National Park (7/14/2025)
-- Hot Springs National Park (9/6/2025)
-- Denali National Park and Preserve (12/26/2025)
-- Glacier National Park (7/12/2026)
+National Parks
+======
+
+<p>
+  <span class="hy-park__count">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px" aria-hidden="true">
+      <path d="M3 19l6.2-10.4L13 15l2.4-3.6L21 19z"></path>
+    </svg>
+    {{ site.data.parks | size }} parks so far
+  </span>
+</p>
+
+<ul class="hy-park-grid">
+{% for park in site.data.parks %}
+  <li>
+    <div class="hy-park__card">
+      <span class="hy-park__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 19l6.2-10.4L13 15l2.4-3.6L21 19z"></path>
+          <path d="M7.6 12.2l1.6-1.2 1.4 1"></path>
+        </svg>
+      </span>
+      <span>
+        <span class="hy-park__name">{{ park.name }}</span>
+        <span class="hy-park__dates">{{ park.dates }}</span>
+      </span>
+    </div>
+  </li>
+{% endfor %}
+</ul>
