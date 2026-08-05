@@ -179,7 +179,7 @@ a:focus-visible {
 
 /* Links that are really components shouldn't get the underline treatment. */
 .hy-chip, .hy-link-pill, .pub-card__link, .masthead a,
-.hy-park__card, .hy-theme-toggle, .page__footer a {
+.hy-theme-toggle, .page__footer a {
   background-image: none;
 }
 
@@ -1075,78 +1075,48 @@ body:not(:has(.hy-hero)) #main {
 }
 
 /* --------------------------------------------------------------------------
-   9. National-park grid
+   9b. Map fallback list (visible only when scripting is off)
    -------------------------------------------------------------------------- */
 
-.hy-park-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(228px, 1fr));
-  gap: 1em;
-  margin: 1.6em 0 2.4em;
-  padding: 0;
-  list-style: none;
-}
-
-.hy-park-grid > li::before { display: none; }
-
-.hy-park__card {
-  display: flex;
-  align-items: flex-start;
-  gap: .8em;
-  height: 100%;
-  background: var(--hy-card);
-  border: 2px solid var(--hy-line);
-  border-radius: var(--hy-radius-sm);
-  box-shadow: var(--hy-shadow-soft);
-  padding: .95em 1em;
-  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-}
-
-.hy-park__card:hover {
-  transform: translateY(-4px) rotate(-.6deg);
-  box-shadow: var(--hy-shadow);
-  border-color: var(--hy-green);
-}
-
-.hy-park__icon {
-  flex: 0 0 34px;
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  border-radius: 10px;
-  background: var(--hy-green-soft);
-  color: var(--hy-green);
-}
-
-.hy-park__icon svg { width: 20px; height: 20px; }
-
-.hy-park__name {
-  font-family: var(--hy-font-display);
+.hy-map__list p {
+  margin: 0 0 .4em;
+  font-size: .88rem;
   font-weight: 700;
-  font-size: .98rem;
-  line-height: 1.35;
-  color: var(--hy-ink);
-  display: block;
-}
-
-.hy-park__dates {
-  font-size: .8rem;
-  color: var(--hy-ink-faint);
-  font-variant-numeric: tabular-nums;
-}
-
-.hy-park__count {
-  display: inline-flex;
-  align-items: center;
-  gap: .4em;
   font-family: var(--hy-font-display);
-  font-weight: 800;
-  font-size: .85rem;
-  color: var(--hy-green);
-  background: var(--hy-green-soft);
-  border-radius: 999px;
-  padding: .25em .9em;
+  color: var(--hy-ink);
+}
+
+.hy-map__list ul {
+  margin: 0;
+  padding-left: 1.1em;
+  list-style: none;
+  columns: 2;
+  column-gap: 1.6em;
+}
+
+.hy-map__list li {
+  position: relative;
+  font-size: .88rem;
+  line-height: 1.55;
+  color: var(--hy-ink-soft);
+  break-inside: avoid;
+  margin-bottom: .25em;
+}
+
+.hy-map__list li::before {
+  content: "";
+  position: absolute;
+  left: -1em;
+  top: .58em;
+  width: 7px;
+  height: 7px;
+  transform: rotate(45deg);
+  border-radius: 2px;
+  background: var(--hy-green);
+}
+
+@media (max-width: 600px) {
+  .hy-map__list ul { columns: 1; }
 }
 
 /* --------------------------------------------------------------------------

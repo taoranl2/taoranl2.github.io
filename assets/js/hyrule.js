@@ -181,7 +181,7 @@
      real element on the page rather than floating at a random offset. */
   var SPOTS = [
     [".hy-section:nth-of-type(1)", "right"],
-    [".hy-park-grid", "left"],
+    [".hy-map", "left"],
     [".pub-list", "right"],
     [".page__content h2", "right"],
     [".page__footer footer", "left"]

@@ -5,8 +5,9 @@
   that file). Pins are placed in the browser by projecting each park's lat/lon
   from _data/parks.yml, so adding a park needs no regeneration.
 
-  Without JavaScript the map still renders and the visited states stay tinted;
-  the pins and tooltips are the enhancement, and the full list sits below.
+  The map is the only place the parks are listed on the page, so it carries its
+  own fallbacks: a visually-hidden list for screen readers, revealed as a plain
+  visible list by the <noscript> stylesheet when the pins can't be drawn.
 {%- endcomment -%}
 
 {%- comment -%}
@@ -16,10 +17,12 @@
   inside "West Virginia" is the one such pair among the 50 states.
 {%- endcomment -%}
 {%- assign visited = "|" -%}
+{%- assign state_count = 0 -%}
 {%- for park in site.data.parks -%}
   {%- assign probe = park.state | prepend: "|" | append: "|" -%}
   {%- unless visited contains probe -%}
     {%- assign visited = visited | append: park.state | append: "|" -%}
+    {%- assign state_count = state_count | plus: 1 -%}
   {%- endunless -%}
 {%- endfor -%}
 
@@ -45,19 +48,46 @@
     <div class="hy-map__pins"></div>
   </div>
 
-  <p class="screen-reader-text">
-    Map of the United States marking the {{ site.data.parks | size }} national parks visited.
-    Every park and its dates are also listed below the map.
-  </p>
-
   <div class="hy-map__tip" role="status" hidden>
     <span class="hy-map__tip-name"></span>
     <span class="hy-map__tip-dates"></span>
   </div>
 
+  {%- comment -%}
+    The same list serves two audiences. It is always in the DOM and hidden, so a
+    screen reader can read the parks in order instead of hunting through pins.
+    The <noscript> block below un-hides it, because with scripting off the pins
+    never get drawn and this is the only copy of the data on the page.
+  {%- endcomment -%}
+  <div class="hy-map__list screen-reader-text">
+    <p>The {{ site.data.parks | size }} national parks marked on this map, most recently visited first:</p>
+    <ul>
+      {%- for park in site.data.parks -%}
+        <li>{{ park.name }}{% if park.state %}, {{ park.state }}{% endif %}{% if park.dates %} — visited {{ park.dates }}{% endif %}</li>
+      {%- endfor -%}
+    </ul>
+  </div>
+  <noscript>
+    <style>
+      /* The theme's .screen-reader-text clamps size and position with
+         !important, so undoing it needs the same weight. */
+      .hy-map__list.screen-reader-text {
+        position: static !important;
+        width: auto !important;
+        height: auto !important;
+        border: 0 !important;
+        overflow: visible;
+        clip: auto;
+        clip-path: none;
+        margin: 1.2em 0 0;
+      }
+      .hy-map__hint { display: none; }
+    </style>
+  </noscript>
+
   <figcaption class="hy-map__legend">
-    <span class="hy-map__key"><i class="hy-map__key-state" aria-hidden="true"></i>States visited</span>
-    <span class="hy-map__key"><i class="hy-map__key-pin" aria-hidden="true"></i>National park</span>
+    <span class="hy-map__key"><i class="hy-map__key-state" aria-hidden="true"></i>{{ state_count }} states</span>
+    <span class="hy-map__key"><i class="hy-map__key-pin" aria-hidden="true"></i>{{ site.data.parks | size }} national parks</span>
     <span class="hy-map__hint">Hover or tap a pin for details</span>
   </figcaption>
 </figure>
