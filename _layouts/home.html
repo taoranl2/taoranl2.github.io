@@ -108,23 +108,6 @@ layout: default
 
 <div id="main" role="main" class="hy-home">
 
-  {% if page.profile %}
-    <section class="hy-section hy-reveal" aria-labelledby="hy-profile-head">
-      <div class="hy-section__head">
-        <span class="hy-gem" aria-hidden="true"></span>
-        <h2 id="hy-profile-head">{{ page.profile_title | default: 'Adventurer’s Profile' }}</h2>
-      </div>
-      <div class="hy-quest">
-        {% for row in page.profile %}
-          <div class="hy-quest__item">
-            <p class="hy-quest__label"><span class="hy-gem hy-gem--{{ row.color | default: 'gold' }}" aria-hidden="true" style="width:8px;height:8px;flex:0 0 8px;box-shadow:none;"></span>{{ row.label }}</p>
-            <p class="hy-quest__value">{{ row.value }}</p>
-          </div>
-        {% endfor %}
-      </div>
-    </section>
-  {% endif %}
-
   {% if site.data.news and site.data.news.size > 0 %}
     <section class="hy-section hy-reveal" aria-labelledby="hy-log-head">
       <div class="hy-section__head">

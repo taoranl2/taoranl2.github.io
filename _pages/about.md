@@ -20,27 +20,6 @@ focus:
   - label: "Applied Cryptography"
     color: "gold"
 
-profile_title: "Adventurer’s Profile"
-profile:
-  - label: "Now"
-    value: "1st-year PhD in Computer Science, Texas A&M University"
-    color: "teal"
-  - label: "Advised by"
-    value: "Prof. Zhiyuan Yu"
-    color: "pink"
-  - label: "Based in"
-    value: "College Station, Texas"
-    color: "gold"
-  - label: "The road here"
-    value: "Zhejiang University × UIUC → UIUC (M.S.) → Texas A&M"
-    color: "green"
-  - label: "Open to"
-    value: "Collaborations on Trustworthy ML and AI Safety"
-    color: "teal"
-  - label: "Off the clock"
-    value: "Cooking, hiking, and photographing national parks"
-    color: "green"
-
 news_title: "Adventure Log"
 ---
 

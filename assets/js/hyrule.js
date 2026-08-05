@@ -40,22 +40,43 @@
   }
 
   /* ----------------------------------------------------------------------
-     Nudge the theme's "greedy nav"
+     Reset the theme's "greedy nav"
 
-     main.min.js measures the nav once on load and tucks links into the
-     overflow menu when it thinks they don't fit. That measurement happens
-     before the web fonts land, so links get hidden on a wide screen and are
-     only restored one per resize event. Re-firing resize a few times after
-     the fonts settle puts them all back.
+     main.min.js measures the nav once, at parse time, and tucks links into
+     the overflow menu when it thinks they don't fit. On loads where that
+     measurement happens before layout settles it hides every link — and it
+     restores at most one per resize event, popping one entry off its
+     `breaks` stack each time. Worse, the runaway recursion described in
+     guardGreedyNav() pushes a `breaks` entry per iteration, so `breaks` can
+     hold thousands of bogus widths and the nav can never dig itself out.
+
+     So don't nudge it: put the links back, clear `breaks`, and let
+     updateNav() re-measure once from a clean state. It then collapses only
+     what genuinely doesn't fit.
      ---------------------------------------------------------------------- */
 
   function settleNav() {
-    var kicks = 0;
-    var timer = setInterval(function () {
-      window.dispatchEvent(new Event("resize"));
-      var hidden = document.querySelectorAll(".greedy-nav .hidden-links > li").length;
-      if (++kicks > 8 || hidden === 0) clearInterval(timer);
-    }, 60);
+    var nav = document.querySelector(".greedy-nav");
+    var visible = document.querySelector(".greedy-nav .visible-links");
+    var hidden = document.querySelector(".greedy-nav .hidden-links");
+    if (!nav || !visible || !hidden) return;
+
+    /* Measuring against a zero-width viewport is what corrupts the nav in the
+       first place — bail and wait for a resize rather than add to the mess. */
+    if (!window.innerWidth || !nav.offsetWidth) return;
+
+    /* hidden-links keeps the original order, so appending in order restores it. */
+    while (hidden.firstElementChild) {
+      visible.appendChild(hidden.firstElementChild);
+    }
+
+    if (Array.isArray(window.breaks)) window.breaks.length = 0;
+
+    var btn = nav.querySelector("button");
+    if (btn) btn.classList.add("hidden");
+    hidden.classList.add("hidden");
+
+    if (typeof window.updateNav === "function") window.updateNav();
   }
 
   /* main.min.js ends updateNav() with `$vlinks.width() > e && updateNav()`.
@@ -236,6 +257,23 @@
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(settleNav);
     }
+
+    /* Re-measure from a clean state on resize too, so the nav recovers from
+       any bad measurement instead of restoring one link per resize event.
+       settleNav is idempotent, so the extra calls below cost nothing when the
+       nav is already correct. */
+    var resizeTimer;
+    window.addEventListener("resize", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(settleNav, 150);
+    });
+
+    /* A tab restored in the background can have a zero-size viewport at load,
+       which is exactly when settleNav bails. Catch it once it has one. */
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) settleNav();
+    });
+    [150, 600, 1500].forEach(function (delay) { setTimeout(settleNav, delay); });
   }
 
   if (document.readyState === "loading") {

@@ -170,7 +170,7 @@ a:focus-visible {
 
 /* Links that are really components shouldn't get the underline treatment. */
 .hy-chip, .hy-link-pill, .pub-card__link, .masthead a,
-.hy-park__card, .hy-theme-toggle, .hy-quest a, .page__footer a {
+.hy-park__card, .hy-theme-toggle, .page__footer a {
   background-image: none;
 }
 
@@ -592,51 +592,9 @@ body:not(:has(.hy-hero)) #main {
 }
 
 /* --------------------------------------------------------------------------
-   6. Adventurer profile card
+   6. Decorative heart row
    -------------------------------------------------------------------------- */
 
-.hy-quest {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
-  gap: 1.1em;
-}
-
-.hy-quest__item {
-  background: var(--hy-card);
-  border: 2px solid var(--hy-line);
-  border-radius: var(--hy-radius-sm);
-  box-shadow: var(--hy-shadow-soft);
-  padding: 1.05em 1.15em;
-  transition: transform .18s ease, box-shadow .18s ease;
-}
-
-.hy-quest__item:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--hy-shadow);
-}
-
-.hy-quest__label {
-  display: flex;
-  align-items: center;
-  gap: .45em;
-  font-family: var(--hy-font-rune);
-  font-size: .68rem;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--hy-ink-faint);
-  margin: 0 0 .35em;
-}
-
-.hy-quest__value {
-  font-family: var(--hy-font-display);
-  font-weight: 700;
-  font-size: 1.02rem;
-  color: var(--hy-ink);
-  margin: 0;
-  line-height: 1.45;
-}
-
-/* Decorative heart row */
 .hy-hearts {
   display: flex;
   gap: .3em;

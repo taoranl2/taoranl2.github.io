@@ -1,20 +1,11 @@
 # Adventure Log — the news feed on the homepage.
 #
+# Academic news only: papers, talks, awards, milestones. Trips, hobbies and
+# other personal notes belong on /miscellaneous/ instead.
+#
 # Newest entry first. `date` is free text (whatever reads well) and `text`
 # accepts Markdown, so [links](https://…), *italics* and **bold** all work.
 # The homepage shows the first `news_limit` entries (set in _pages/about.md).
-#
-# These starter entries were seeded from what was already on the site; replace
-# them with real news as it happens (paper accepted, talk given, award, etc.).
-
-- date: "Jul 2026"
-  text: "Hiked **Glacier National Park** — the 11th U.S. national park on [the list](/miscellaneous/). 🏔️"
-
-- date: "Jun 2026"
-  text: "Back to **Rocky Mountain National Park**, two years after the first visit."
-
-- date: "Dec 2025"
-  text: "Winter trip to **Denali National Park and Preserve**. ❄️"
 
 - date: "2025"
   text: "*MedGUIDE: Benchmarking Clinical Decision-Making in Large Language Models* was accepted to the **NeurIPS GenAI4Health Workshop 2025**."
