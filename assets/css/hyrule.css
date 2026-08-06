@@ -1018,6 +1018,167 @@ body:not(:has(.hy-hero)) #main {
   font-variant-numeric: tabular-nums;
 }
 
+/* Photo strip ------------------------------------------------------------ */
+
+/* Only tooltips with photos take pointer events, so the mouse can travel from
+   the pin into the card to click a thumbnail. Without photos the card stays
+   click-through and can't block a pin underneath it. */
+.hy-map__tip.has-photos {
+  pointer-events: auto;
+  max-width: 18em;
+}
+
+.hy-map__shots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .3em;
+  margin-top: .5em;
+}
+
+.hy-map__shot {
+  /* Fixed box: the tooltip is measured and positioned before the thumbnails
+     have loaded, so their size must not depend on the image. */
+  width: 62px;
+  height: 62px;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 2px solid var(--hy-line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--hy-paper-deep);
+  cursor: zoom-in;
+  transition: transform .16s ease, border-color .16s ease;
+}
+
+.hy-map__shot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hy-map__shot:hover,
+.hy-map__shot:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--hy-map-pin-active);
+  outline: none;
+}
+
+/* Lightbox --------------------------------------------------------------- */
+
+.hy-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 3.2rem 1rem 1rem;
+  background: rgba(30, 22, 8, .82);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+:root[data-hy-theme="night"] .hy-lightbox { background: rgba(4, 8, 12, .88); }
+
+.hy-lightbox[hidden] { display: none; }
+
+.hy-lightbox__figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .7em;
+  max-width: min(1100px, 94vw);
+}
+
+.hy-lightbox__img {
+  display: block;
+  max-width: 100%;
+  max-height: 76vh;
+  object-fit: contain;
+  border-radius: 14px;
+  border: 3px solid var(--hy-card);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .5);
+  background: var(--hy-paper-deep);
+}
+
+.hy-lightbox__caption {
+  font-family: var(--hy-font-body);
+  font-size: .88rem;
+  color: #f4ece0;
+  text-align: center;
+  max-width: 44em;
+}
+
+.hy-lightbox__caption b {
+  font-family: var(--hy-font-display);
+  font-weight: 700;
+  display: block;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.hy-lightbox__count {
+  font-variant-numeric: tabular-nums;
+  opacity: .75;
+}
+
+.hy-lightbox button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 2px solid rgba(255, 255, 255, .35);
+  border-radius: 50%;
+  background: rgba(20, 16, 10, .55);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color .16s ease, border-color .16s ease, transform .16s ease;
+}
+
+.hy-lightbox button:hover,
+.hy-lightbox button:focus-visible {
+  background: var(--hy-teal);
+  border-color: #fff;
+  transform: scale(1.06);
+  outline: none;
+}
+
+.hy-lightbox button svg { width: 22px; height: 22px; }
+
+.hy-lightbox__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.hy-lightbox__prev,
+.hy-lightbox__next {
+  position: absolute;
+  top: 50%;
+  margin-top: -22px;
+}
+
+.hy-lightbox__prev { left: 1rem; }
+.hy-lightbox__next { right: 1rem; }
+
+.hy-lightbox.is-single .hy-lightbox__prev,
+.hy-lightbox.is-single .hy-lightbox__next { display: none; }
+
+@media (max-width: 600px) {
+  .hy-lightbox { padding: 3.4rem .6rem .6rem; }
+  .hy-lightbox__prev { left: .4rem; }
+  .hy-lightbox__next { right: .4rem; }
+  .hy-map__shot { width: 56px; height: 56px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hy-map__shot,
+  .hy-lightbox button { transition: none; }
+}
+
 /* Legend ----------------------------------------------------------------- */
 
 .hy-map__legend {

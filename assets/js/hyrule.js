@@ -324,6 +324,122 @@
       '<circle class="hy-map__pin-dot" cx="0" cy="-9.2" r="2.1"></circle>' +
     '</svg>';
 
+  /* ----------------------------------------------------------------------
+     Lightbox for the park photos
+
+     Home-grown rather than the theme's magnific-popup: that one is bound at
+     document-ready over the links that exist then, and it is styled for the
+     stock theme. Thumbnails are <button>s, not <a href="…jpg">, so the theme's
+     auto-binding leaves them alone.
+     ---------------------------------------------------------------------- */
+
+  var lightbox = null;
+
+  function buildLightbox() {
+    if (lightbox) return lightbox;
+
+    var root = document.createElement("div");
+    root.className = "hy-lightbox";
+    root.hidden = true;
+    root.setAttribute("role", "dialog");
+    root.setAttribute("aria-modal", "true");
+    root.setAttribute("aria-label", "Photo viewer");
+    root.innerHTML =
+      '<button class="hy-lightbox__close" type="button" aria-label="Close photo viewer">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">' +
+          '<path d="M6 6l12 12M18 6L6 18"></path></svg></button>' +
+      '<button class="hy-lightbox__prev" type="button" aria-label="Previous photo">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">' +
+          '<polyline points="15 5 8 12 15 19"></polyline></svg></button>' +
+      '<button class="hy-lightbox__next" type="button" aria-label="Next photo">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">' +
+          '<polyline points="9 5 16 12 9 19"></polyline></svg></button>' +
+      '<figure class="hy-lightbox__figure">' +
+        '<img class="hy-lightbox__img" alt="">' +
+        '<figcaption class="hy-lightbox__caption"><b></b><span class="hy-lightbox__alt"></span> ' +
+          '<span class="hy-lightbox__count"></span></figcaption>' +
+      '</figure>';
+
+    document.body.appendChild(root);
+
+    var img = root.querySelector(".hy-lightbox__img");
+    var title = root.querySelector(".hy-lightbox__caption b");
+    var altText = root.querySelector(".hy-lightbox__alt");
+    var count = root.querySelector(".hy-lightbox__count");
+    var photos = [];
+    var index = 0;
+    var heading = "";
+    var returnFocus = null;
+
+    function render() {
+      var photo = photos[index] || {};
+      img.src = photo.src || "";
+      img.alt = photo.alt || "";
+      title.textContent = heading;
+      altText.textContent = photo.alt || "";
+      count.textContent = photos.length > 1 ? (index + 1) + " / " + photos.length : "";
+      root.classList.toggle("is-single", photos.length < 2);
+    }
+
+    function step(delta) {
+      if (photos.length < 2) return;
+      index = (index + delta + photos.length) % photos.length;
+      render();
+    }
+
+    function close() {
+      root.hidden = true;
+      document.documentElement.style.overflow = "";
+      img.src = "";
+      if (returnFocus && document.contains(returnFocus)) {
+        returnFocus.focus({ preventScroll: true });
+      }
+      returnFocus = null;
+    }
+
+    root.querySelector(".hy-lightbox__close").addEventListener("click", close);
+    root.querySelector(".hy-lightbox__prev").addEventListener("click", function () { step(-1); });
+    root.querySelector(".hy-lightbox__next").addEventListener("click", function () { step(1); });
+
+    /* Clicking the backdrop closes; clicking the photo or a control does not. */
+    root.addEventListener("click", function (event) {
+      if (event.target === root) close();
+    });
+
+    root.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") { event.stopPropagation(); close(); }
+      else if (event.key === "ArrowLeft") step(-1);
+      else if (event.key === "ArrowRight") step(1);
+      else if (event.key === "Tab") {
+        /* Keep focus inside the dialog. */
+        var focusable = root.querySelectorAll("button");
+        var first = focusable[0];
+        var last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault(); last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault(); first.focus();
+        }
+      }
+    });
+
+    lightbox = {
+      open: function (list, startAt, label, opener) {
+        photos = list;
+        index = startAt || 0;
+        heading = label || "";
+        returnFocus = opener || null;
+        render();
+        root.hidden = false;
+        /* Stop the page scrolling behind the overlay. */
+        document.documentElement.style.overflow = "hidden";
+        root.querySelector(".hy-lightbox__close").focus({ preventScroll: true });
+      },
+      isOpen: function () { return !root.hidden; }
+    };
+    return lightbox;
+  }
+
   function buildParkMap() {
     var figure = document.querySelector("[data-hy-map]");
     if (!figure) return;
@@ -333,6 +449,7 @@
     var tip = figure.querySelector(".hy-map__tip");
     var tipName = figure.querySelector(".hy-map__tip-name");
     var tipDates = figure.querySelector(".hy-map__tip-dates");
+    var shots = figure.querySelector(".hy-map__shots");
     if (!svg || !layer || !tip) return;
 
     var parks;
@@ -373,6 +490,7 @@
       anchors.push({ pin: pin, park: park });
 
       pin.addEventListener("mouseenter", function () {
+        cancelHide();
         if (locked && locked !== pin) return;
         showTip(pin, park);
       });
@@ -381,7 +499,7 @@
            different pin, so moving the mouse across its neighbours must not
            close it. */
         if (locked) return;
-        hideTip();
+        scheduleHide();
       });
       pin.addEventListener("focus", function () {
         if (locked && locked !== pin) locked = null;
@@ -416,6 +534,7 @@
 
       tipName.textContent = park.name;
       tipDates.textContent = park.dates || "";
+      renderShots(park, pin);
       tip.hidden = false;
 
       var figureBox = figure.getBoundingClientRect();
@@ -448,10 +567,69 @@
       tip.style.transform = "translate(" + left.toFixed(1) + "px," + y.toFixed(1) + "px)";
     }
 
+    /* Thumbnails are built fresh per park and given explicit dimensions in CSS,
+       so the card's size is final before any image has loaded — the position
+       computed in showTip stays correct. */
+    function renderShots(park, pin) {
+      shots.innerHTML = "";
+      var list = park.photos || [];
+      tip.classList.toggle("has-photos", list.length > 0);
+      if (!list.length) return;
+
+      list.forEach(function (photo, i) {
+        if (!photo || !photo.src) return;
+        var button = document.createElement("button");
+        button.type = "button";
+        button.className = "hy-map__shot";
+        button.setAttribute("aria-label",
+          "Open photo " + (i + 1) + " of " + list.length + " from " + park.name +
+          (photo.alt ? ": " + photo.alt : ""));
+
+        var img = document.createElement("img");
+        img.src = photo.thumb || photo.src;
+        img.alt = "";
+        img.loading = "lazy";
+        img.decoding = "async";
+        button.appendChild(img);
+
+        button.addEventListener("click", function (event) {
+          event.stopPropagation();
+          /* Pin the card open: the lightbox returns focus to this button when
+             it closes, and focus can't land on a hidden element. */
+          cancelHide();
+          locked = pin;
+          buildLightbox().open(list, i, park.name, button);
+        });
+
+        shots.appendChild(button);
+      });
+    }
+
     function hideTip() {
       tip.hidden = true;
+      tip.classList.remove("has-photos");
       anchors.forEach(function (a) { a.pin.classList.remove("is-active"); });
     }
+
+    /* With photos in the card the pointer has to be able to cross the gap from
+       the pin to a thumbnail, so hiding is deferred and cancelled if the
+       pointer lands on the card. */
+    var hideTimer = null;
+
+    function cancelHide() {
+      if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+    }
+
+    function scheduleHide() {
+      cancelHide();
+      hideTimer = setTimeout(function () {
+        hideTimer = null;
+        if (!locked) hideTip();
+      }, 160);
+    }
+
+    tip.addEventListener("mouseenter", cancelHide);
+    tip.addEventListener("mouseleave", function () { if (!locked) scheduleHide(); });
 
     /* Pins are positioned in percentages, so resizing needs no relayout — only
        the tooltip's pixel offsets go stale. */
@@ -461,15 +639,18 @@
       hideTip();
     });
 
+    /* While the lightbox is up it owns clicks and Escape; tearing the card down
+       underneath it would strand the focus it has to return to. */
     document.addEventListener("click", function () {
+      if (lightbox && lightbox.isOpen()) return;
       locked = null;
       hideTip();
     });
     document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") {
-        locked = null;
-        hideTip();
-      }
+      if (event.key !== "Escape") return;
+      if (lightbox && lightbox.isOpen()) return;
+      locked = null;
+      hideTip();
     });
 
     /* Drop the pins in when the map first comes into view. */

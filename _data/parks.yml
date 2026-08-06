@@ -5,11 +5,35 @@
 #   state  must match a name in _data/us_states.yml; tints that state on the map
 #   lat    decimal degrees, north positive
 #   lon    decimal degrees, WEST NEGATIVE (e.g. -113.787)
+#   photos optional; see below
 #
 # lat/lon place the pin on the map on /miscellaneous/. They're projected in the
 # browser (assets/js/hyrule.js), so adding a park is just adding an entry here —
 # nothing to regenerate. Coordinates only need to be roughly right; anywhere
 # inside the park is fine. Alaska and Hawaii work too: they land in the insets.
+#
+# PHOTOS
+#
+# Add up to about four per park and they appear as thumbnails in the pin's
+# tooltip; clicking one opens it full size. Parks with no photos just show the
+# name and dates, exactly as before.
+#
+#   photos:
+#     - src: /images/parks/glacier-01.jpg        # large, for the lightbox
+#       thumb: /images/parks/glacier-01-thumb.jpg # small, for the tooltip
+#       alt: "Hidden Lake below Clements Mountain"
+#
+# `thumb` is optional — without it the large file is used for both, which
+# works but downloads far more than it needs to on hover.
+#
+# Don't commit camera originals: a phone photo is several MB, and a dozen of
+# them will bloat the repository and slow the page badly. Run
+#
+#     tools/add-park-photos.sh glacier ~/Pictures/glacier/*.jpg
+#
+# which writes web-sized copies into images/parks/ and prints the YAML block
+# above ready to paste in. `alt` is the description read aloud to people using
+# a screen reader, so write what is actually in the shot.
 
 - name: "Glacier National Park"
   dates: "07/12/2026"
