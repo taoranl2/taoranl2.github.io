@@ -9,9 +9,12 @@
 #   venue    full venue line under the title
 #   pending  true for work under review (adds the muted "Under review" pill)
 #   accent   teal | pink | gold | green | purple — the card's colour
+#            (security venues teal, NeurIPS purple, ICML pink, accepted green)
 #   links    list of { label, url, icon }; icon is any Font Awesome or
 #            Academicons class, e.g. "ai ai-arxiv", "fas fa-file-pdf",
 #            "fab fa-github", "fas fa-display"
+#
+# Ordered newest first, which is the reverse of the numbered list in the CV.
 
 - title: "AutoDojo: Adaptive Attacks Expose Superficial Defenses and User-Underspecification Limits in LLM Agents"
   url: "https://arxiv.org/abs/2606.15057"
@@ -51,23 +54,23 @@
   pending: true
   accent: "teal"
 
-- title: "Layer-Targeted Multilingual Knowledge Erasure in Large Language Models"
+- title: "One Layer to Forget Them All: Enabling Multilingual Knowledge Erasure via Language-Agnostic Layers"
   url: "https://arxiv.org/abs/2602.22562"
   authors: '**Taoran Li**, Varun Chandrasekaran, Zhiyuan Yu.'
-  badge: "ICML 2026"
-  venue: "43rd International Conference on Machine Learning"
+  badge: "NeurIPS 2026"
+  venue: "Fortieth Annual Conference on Neural Information Processing Systems"
   pending: true
-  accent: "pink"
+  accent: "purple"
   links:
     - label: "arXiv"
       url: "https://arxiv.org/abs/2602.22562"
       icon: "ai ai-arxiv"
 
-- title: "The Erasure Illusion: Stress-Testing the Generalization of LLM Forgetting Evaluation"
+- title: "The Metric Mirage: A False Sense of Unlearning"
   url: "https://arxiv.org/abs/2512.19025"
   authors: 'Hengrui Jia, **Taoran Li**, Jonas Guan, Varun Chandrasekaran.'
-  badge: "ACM CCS 2026"
-  venue: "ACM Conference on Computer and Communications Security"
+  badge: "NDSS 2027"
+  venue: "Network and Distributed System Security Symposium"
   pending: true
   accent: "teal"
   links:
@@ -78,7 +81,7 @@
 - title: "SoK: Understanding (New) Security Issues Across AI4Code Use Cases"
   url: "https://arxiv.org/abs/2512.18456"
   authors: 'Qilong Wu\*, **Taoran Li\***, Tianyang Zhou\*, Varun Chandrasekaran.'
-  badge: "NDSS 2026"
+  badge: "NDSS 2027"
   venue: "Network and Distributed System Security Symposium"
   pending: true
   accent: "teal"
@@ -90,9 +93,10 @@
 - title: "MedGUIDE: Benchmarking Clinical Decision-Making in Large Language Models"
   url: "https://arxiv.org/abs/2505.11613"
   authors: 'Xiaomin Li\*, Mingye Gao\*, Yuexing Hao, **Taoran Li**, Guangya Wan, Zihan Wang, Yijun Wang.'
-  badge: "NeurIPS 2025"
-  venue: "NeurIPS GenAI4Health Workshop"
-  accent: "green"
+  badge: "ICML 2026"
+  venue: "43rd International Conference on Machine Learning"
+  pending: true
+  accent: "pink"
   links:
     - label: "arXiv"
       url: "https://arxiv.org/abs/2505.11613"
