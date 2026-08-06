@@ -1241,6 +1241,18 @@ body:not(:has(.hy-hero)) #main {
 }
 
 /* --------------------------------------------------------------------------
+   9c. Visitor-map widget
+
+   A third-party script that has been known to 500 and serve an HTML error page
+   instead of JavaScript. Hidden until it renders something, so an outage on
+   their side shows nothing rather than a heading over blank space. Revealed by
+   assets/js/hyrule.js.
+   -------------------------------------------------------------------------- */
+
+.hy-visitors { display: none; }
+.hy-visitors.is-live { display: block; }
+
+/* --------------------------------------------------------------------------
    9b. Map fallback list (visible only when scripting is off)
    -------------------------------------------------------------------------- */
 

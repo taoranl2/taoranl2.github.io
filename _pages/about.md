@@ -119,6 +119,12 @@ My research broadly covers computer security and privacy, focusing on robust, sc
   </div>
 </div>
 
-## Visitor Map
-
-<script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=8IeGcvsd6Dd3zHXUCVb1EOYDIF1ZBLmaEMSLlELCmfs&cl=ffffff&w=a"></script>
+<!-- Hidden until the third-party widget actually renders something, so a
+     failure on their side leaves no empty heading behind. assets/js/hyrule.js
+     reveals it. -->
+<section class="hy-visitors" data-hy-visitors>
+  <h2 id="visitor-map">Visitor Map</h2>
+  <div class="hy-visitors__slot" data-hy-visitors-slot>
+    <script type="text/javascript" id="mapmyvisitors" src="https://mapmyvisitors.com/map.js?d=8IeGcvsd6Dd3zHXUCVb1EOYDIF1ZBLmaEMSLlELCmfs&cl=ffffff&w=a"></script>
+  </div>
+</section>

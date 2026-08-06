@@ -667,6 +667,50 @@
   }
 
   /* ----------------------------------------------------------------------
+     Visitor-map widget
+
+     Third-party, and it has been observed returning HTTP 500 with an HTML
+     error page in place of its script. The section is hidden in CSS and only
+     revealed once the widget has actually put something on the page, so an
+     outage costs a heading over empty space rather than looking broken.
+     ---------------------------------------------------------------------- */
+
+  function revealVisitorMap() {
+    var section = document.querySelector("[data-hy-visitors]");
+    var slot = section && section.querySelector("[data-hy-visitors-slot]");
+    if (!section || !slot) return;
+
+    /* Watch the slot, which holds nothing but the widget's own script tag.
+       Looking at the whole section would be fooled by anything else that adds
+       markup inside it — the hidden sprite drops an <svg> into a heading. */
+    function rendered() {
+      var nodes = slot.getElementsByTagName("*");
+      for (var i = 0; i < nodes.length; i++) {
+        var tag = nodes[i].tagName;
+        if (tag !== "SCRIPT" && tag !== "STYLE") return true;
+      }
+      return false;
+    }
+
+    function check() {
+      if (!rendered()) return false;
+      section.classList.add("is-live");
+      return true;
+    }
+
+    if (check()) return;
+    if (!("MutationObserver" in window)) return;
+
+    var observer = new MutationObserver(function () {
+      if (check()) observer.disconnect();
+    });
+    observer.observe(slot, { childList: true, subtree: true });
+
+    /* Give it a while, then stop watching rather than observe forever. */
+    setTimeout(function () { observer.disconnect(); }, 10000);
+  }
+
+  /* ----------------------------------------------------------------------
      Boot
      ---------------------------------------------------------------------- */
 
@@ -674,6 +718,7 @@
     guardGreedyNav();
     buildThemeToggle();
     revealOnScroll();
+    revealVisitorMap();
     buildParkMap();
     placeSprite();
     settleNav();
