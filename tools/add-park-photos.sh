@@ -31,7 +31,22 @@ mkdir -p "$OUT"
 
 THUMB_EDGE=360     # px on the long edge — displayed at ~62px, so this stays sharp on retina
 FULL_EDGE=1600     # px on the long edge for the lightbox
-QUALITY=72         # sips JPEG quality, 0-100
+QUALITY=62         # sips JPEG quality, 0-100; 62 is visually clean at these sizes
+
+# sips -Z enlarges as well as shrinks, which would blur an already-small photo
+# and waste bytes, so only resize when the source is actually bigger.
+resize_to() {
+  local src="$1" out="$2" target="$3"
+  local w h edge
+  w=$(sips -g pixelWidth  "$src" | awk '/pixelWidth/{print $2}')
+  h=$(sips -g pixelHeight "$src" | awk '/pixelHeight/{print $2}')
+  edge=$(( w > h ? w : h ))
+  if [[ $edge -gt $target ]]; then
+    sips -s format jpeg -s formatOptions $QUALITY -Z $target "$src" --out "$out" >/dev/null
+  else
+    sips -s format jpeg -s formatOptions $QUALITY "$src" --out "$out" >/dev/null
+  fi
+}
 
 i=0
 echo ""
@@ -48,8 +63,8 @@ for src in "$@"; do
   full="$OUT/$SLUG-$n.jpg"
   thumb="$OUT/$SLUG-$n-thumb.jpg"
 
-  sips -s format jpeg -s formatOptions $QUALITY -Z $FULL_EDGE  "$src" --out "$full"  >/dev/null
-  sips -s format jpeg -s formatOptions $QUALITY -Z $THUMB_EDGE "$src" --out "$thumb" >/dev/null
+  resize_to "$src" "$full"  $FULL_EDGE
+  resize_to "$src" "$thumb" $THUMB_EDGE
 
   echo "    - src: /images/parks/$SLUG-$n.jpg"
   echo "      thumb: /images/parks/$SLUG-$n-thumb.jpg"

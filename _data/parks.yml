@@ -14,44 +14,66 @@
 #
 # PHOTOS
 #
-# Add up to about four per park and they appear as thumbnails in the pin's
-# tooltip; clicking one opens it full size. Parks with no photos just show the
-# name and dates, exactly as before.
+# Up to about four per park; they appear as thumbnails in the pin's tooltip and
+# open full size when clicked. Parks with no photos just show the name and
+# dates, exactly as before.
 #
-#   photos:
-#     - src: /images/parks/glacier-01.jpg        # large, for the lightbox
-#       thumb: /images/parks/glacier-01-thumb.jpg # small, for the tooltip
-#       alt: "Hidden Lake below Clements Mountain"
-#
-# `thumb` is optional — without it the large file is used for both, which
-# works but downloads far more than it needs to on hover.
-#
-# Don't commit camera originals: a phone photo is several MB, and a dozen of
+# Don't commit camera originals: a phone photo is several MB, and a folder of
 # them will bloat the repository and slow the page badly. Run
 #
 #     tools/add-park-photos.sh glacier ~/Pictures/glacier/*.jpg
 #
 # which writes web-sized copies into images/parks/ and prints the YAML block
-# above ready to paste in. `alt` is the description read aloud to people using
-# a screen reader, so write what is actually in the shot.
+# ready to paste in. `alt` is the description read aloud to people using a
+# screen reader, so write what is actually in the shot.
 
 - name: "Glacier National Park"
   dates: "07/12/2026"
   state: "Montana"
   lat: 48.7596
   lon: -113.7870
+  photos:
+    - src: /images/parks/glacier-01.jpg
+      thumb: /images/parks/glacier-01-thumb.jpg
+      alt: "A turquoise glacial lake in the valley below jagged peaks, seen from a wildflower slope on the trail"
+    - src: /images/parks/glacier-02.jpg
+      thumb: /images/parks/glacier-02-thumb.jpg
+      alt: "The bow of a kayak on a mirror-still lake, with mountains and clouds reflected in the water"
+    - src: /images/parks/glacier-03.jpg
+      thumb: /images/parks/glacier-03-thumb.jpg
+      alt: "Snow-streaked peaks above a small alpine lake, with a green meadow and scattered firs in front"
 
 - name: "Rocky Mountain National Park"
   dates: "07/07/2024, 06/03/2026"
   state: "Colorado"
   lat: 40.3428
   lon: -105.6836
+  photos:
+    - src: /images/parks/rocky-mountain-01.jpg
+      thumb: /images/parks/rocky-mountain-01-thumb.jpg
+      alt: "A still alpine lake reflecting a snow-streaked cliff face, with a boulder in the foreground"
+    - src: /images/parks/rocky-mountain-02.jpg
+      thumb: /images/parks/rocky-mountain-02-thumb.jpg
+      alt: "A road curving across high tundra with the snow-capped range behind it"
+    - src: /images/parks/rocky-mountain-03.jpg
+      thumb: /images/parks/rocky-mountain-03-thumb.jpg
+      alt: "Hikers on a tundra path above the treeline, with snowfields and peaks across the valley"
 
 - name: "Denali National Park and Preserve"
   dates: "12/26/2025"
   state: "Alaska"
   lat: 63.1148
   lon: -151.1926
+  photos:
+    - src: /images/parks/denali-01.jpg
+      thumb: /images/parks/denali-01-thumb.jpg
+      alt: "Denali rising above a sea of cloud, lit pink at sunrise, seen from the air"
+    - src: /images/parks/denali-02.jpg
+      thumb: /images/parks/denali-02-thumb.jpg
+      alt: "A snow-covered road running toward white mountains through spruce forest in blue winter light"
+    - src: /images/parks/denali-03.jpg
+      thumb: /images/parks/denali-03-thumb.jpg
+      alt: "A sharp snow-covered summit breaking through the clouds, seen from the air"
 
 - name: "Hot Springs National Park"
   dates: "09/06/2025"
@@ -64,39 +86,106 @@
   state: "California"
   lat: 37.8651
   lon: -119.5383
+  photos:
+    - src: /images/parks/yosemite-01.jpg
+      thumb: /images/parks/yosemite-01-thumb.jpg
+      alt: "Yosemite Valley from Tunnel View, with El Capitan on the left above the forest"
+    - src: /images/parks/yosemite-02.jpg
+      thumb: /images/parks/yosemite-02-thumb.jpg
+      alt: "Half Dome catching the last sunlight, with people watching from the overlook"
+    - src: /images/parks/yosemite-03.jpg
+      thumb: /images/parks/yosemite-03-thumb.jpg
+      alt: "Half Dome glowing at sunset under a wide blue sky streaked with thin cloud"
 
 - name: "Great Sand Dunes National Park and Preserve"
   dates: "07/05/2024"
   state: "Colorado"
   lat: 37.7916
   lon: -105.5943
+  photos:
+    - src: /images/parks/great-sand-dunes-01.jpg
+      thumb: /images/parks/great-sand-dunes-01-thumb.jpg
+      alt: "Dune ridges at dusk with a mountain ridge silhouetted behind them"
+    - src: /images/parks/great-sand-dunes-02.jpg
+      thumb: /images/parks/great-sand-dunes-02-thumb.jpg
+      alt: "A steep dune crest against a deep blue sky, with climbers small on the slope"
+    - src: /images/parks/great-sand-dunes-03.jpg
+      thumb: /images/parks/great-sand-dunes-03-thumb.jpg
+      alt: "The dune field spread below green mountains, seen across the flats"
 
 - name: "Yellowstone National Park"
   dates: "06/02/2024"
   state: "Wyoming"
   lat: 44.4280
   lon: -110.5885
+  photos:
+    - src: /images/parks/yellowstone-01.jpg
+      thumb: /images/parks/yellowstone-01-thumb.jpg
+      alt: "Grand Prismatic Spring steaming below the overlook, ringed with orange bacterial mats"
+    - src: /images/parks/yellowstone-02.jpg
+      thumb: /images/parks/yellowstone-02-thumb.jpg
+      alt: "The view from a snow-patched summit ridge out over forest and plateau"
+    - src: /images/parks/yellowstone-03.jpg
+      thumb: /images/parks/yellowstone-03-thumb.jpg
+      alt: "The yellow walls of the Grand Canyon of the Yellowstone, with the river running far below"
 
 - name: "Grand Teton National Park"
   dates: "05/31/2024"
   state: "Wyoming"
   lat: 43.7904
   lon: -110.6818
+  photos:
+    - src: /images/parks/grand-teton-01.jpg
+      thumb: /images/parks/grand-teton-01-thumb.jpg
+      alt: "The Teton range at sunrise, mirrored in a still stretch of river"
+    - src: /images/parks/grand-teton-02.jpg
+      thumb: /images/parks/grand-teton-02-thumb.jpg
+      alt: "A weathered wooden barn on the flats with the Teton range rising behind it"
+    - src: /images/parks/grand-teton-03.jpg
+      thumb: /images/parks/grand-teton-03-thumb.jpg
+      alt: "A wide lake below the mountains, seen from a rocky overlook fringed with pines"
 
 - name: "Indiana Dunes National Park"
   dates: "03/09/2024"
   state: "Indiana"
   lat: 41.6533
   lon: -87.0524
+  photos:
+    - src: /images/parks/indiana-dunes-01.jpg
+      thumb: /images/parks/indiana-dunes-01-thumb.jpg
+      alt: "Concrete steps leading down to Lake Michigan on a bright, windy day"
+    - src: /images/parks/indiana-dunes-02.jpg
+      thumb: /images/parks/indiana-dunes-02-thumb.jpg
+      alt: "A cartoon pig drawn in the wet sand"
+    - src: /images/parks/indiana-dunes-03.jpg
+      thumb: /images/parks/indiana-dunes-03-thumb.jpg
+      alt: "The Chicago skyline on the horizon across a choppy Lake Michigan"
 
 - name: "Joshua Tree National Park"
   dates: "12/28/2023"
   state: "California"
   lat: 33.8734
   lon: -115.9010
+  photos:
+    - src: /images/parks/joshua-tree-01.jpg
+      thumb: /images/parks/joshua-tree-01-thumb.jpg
+      alt: "A road through the desert at dusk, past a granite pile and a Joshua tree"
+    - src: /images/parks/joshua-tree-02.jpg
+      thumb: /images/parks/joshua-tree-02-thumb.jpg
+      alt: "Joshua trees scattered across the desert floor with the mountains glowing at sunset"
 
 - name: "Grand Canyon National Park"
   dates: "12/20/2023"
   state: "Arizona"
   lat: 36.0544
   lon: -112.1401
+  photos:
+    - src: /images/parks/grand-canyon-01.jpg
+      thumb: /images/parks/grand-canyon-01-thumb.jpg
+      alt: "The canyon spread out under a wide sky streaked with cloud"
+    - src: /images/parks/grand-canyon-02.jpg
+      thumb: /images/parks/grand-canyon-02-thumb.jpg
+      alt: "Layered buttes and side canyons seen from a rocky viewpoint on the rim"
+    - src: /images/parks/grand-canyon-03.jpg
+      thumb: /images/parks/grand-canyon-03-thumb.jpg
+      alt: "A bighorn sheep standing beside the rim path next to a bare tree"

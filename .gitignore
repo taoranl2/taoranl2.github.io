@@ -15,3 +15,10 @@ package-lock.json
 # Python bytecode from tools/
 __pycache__/
 *.pyc
+
+# macOS finder metadata
+.DS_Store
+
+# Drop-folder for camera originals; only the web-sized copies in
+# images/parks/ belong in the repository (see tools/add-park-photos.sh).
+photo/
