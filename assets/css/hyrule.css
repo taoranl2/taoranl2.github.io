@@ -1103,7 +1103,13 @@ body:not(:has(.hy-hero)) #main {
   background: var(--hy-paper-deep);
 }
 
+/* Park name and position only — the photo's description lives in the image's
+   alt attribute, for screen readers, and is not shown. */
 .hy-lightbox__caption {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: .6em;
   font-family: var(--hy-font-body);
   font-size: .88rem;
   color: #f4ece0;
@@ -1114,14 +1120,13 @@ body:not(:has(.hy-hero)) #main {
 .hy-lightbox__caption b {
   font-family: var(--hy-font-display);
   font-weight: 700;
-  display: block;
   font-size: 1rem;
   color: #fff;
 }
 
 .hy-lightbox__count {
   font-variant-numeric: tabular-nums;
-  opacity: .75;
+  opacity: .7;
 }
 
 .hy-lightbox button {

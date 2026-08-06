@@ -356,7 +356,7 @@
           '<polyline points="9 5 16 12 9 19"></polyline></svg></button>' +
       '<figure class="hy-lightbox__figure">' +
         '<img class="hy-lightbox__img" alt="">' +
-        '<figcaption class="hy-lightbox__caption"><b></b><span class="hy-lightbox__alt"></span> ' +
+        '<figcaption class="hy-lightbox__caption"><b></b>' +
           '<span class="hy-lightbox__count"></span></figcaption>' +
       '</figure>';
 
@@ -364,7 +364,6 @@
 
     var img = root.querySelector(".hy-lightbox__img");
     var title = root.querySelector(".hy-lightbox__caption b");
-    var altText = root.querySelector(".hy-lightbox__alt");
     var count = root.querySelector(".hy-lightbox__count");
     var photos = [];
     var index = 0;
@@ -374,9 +373,10 @@
     function render() {
       var photo = photos[index] || {};
       img.src = photo.src || "";
+      /* The description stays on the image for screen readers; it is
+         deliberately not shown as a visible caption. */
       img.alt = photo.alt || "";
       title.textContent = heading;
-      altText.textContent = photo.alt || "";
       count.textContent = photos.length > 1 ? (index + 1) + " / " + photos.length : "";
       root.classList.toggle("is-single", photos.length < 2);
     }
