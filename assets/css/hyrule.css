@@ -15,58 +15,62 @@
    -------------------------------------------------------------------------- */
 
 :root {
-  /* Surfaces — warm parchment */
-  --hy-paper:       #fdf7ea;
-  --hy-paper-deep:  #f6ecd8;
-  --hy-card:        #fffdf7;
-  --hy-line:        #e6d7b8;
-  --hy-line-strong: #d3bf98;
+  /* Surfaces — milky pink */
+  --hy-paper:       #fff7fb;
+  --hy-paper-deep:  #ffeef6;
+  --hy-card:        #fffdfe;
+  --hy-line:        #f7dcea;
+  --hy-line-strong: #eec3da;
 
-  /* Ink */
-  --hy-ink:         #40382a;
-  --hy-ink-soft:    #7d6d55;
-  --hy-ink-faint:   #a2937c;
+  /* Ink — warm plum rather than brown, so it sits in the pink family.
+     Every one of these clears 4.5:1 on all three surfaces above; the tones
+     were picked with a contrast check, not by eye. */
+  --hy-ink:         #4a3a46;
+  --hy-ink-soft:    #786070;
+  --hy-ink-faint:   #836b7c;
 
-  /* Accents */
-  --hy-teal:        #1f9b98;
+  /* Accents — pink leads, lavender supports, mint and gold trim */
+  --hy-pink:        #e05a92;
+  --hy-pink-deep:   #c03572;
+  --hy-pink-soft:   #ffe3ef;
+
+  --hy-purple:      #8f6bd0;
+  --hy-purple-deep: #7f57c9;
+  --hy-purple-soft: #f0e8fd;
+
+  --hy-teal:        #3bb3ae;
   --hy-teal-deep:   #147d7b;
-  --hy-teal-soft:   #d7f1ef;
-  --hy-glow:        #67e0dc;
+  --hy-teal-soft:   #dcf5f3;
+  --hy-glow:        #ffc2de;
 
-  --hy-pink:        #ee6e97;
-  --hy-pink-soft:   #ffe1eb;
+  --hy-gold:        #c98016;
+  --hy-gold-soft:   #ffeed0;
 
-  --hy-gold:        #d99a2b;
-  --hy-gold-soft:   #fbeac6;
+  --hy-green:       #4f9a6f;
+  --hy-green-soft:  #dff3e7;
 
-  --hy-green:       #63a24a;
-  --hy-green-soft:  #e2f1d6;
+  /* Soft pink shadows instead of the old brown game-UI slab */
+  --hy-shadow:      0 2px 0 var(--hy-line-strong), 0 12px 26px rgba(214, 122, 172, .20);
+  --hy-shadow-soft: 0 1px 0 var(--hy-line), 0 8px 18px rgba(214, 122, 172, .14);
+  --hy-shadow-lift: 0 4px 0 var(--hy-line-strong), 0 20px 38px rgba(214, 122, 172, .28);
 
-  --hy-purple:      #8d6fce;
-  --hy-purple-soft: #ece4fb;
-
-  /* Chunky game-UI shadow */
-  --hy-shadow:      0 3px 0 var(--hy-line-strong), 0 10px 24px rgba(97, 78, 44, .13);
-  --hy-shadow-soft: 0 2px 0 var(--hy-line), 0 6px 16px rgba(97, 78, 44, .09);
-  --hy-shadow-lift: 0 6px 0 var(--hy-line-strong), 0 18px 34px rgba(97, 78, 44, .18);
-
-  --hy-radius:      20px;
-  --hy-radius-sm:   13px;
+  --hy-radius:      26px;
+  --hy-radius-sm:   16px;
 
   /* Type */
   --hy-font-display: "Baloo 2", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
   --hy-font-body:    "Nunito", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
   --hy-font-rune:    "Cinzel", "Baloo 2", Georgia, serif;
 
-  --hy-hero-sky-1:  #cdeef3;
-  --hy-hero-sky-2:  #fbe7cf;
-  --hy-hero-sky-3:  #ffe9ef;
+  --hy-hero-sky-1:  #e4dcff;
+  --hy-hero-sky-2:  #ffe0ef;
+  --hy-hero-sky-3:  #fff0f6;
 
   /* Hero scene */
-  --hy-hill-far:    #c3e3c4;
-  --hy-hill-mid:    #96d09c;
-  --hy-hill-near:   #6fb57d;
-  --hy-tree:        #4c8c5c;
+  --hy-hill-far:    #dff0e4;
+  --hy-hill-mid:    #b9e3cd;
+  --hy-hill-near:   #93cfb2;
+  --hy-tree:        #66b596;
 
   /* Map pins get their own colours: --hy-pink over the pale state fills is only
      2.4:1, under the 3:1 a non-text control needs. These clear 4:1. */
@@ -75,45 +79,47 @@
 }
 
 :root[data-hy-theme="night"] {
-  --hy-paper:       #16202b;
-  --hy-paper-deep:  #101821;
-  --hy-card:        #1e2b38;
-  --hy-line:        #2f4152;
-  --hy-line-strong: #223140;
+  --hy-paper:       #201826;
+  --hy-paper-deep:  #171020;
+  --hy-card:        #2a1f31;
+  --hy-line:        #463349;
+  --hy-line-strong: #33243a;
 
-  --hy-ink:         #e9f2f7;
-  --hy-ink-soft:    #a6bccb;
-  --hy-ink-faint:   #7b93a3;
+  --hy-ink:         #f7ecf4;
+  --hy-ink-soft:    #c9b3c6;
+  --hy-ink-faint:   #a992a6;
 
-  --hy-teal:        #5cdad6;
-  --hy-teal-deep:   #8ff0ec;
-  --hy-teal-soft:   #17383d;
-  --hy-glow:        #8ff5f1;
+  --hy-pink:        #ffa8cd;
+  --hy-pink-deep:   #ffc2dc;
+  --hy-pink-soft:   #45253a;
 
-  --hy-pink:        #ff9dbe;
-  --hy-pink-soft:   #3d2331;
+  --hy-purple:      #c4a9f5;
+  --hy-purple-deep: #d8c6ff;
+  --hy-purple-soft: #302448;
 
-  --hy-gold:        #f0c46a;
-  --hy-gold-soft:   #3a2f19;
+  --hy-teal:        #6fdcd8;
+  --hy-teal-deep:   #9ff0ed;
+  --hy-teal-soft:   #1d3d43;
+  --hy-glow:        #ffb9da;
 
-  --hy-green:       #8ed070;
-  --hy-green-soft:  #22331d;
+  --hy-gold:        #f3ca70;
+  --hy-gold-soft:   #40331d;
 
-  --hy-purple:      #b49af0;
-  --hy-purple-soft: #2b2440;
+  --hy-green:       #93dcb2;
+  --hy-green-soft:  #223a2c;
 
-  --hy-shadow:      0 3px 0 #0d151d, 0 10px 26px rgba(0, 0, 0, .45);
-  --hy-shadow-soft: 0 2px 0 #0d151d, 0 6px 16px rgba(0, 0, 0, .35);
-  --hy-shadow-lift: 0 6px 0 #0d151d, 0 18px 36px rgba(0, 0, 0, .5);
+  --hy-shadow:      0 2px 0 #150e1c, 0 12px 28px rgba(0, 0, 0, .5);
+  --hy-shadow-soft: 0 1px 0 #150e1c, 0 8px 18px rgba(0, 0, 0, .4);
+  --hy-shadow-lift: 0 4px 0 #150e1c, 0 20px 40px rgba(0, 0, 0, .55);
 
-  --hy-hero-sky-1:  #16202b;
-  --hy-hero-sky-2:  #1d2b3c;
-  --hy-hero-sky-3:  #2a2440;
+  --hy-hero-sky-1:  #201826;
+  --hy-hero-sky-2:  #2a1f3a;
+  --hy-hero-sky-3:  #3a2748;
 
-  --hy-hill-far:    #21374c;
-  --hy-hill-mid:    #1a2c3e;
-  --hy-hill-near:   #142333;
-  --hy-tree:        #0e1926;
+  --hy-hill-far:    #38294a;
+  --hy-hill-mid:    #2c2039;
+  --hy-hill-near:   #221930;
+  --hy-tree:        #180f22;
 
   /* On the dark map the bright palette pinks and teals already clear 5:1. */
   --hy-map-pin:        var(--hy-pink);
@@ -132,9 +138,9 @@ body {
   background-color: var(--hy-paper);
   /* Faint paper grain, drawn with gradients so there is no image to load. */
   background-image:
-    radial-gradient(circle at 18% 12%, rgba(103, 224, 220, .07), transparent 42%),
-    radial-gradient(circle at 84% 8%, rgba(238, 110, 151, .06), transparent 40%),
-    radial-gradient(circle at 50% 96%, rgba(99, 162, 74, .06), transparent 46%);
+    radial-gradient(circle at 18% 12%, rgba(196, 169, 245, .16), transparent 44%),
+    radial-gradient(circle at 84% 8%, rgba(224, 90, 146, .10), transparent 42%),
+    radial-gradient(circle at 50% 96%, rgba(147, 207, 178, .12), transparent 48%);
   background-attachment: fixed;
   color: var(--hy-ink);
   font-family: var(--hy-font-body);
@@ -160,7 +166,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 a {
-  color: var(--hy-teal-deep);
+  color: var(--hy-pink-deep);
   text-decoration: none;
   background-image: linear-gradient(var(--hy-glow), var(--hy-glow));
   background-repeat: no-repeat;
@@ -171,8 +177,8 @@ a {
 
 a:hover,
 a:focus-visible {
-  color: var(--hy-pink);
-  background-image: linear-gradient(var(--hy-pink), var(--hy-pink));
+  color: var(--hy-purple-deep);
+  background-image: linear-gradient(var(--hy-purple-soft), var(--hy-purple-soft));
   background-size: 100% 40%;
   border-radius: 3px;
 }
@@ -184,7 +190,7 @@ a:focus-visible {
 }
 
 ::selection {
-  background: var(--hy-teal-soft);
+  background: var(--hy-pink-soft);
   color: var(--hy-ink);
 }
 
@@ -226,7 +232,7 @@ a:focus-visible {
 
 .greedy-nav a:hover {
   color: var(--hy-ink);
-  background-color: var(--hy-teal-soft);
+  background-color: var(--hy-pink-soft);
   transform: translateY(-1px);
 }
 
@@ -241,7 +247,7 @@ a:focus-visible {
 }
 
 .greedy-nav button {
-  background: var(--hy-teal);
+  background: var(--hy-pink);
   border-radius: 999px;
 }
 
@@ -390,6 +396,30 @@ body:not(:has(.hy-hero)) #main {
 :root[data-hy-theme="night"] .hy-hero__aurora.hy-sky-night { display: block; }
 :root[data-hy-theme="night"] .hy-sky-day   { display: none; }
 :root[data-hy-theme="night"] .hy-sky-night { display: block; }
+
+/* Puffy clouds, day sky only. */
+.hy-hero__clouds {
+  position: absolute;
+  inset: 0 0 auto 0;
+  width: 100%;
+  height: 58%;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
+}
+
+.hy-hero__clouds.hy-sky-day { display: none; }
+:root:not([data-hy-theme="night"]) .hy-hero__clouds.hy-sky-day { display: block; }
+
+.hy-cloud { animation: hy-cloud-drift 46s linear infinite; }
+.hy-cloud:nth-child(2) { animation-duration: 62s; animation-delay: -20s; }
+.hy-cloud:nth-child(3) { animation-duration: 54s; animation-delay: -38s; }
+.hy-cloud:nth-child(4) { animation-duration: 74s; animation-delay: -11s; }
+
+@keyframes hy-cloud-drift {
+  from { transform: translateX(-16%); }
+  to   { transform: translateX(116%); }
+}
 
 /* Aurora ribbons, night sky only. */
 .hy-hero__aurora {
@@ -1023,7 +1053,9 @@ body:not(:has(.hy-hero)) #main {
 }
 
 .hy-map__state.is-visited {
-  fill: var(--hy-green-soft);
+  /* A touch stronger than --hy-green-soft: on the pink surfaces the softer
+     mint left visited and unvisited states nearly the same lightness. */
+  fill: #c9ead8;
   stroke: var(--hy-green);
 }
 
@@ -1985,6 +2017,197 @@ body:not(:has(.hy-hero)) #main {
 }
 
 /* --------------------------------------------------------------------------
+   13b. Cute layer — petals, hearts, sparkle trail, confetti, flower
+   -------------------------------------------------------------------------- */
+
+/* Petals by day, stardust by night. The layer is inert; it must never sit
+   between the reader and a link. */
+.hy-weather {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hy-weather__bit {
+  position: absolute;
+  top: -6%;
+  width: 13px;
+  height: 13px;
+  background: var(--hy-pink);
+  /* A petal: round on three corners, pointed on one. */
+  border-radius: 60% 12% 60% 12%;
+  opacity: .75;
+  animation-name: hy-petal-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+:root[data-hy-theme="night"] .hy-weather__bit {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--hy-glow);
+  box-shadow: 0 0 7px var(--hy-glow);
+  opacity: .85;
+  animation-name: hy-dust-rise;
+}
+
+@keyframes hy-petal-fall {
+  from { transform: translate3d(0, 0, 0) rotate(0) scale(var(--scale, 1)); opacity: 0; }
+  12%  { opacity: .8; }
+  88%  { opacity: .8; }
+  to   { transform: translate3d(var(--drift, 0), 118vh, 0) rotate(var(--spin, 360deg)) scale(var(--scale, 1)); opacity: 0; }
+}
+
+@keyframes hy-dust-rise {
+  from { transform: translate3d(0, 60vh, 0) scale(var(--scale, 1)); opacity: 0; }
+  18%  { opacity: .9; }
+  82%  { opacity: .9; }
+  to   { transform: translate3d(var(--drift, 0), -10vh, 0) scale(var(--scale, 1)); opacity: 0; }
+}
+
+/* Portrait reactions */
+.hy-avatar { cursor: pointer; }
+
+.hy-avatar img { transition: transform .3s cubic-bezier(.34, 1.56, .64, 1); }
+
+.hy-avatar:hover img { transform: rotate(-4deg) scale(1.04); }
+
+.hy-avatar.is-shy img { animation: hy-shy .9s cubic-bezier(.34, 1.4, .64, 1); }
+
+@keyframes hy-shy {
+  0%   { transform: rotate(0) scale(1); }
+  30%  { transform: rotate(14deg) scale(1.08); }
+  60%  { transform: rotate(-10deg) scale(.96); }
+  100% { transform: rotate(0) scale(1); }
+}
+
+.hy-heart-pop {
+  position: absolute;
+  bottom: 12%;
+  width: 18px;
+  height: 18px;
+  color: var(--hy-pink);
+  pointer-events: none;
+  animation: hy-heart-rise 1.4s ease-out forwards;
+  z-index: 3;
+}
+
+.hy-heart-pop svg { width: 100%; height: 100%; display: block; }
+
+@keyframes hy-heart-rise {
+  0%   { transform: translate(0, 0) scale(.4); opacity: 0; }
+  25%  { opacity: 1; }
+  100% { transform: translate(var(--dx, 0), -64px) scale(1.05); opacity: 0; }
+}
+
+/* Jelly hover — squash and stretch instead of a plain lift. */
+.hy-chip,
+.pub-card,
+.hy-quest__item,
+.hy-focus-card {
+  transition: transform .32s cubic-bezier(.34, 1.7, .5, 1), box-shadow .2s ease, border-color .2s ease;
+}
+
+.hy-chip:hover { transform: scale(1.1, .9) translateY(-2px); }
+.pub-card:hover { transform: scale(1.012, .988) translateY(-3px); }
+.hy-focus-card:hover { transform: scale(1.02, .97) translateY(-5px); }
+
+/* Cursor sparkle trail */
+.hy-trail {
+  position: fixed;
+  z-index: 95;
+  width: var(--size, 10px);
+  height: var(--size, 10px);
+  margin: calc(var(--size, 10px) / -2) 0 0 calc(var(--size, 10px) / -2);
+  color: var(--hy-pink);
+  pointer-events: none;
+  animation: hy-trail-out .9s ease-out forwards;
+}
+
+.hy-trail:nth-child(3n)   { color: var(--hy-purple); }
+.hy-trail:nth-child(3n+1) { color: var(--hy-gold); }
+.hy-trail svg { width: 100%; height: 100%; display: block; fill: currentColor; }
+
+@keyframes hy-trail-out {
+  0%   { transform: scale(.3) rotate(0); opacity: 0; }
+  22%  { transform: scale(1) rotate(calc(var(--rot, 0deg) / 2)); opacity: .95; }
+  100% { transform: translate(var(--dx, 0), var(--dy, 16px)) scale(.1) rotate(var(--rot, 0deg)); opacity: 0; }
+}
+
+/* Konami confetti */
+.hy-confetti {
+  position: fixed;
+  top: -5vh;
+  width: 10px;
+  height: 14px;
+  border-radius: 2px;
+  z-index: 120;
+  pointer-events: none;
+  animation-name: hy-confetti-fall;
+  animation-timing-function: cubic-bezier(.25, .6, .5, 1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes hy-confetti-fall {
+  from { transform: translate3d(0, 0, 0) rotate(0); opacity: 1; }
+  to   { transform: translate3d(var(--drift, 0), 108vh, 0) rotate(var(--spin, 360deg)); opacity: .9; }
+}
+
+/* Footer flower — one petal per sprite found */
+.hy-flower {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45em;
+  margin-bottom: .8em;
+}
+
+.hy-flower svg { width: 46px; height: 46px; display: block; overflow: visible; }
+
+.hy-flower__petal {
+  fill: var(--hy-line);
+  transform-box: view-box;
+  transform-origin: 0 2px;
+  transition: fill .4s ease;
+}
+
+.hy-flower__petal.is-open {
+  fill: var(--hy-pink);
+  animation: hy-petal-open .5s cubic-bezier(.34, 1.6, .64, 1) backwards;
+  animation-delay: calc(var(--i, 0) * 80ms);
+}
+
+@keyframes hy-petal-open {
+  from { transform: rotate(var(--a, 0)) scale(.2); opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.hy-flower__heart { fill: var(--hy-gold); }
+
+.hy-flower__label {
+  font-family: var(--hy-font-display);
+  font-weight: 800;
+  font-size: .82rem;
+  color: var(--hy-ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hy-weather,
+  .hy-heart-pop,
+  .hy-trail,
+  .hy-confetti { display: none; }
+  .hy-avatar img,
+  .hy-chip,
+  .pub-card,
+  .hy-focus-card,
+  .hy-flower__petal { transition: none; animation: none; }
+}
+
+/* --------------------------------------------------------------------------
    14. Scroll reveal
    -------------------------------------------------------------------------- */
 
@@ -2032,6 +2255,7 @@ body:not(:has(.hy-hero)) #main {
   .hy-hero__orb,
   .hy-motes circle,
   .hy-aurora__band,
+  .hy-cloud,
   .hy-isle,
   .hy-tower__light,
   .hy-spring__glow,

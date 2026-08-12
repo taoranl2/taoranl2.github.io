@@ -846,6 +846,214 @@
   }
 
   /* ----------------------------------------------------------------------
+     Falling petals by day, rising stardust by night
+     ---------------------------------------------------------------------- */
+
+  function buildWeather() {
+    var hero = document.querySelector(".hy-hero");
+    if (!hero || reduceMotion) return;
+
+    var layer = document.createElement("div");
+    layer.className = "hy-weather";
+    layer.setAttribute("aria-hidden", "true");
+
+    /* Fewer on a phone: the same count on a 375px screen reads as a blizzard,
+       and it is the narrow screens that can least afford the compositing. */
+    var count = window.innerWidth < 700 ? 9 : window.innerWidth < 1100 ? 14 : 20;
+
+    for (var i = 0; i < count; i++) {
+      var bit = document.createElement("span");
+      bit.className = "hy-weather__bit";
+      bit.style.left = (Math.random() * 100).toFixed(2) + "%";
+      bit.style.animationDuration = (9 + Math.random() * 11).toFixed(2) + "s";
+      bit.style.animationDelay = (-Math.random() * 16).toFixed(2) + "s";
+      bit.style.setProperty("--drift", (Math.random() * 90 - 45).toFixed(0) + "px");
+      bit.style.setProperty("--spin", (Math.random() * 540 - 270).toFixed(0) + "deg");
+      bit.style.setProperty("--scale", (0.6 + Math.random() * 0.7).toFixed(2));
+      layer.appendChild(bit);
+    }
+
+    hero.appendChild(layer);
+  }
+
+  /* ----------------------------------------------------------------------
+     Portrait: wiggles on hover, gets shy when clicked
+     ---------------------------------------------------------------------- */
+
+  var HEART_SVG =
+    '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
+      '<path d="M12 21s-8-5.1-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 15.9 12 21 12 21z"/>' +
+    '</svg>';
+
+  function floatHearts(host, n) {
+    if (reduceMotion) return;
+    for (var i = 0; i < n; i++) {
+      var heart = document.createElement("span");
+      heart.className = "hy-heart-pop";
+      heart.innerHTML = HEART_SVG;
+      heart.style.left = (18 + Math.random() * 64) + "%";
+      heart.style.animationDelay = (i * 90) + "ms";
+      heart.style.setProperty("--dx", (Math.random() * 44 - 22).toFixed(0) + "px");
+      host.appendChild(heart);
+      window.setTimeout(function (node) {
+        return function () { node.remove(); };
+      }(heart), 1500 + i * 90);
+    }
+  }
+
+  function enliven() {
+    var avatar = document.querySelector(".hy-avatar");
+    if (!avatar) return;
+
+    var busy = false;
+    avatar.addEventListener("mouseenter", function () {
+      if (busy) return;
+      floatHearts(avatar, 3);
+    });
+
+    avatar.addEventListener("click", function () {
+      if (busy) return;
+      busy = true;
+      avatar.classList.add("is-shy");
+      floatHearts(avatar, 5);
+      window.setTimeout(function () {
+        avatar.classList.remove("is-shy");
+        busy = false;
+      }, 900);
+    });
+  }
+
+  /* ----------------------------------------------------------------------
+     Cursor sparkle trail
+     ---------------------------------------------------------------------- */
+
+  var STAR_SVG =
+    '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+      '<path d="M12 1.6l2.6 6.7 6.9.4-5.3 4.4 1.8 6.7-6-3.8-6 3.8 1.8-6.7L2.5 8.7l6.9-.4z"/>' +
+    '</svg>';
+
+  function cursorTrail() {
+    /* Pointless on touch — there is no cursor to trail — and unkind to anyone
+       who asked for less motion. */
+    if (reduceMotion) return;
+    if (!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    var last = { x: 0, y: 0 };
+    var pending = null;
+    var live = 0;
+    var MAX_LIVE = 18;
+
+    function spawn(x, y) {
+      if (live >= MAX_LIVE) return;
+      live++;
+      var star = document.createElement("span");
+      star.className = "hy-trail";
+      star.innerHTML = STAR_SVG;
+      star.style.left = x + "px";
+      star.style.top = y + "px";
+      star.style.setProperty("--dx", (Math.random() * 26 - 13).toFixed(0) + "px");
+      star.style.setProperty("--dy", (10 + Math.random() * 20).toFixed(0) + "px");
+      star.style.setProperty("--rot", (Math.random() * 180 - 90).toFixed(0) + "deg");
+      star.style.setProperty("--size", (7 + Math.random() * 7).toFixed(1) + "px");
+      document.body.appendChild(star);
+      window.setTimeout(function () { star.remove(); live--; }, 900);
+    }
+
+    window.addEventListener("pointermove", function (event) {
+      if (event.pointerType && event.pointerType !== "mouse") return;
+      last.x = event.clientX;
+      last.y = event.clientY;
+      if (pending) return;
+      /* One star per frame at most, and only once the pointer has actually
+         travelled — otherwise a resting hand keeps emitting. */
+      pending = window.requestAnimationFrame(function () {
+        pending = null;
+        var dx = last.x - spawn.px, dy = last.y - spawn.py;
+        if (spawn.px === undefined || dx * dx + dy * dy > 90) {
+          spawn(last.x, last.y);
+          spawn.px = last.x;
+          spawn.py = last.y;
+        }
+      });
+    }, { passive: true });
+  }
+
+  /* ----------------------------------------------------------------------
+     Konami code
+     ---------------------------------------------------------------------- */
+
+  function konami() {
+    var SEQ = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown",
+               "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+    var at = 0;
+
+    document.addEventListener("keydown", function (event) {
+      var key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+      at = (key === SEQ[at]) ? at + 1 : (key === SEQ[0] ? 1 : 0);
+      if (at < SEQ.length) return;
+      at = 0;
+      confetti();
+      toast("✧ You know the old magic words ✧");
+    });
+  }
+
+  var CONFETTI_COLORS = ["#e05a92", "#8f6bd0", "#3bb3ae", "#c98016", "#4f9a6f", "#ffa8cd"];
+
+  function confetti() {
+    if (reduceMotion) {
+      return;
+    }
+    for (var i = 0; i < 70; i++) {
+      var bit = document.createElement("span");
+      bit.className = "hy-confetti";
+      bit.style.left = (Math.random() * 100).toFixed(2) + "vw";
+      bit.style.background = CONFETTI_COLORS[i % CONFETTI_COLORS.length];
+      bit.style.animationDuration = (2.2 + Math.random() * 1.8).toFixed(2) + "s";
+      bit.style.animationDelay = (Math.random() * 0.6).toFixed(2) + "s";
+      bit.style.setProperty("--drift", (Math.random() * 220 - 110).toFixed(0) + "px");
+      bit.style.setProperty("--spin", (Math.random() * 900 - 450).toFixed(0) + "deg");
+      if (i % 3 === 0) bit.style.borderRadius = "50%";
+      document.body.appendChild(bit);
+      window.setTimeout(function (node) {
+        return function () { node.remove(); };
+      }(bit), 4600);
+    }
+  }
+
+  /* ----------------------------------------------------------------------
+     Footer flower — one petal per sprite found
+     ---------------------------------------------------------------------- */
+
+  function buildFlower() {
+    var footer = document.querySelector(".page__footer footer");
+    if (!footer) return;
+
+    var found = loadFound().length;
+    var wrap = document.createElement("div");
+    wrap.className = "hy-flower";
+    wrap.title = found + " of " + SPRITE_TOTAL + " sprites found";
+
+    var petals = "";
+    for (var i = 0; i < SPRITE_TOTAL; i++) {
+      var angle = (360 / SPRITE_TOTAL) * i;
+      petals +=
+        '<ellipse class="hy-flower__petal' + (i < found ? " is-open" : "") + '" ' +
+          'cx="0" cy="-15" rx="7" ry="12" ' +
+          'transform="rotate(' + angle + ')" style="--i:' + i + '"></ellipse>';
+    }
+
+    wrap.innerHTML =
+      '<svg viewBox="-34 -34 68 68" aria-hidden="true">' +
+        '<g transform="translate(0 2)">' + petals +
+          '<circle class="hy-flower__heart" cx="0" cy="0" r="7"></circle>' +
+        "</g>" +
+      "</svg>" +
+      '<span class="hy-flower__label">' + found + " / " + SPRITE_TOTAL + "</span>";
+
+    footer.insertBefore(wrap, footer.firstChild);
+  }
+
+  /* ----------------------------------------------------------------------
      Boot
      ---------------------------------------------------------------------- */
 
@@ -856,6 +1064,11 @@
     revealVisitorMap();
     buildParkMap();
     placeSprites();
+    buildFlower();
+    buildWeather();
+    enliven();
+    cursorTrail();
+    konami();
     settleNav();
 
     if (document.fonts && document.fonts.ready) {

@@ -24,6 +24,27 @@ layout: default
   </svg>
 
   {%- comment -%}
+    Puffy clouds, day only. Each drifts at its own pace.
+  {%- endcomment -%}
+  <svg class="hy-hero__clouds hy-sky-day" viewBox="0 0 1440 200" preserveAspectRatio="xMidYMin slice" aria-hidden="true" focusable="false">
+    <defs>
+      <g id="hy-cloud">
+        <circle cx="0"   cy="0"   r="26"/>
+        <circle cx="30"  cy="-10" r="20"/>
+        <circle cx="-30" cy="6"   r="18"/>
+        <circle cx="14"  cy="12"  r="18"/>
+        <rect x="-32" y="4" width="70" height="18" rx="9"/>
+      </g>
+    </defs>
+    <g fill="#ffffff">
+      <g class="hy-cloud" opacity=".82"><use href="#hy-cloud" transform="translate(210 62) scale(1)"/></g>
+      <g class="hy-cloud" opacity=".66"><use href="#hy-cloud" transform="translate(760 40) scale(.72)"/></g>
+      <g class="hy-cloud" opacity=".74"><use href="#hy-cloud" transform="translate(1180 82) scale(.88)"/></g>
+      <g class="hy-cloud" opacity=".55"><use href="#hy-cloud" transform="translate(520 118) scale(.55)"/></g>
+    </g>
+  </svg>
+
+  {%- comment -%}
     Aurora ribbons, night only. Drawn behind the ridges so they sit in the sky.
   {%- endcomment -%}
   <svg class="hy-hero__aurora hy-sky-night" viewBox="0 0 1440 260" preserveAspectRatio="none" aria-hidden="true" focusable="false">
