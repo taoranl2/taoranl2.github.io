@@ -374,7 +374,14 @@ body:not(:has(.hy-hero)) #main {
   width: 128px;
   height: 128px;
   pointer-events: none;
+}
+
+/* The float lives on an inner wrapper so the parallax transform on the orb
+   itself can't be clobbered by the keyframes, and vice versa. */
+.hy-hero__orb > g {
   animation: hy-float 11s ease-in-out infinite;
+  transform-box: view-box;
+  transform-origin: 50% 50%;
 }
 
 @keyframes hy-float {
@@ -396,6 +403,96 @@ body:not(:has(.hy-hero)) #main {
 :root[data-hy-theme="night"] .hy-hero__aurora.hy-sky-night { display: block; }
 :root[data-hy-theme="night"] .hy-sky-day   { display: none; }
 :root[data-hy-theme="night"] .hy-sky-night { display: block; }
+
+/* Night sky: star field + meteors. Sits above the sky gradient but below the
+   ridges and the hero text. */
+.hy-sky {
+  position: absolute;
+  inset: 0 0 30% 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .6s ease;
+  transform: translate3d(var(--px, 0), var(--py, 0), 0);
+}
+
+:root[data-hy-theme="night"] .hy-sky { opacity: 1; }
+
+.hy-star {
+  position: absolute;
+  width: var(--size, 2px);
+  height: var(--size, 2px);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 4px rgba(255, 255, 255, .8);
+  animation-name: hy-twinkle;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes hy-twinkle {
+  0%, 100% { opacity: .18; transform: scale(.7); }
+  50%      { opacity: var(--peak, .9); transform: scale(1); }
+}
+
+/* A meteor is a bright head with a tapering tail, thrown down and to the left. */
+.hy-meteor {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 8px 2px rgba(255, 255, 255, .85);
+  animation-name: hy-meteor-fall;
+  animation-timing-function: cubic-bezier(.3, 0, .7, 1);
+  animation-fill-mode: forwards;
+}
+
+.hy-meteor::after {
+  content: "";
+  position: absolute;
+  right: 1px;
+  top: 50%;
+  width: var(--len, 150px);
+  height: 2px;
+  transform-origin: 100% 50%;
+  transform: translateY(-50%) rotate(38deg);
+  background: linear-gradient(to left, rgba(255, 255, 255, .9), rgba(255, 214, 240, .35), transparent);
+  border-radius: 2px;
+}
+
+@keyframes hy-meteor-fall {
+  0%   { transform: translate3d(0, 0, 0); opacity: 0; }
+  12%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translate3d(calc(var(--fall, 200px) * -1.28), var(--fall, 200px), 0); opacity: 0; }
+}
+
+/* Parallax offsets. The scene keeps its own bottom anchoring. */
+.hy-hero__clouds,
+.hy-hero__aurora,
+.hy-hero__orb {
+  transition: transform .35s cubic-bezier(.22, .61, .36, 1);
+}
+
+.hy-hero__clouds { transform: translate3d(var(--px, 0), var(--py, 0), 0); }
+.hy-hero__aurora { transform: translate3d(var(--px, 0), var(--py, 0), 0); }
+
+/* Aurora curtain: slow colour breathing plus the vertical rays. */
+.hy-aurora__band:nth-child(3) {
+  animation-duration: 41s;
+  animation-delay: -17s;
+}
+
+.hy-aurora__rays {
+  mix-blend-mode: overlay;
+  animation: hy-rays-shift 23s ease-in-out infinite;
+}
+
+@keyframes hy-rays-shift {
+  0%, 100% { transform: translateX(-1.5%) scaleY(1);    opacity: .12; }
+  50%      { transform: translateX(1.5%)  scaleY(1.12); opacity: .3; }
+}
 
 /* Puffy clouds, day sky only. */
 .hy-hero__clouds {
@@ -2255,6 +2352,9 @@ body:not(:has(.hy-hero)) #main {
   .hy-hero__orb,
   .hy-motes circle,
   .hy-aurora__band,
+  .hy-aurora__rays,
+  .hy-star,
+  .hy-meteor,
   .hy-cloud,
   .hy-isle,
   .hy-tower__light,

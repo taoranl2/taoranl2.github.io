@@ -877,6 +877,116 @@
   }
 
   /* ----------------------------------------------------------------------
+     Night sky: twinkling stars and the occasional meteor
+     ---------------------------------------------------------------------- */
+
+  function isNight() {
+    return root.getAttribute("data-hy-theme") === "night";
+  }
+
+  function buildNightSky() {
+    var sky = document.querySelector(".hy-sky");
+    if (!sky || reduceMotion) return;
+
+    /* Stars are laid out once and simply hidden by day, so toggling the theme
+       never has to rebuild them. */
+    var count = window.innerWidth < 700 ? 34 : window.innerWidth < 1100 ? 60 : 90;
+    var frag = document.createDocumentFragment();
+
+    for (var i = 0; i < count; i++) {
+      var star = document.createElement("span");
+      star.className = "hy-star";
+      star.style.left = (Math.random() * 100).toFixed(2) + "%";
+      /* Kept to the upper sky so stars never sit on the hills. */
+      star.style.top = (Math.random() * 62).toFixed(2) + "%";
+      star.style.setProperty("--size", (1 + Math.random() * 2.2).toFixed(2) + "px");
+      star.style.animationDuration = (2.4 + Math.random() * 4).toFixed(2) + "s";
+      star.style.animationDelay = (-Math.random() * 6).toFixed(2) + "s";
+      star.style.setProperty("--peak", (0.45 + Math.random() * 0.55).toFixed(2));
+      frag.appendChild(star);
+    }
+    sky.appendChild(frag);
+
+    scheduleMeteor(sky);
+  }
+
+  var meteorTimer = null;
+
+  function scheduleMeteor(sky) {
+    clearTimeout(meteorTimer);
+    /* Random gaps, so meteors feel like luck rather than a metronome. */
+    meteorTimer = setTimeout(function () {
+      /* Only when it would actually be seen: night, tab visible, hero on screen. */
+      if (isNight() && !document.hidden && sky.getBoundingClientRect().bottom > 0) {
+        launchMeteor(sky);
+      }
+      scheduleMeteor(sky);
+    }, 3500 + Math.random() * 9000);
+  }
+
+  function launchMeteor(sky) {
+    var meteor = document.createElement("span");
+    meteor.className = "hy-meteor";
+    /* Start high and anywhere along the width, then fall down-left. */
+    meteor.style.left = (18 + Math.random() * 78).toFixed(1) + "%";
+    meteor.style.top = (Math.random() * 34).toFixed(1) + "%";
+    meteor.style.setProperty("--len", (110 + Math.random() * 130).toFixed(0) + "px");
+    meteor.style.setProperty("--fall", (150 + Math.random() * 170).toFixed(0) + "px");
+    meteor.style.animationDuration = (0.75 + Math.random() * 0.55).toFixed(2) + "s";
+    sky.appendChild(meteor);
+    setTimeout(function () { meteor.remove(); }, 1800);
+  }
+
+  /* ----------------------------------------------------------------------
+     Hero parallax — layers drift slightly against the pointer
+     ---------------------------------------------------------------------- */
+
+  function heroParallax() {
+    var hero = document.querySelector(".hy-hero");
+    if (!hero || reduceMotion) return;
+    if (!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    /* depth: how far each layer shifts, in px, at the edge of the hero. */
+    var layers = [
+      { el: hero.querySelector(".hy-hero__clouds"), depth: 16 },
+      { el: hero.querySelector(".hy-hero__aurora"), depth: 11 },
+      { el: hero.querySelector(".hy-sky"),          depth: 7 },
+      { el: hero.querySelector(".hy-hero__orb"),    depth: 22 },
+      { el: hero.querySelector(".hy-hero__scene"),  depth: -9 }
+    ].filter(function (l) { return l.el; });
+    if (!layers.length) return;
+
+    var pending = false;
+    var nx = 0, ny = 0;
+
+    function apply() {
+      pending = false;
+      layers.forEach(function (l) {
+        l.el.style.setProperty("--px", (nx * l.depth).toFixed(1) + "px");
+        l.el.style.setProperty("--py", (ny * l.depth * 0.5).toFixed(1) + "px");
+      });
+    }
+
+    hero.addEventListener("pointermove", function (event) {
+      if (event.pointerType && event.pointerType !== "mouse") return;
+      var box = hero.getBoundingClientRect();
+      if (!box.width || !box.height) return;
+      nx = (event.clientX - box.left) / box.width * 2 - 1;   /* -1 .. 1 */
+      ny = (event.clientY - box.top) / box.height * 2 - 1;
+      if (pending) return;
+      pending = true;
+      window.requestAnimationFrame(apply);
+    }, { passive: true });
+
+    hero.addEventListener("pointerleave", function () {
+      nx = 0; ny = 0;
+      if (pending) return;
+      pending = true;
+      window.requestAnimationFrame(apply);
+    });
+  }
+
+  /* ----------------------------------------------------------------------
      Portrait: wiggles on hover, gets shy when clicked
      ---------------------------------------------------------------------- */
 
@@ -1066,6 +1176,8 @@
     placeSprites();
     buildFlower();
     buildWeather();
+    buildNightSky();
+    heroParallax();
     enliven();
     cursorTrail();
     konami();

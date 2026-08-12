@@ -60,12 +60,51 @@ layout: default
         <stop offset="50%"  stop-color="#7ce8b0" stop-opacity=".24"/>
         <stop offset="100%" stop-color="#5cdad6" stop-opacity="0"/>
       </linearGradient>
+      <linearGradient id="hy-aurora-c" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"   stop-color="#ffa8e0" stop-opacity="0"/>
+        <stop offset="45%"  stop-color="#ffa8e0" stop-opacity=".26"/>
+        <stop offset="100%" stop-color="#a9b6ff" stop-opacity="0"/>
+      </linearGradient>
+      {%- comment -%}
+        Vertical rays give the curtain its texture. Masked so they only show
+        inside the ribbons and fade out downward.
+      {%- endcomment -%}
+      {%- comment -%}
+        The fade has to start AND end transparent: a gradient that begins at
+        full strength draws a hard bar across the top of the layer, which reads
+        as a barcode rather than a curtain.
+      {%- endcomment -%}
+      <linearGradient id="hy-ray-fade" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#fff" stop-opacity="0"/>
+        <stop offset="38%"  stop-color="#fff" stop-opacity=".5"/>
+        <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+      </linearGradient>
+      <pattern id="hy-aurora-rays" width="119" height="260" patternUnits="userSpaceOnUse">
+        <rect x="9"  y="0" width="6"  height="260" fill="url(#hy-ray-fade)"/>
+        <rect x="31" y="0" width="2"  height="260" fill="url(#hy-ray-fade)"/>
+        <rect x="48" y="0" width="9"  height="260" fill="url(#hy-ray-fade)"/>
+        <rect x="72" y="0" width="3"  height="260" fill="url(#hy-ray-fade)"/>
+        <rect x="86" y="0" width="5"  height="260" fill="url(#hy-ray-fade)"/>
+        <rect x="104" y="0" width="2" height="260" fill="url(#hy-ray-fade)"/>
+      </pattern>
     </defs>
-    <path class="hy-aurora__band" fill="url(#hy-aurora-a)"
-          d="M-200 92 C 120 24, 380 140, 700 78 C 980 24, 1180 128, 1500 66 L1500 138 C 1180 200, 980 96, 700 150 C 380 212, 120 96, -200 164 Z"/>
-    <path class="hy-aurora__band" fill="url(#hy-aurora-b)"
-          d="M-200 150 C 160 96, 420 190, 760 140 C 1040 100, 1240 176, 1560 124 L1560 176 C 1240 228, 1040 152, 760 192 C 420 242, 160 148, -200 202 Z"/>
+
+    <g class="hy-aurora__curtain">
+      <path class="hy-aurora__band" fill="url(#hy-aurora-a)"
+            d="M-200 92 C 120 24, 380 140, 700 78 C 980 24, 1180 128, 1500 66 L1500 138 C 1180 200, 980 96, 700 150 C 380 212, 120 96, -200 164 Z"/>
+      <path class="hy-aurora__band" fill="url(#hy-aurora-b)"
+            d="M-200 150 C 160 96, 420 190, 760 140 C 1040 100, 1240 176, 1560 124 L1560 176 C 1240 228, 1040 152, 760 192 C 420 242, 160 148, -200 202 Z"/>
+      <path class="hy-aurora__band" fill="url(#hy-aurora-c)"
+            d="M-200 58 C 200 8, 460 104, 820 52 C 1120 8, 1300 92, 1620 44 L1620 96 C 1300 144, 1120 60, 820 104 C 460 156, 200 60, -200 110 Z"/>
+      <path class="hy-aurora__rays" fill="url(#hy-aurora-rays)"
+            d="M-200 92 C 120 24, 380 140, 700 78 C 980 24, 1180 128, 1500 66 L1500 176 C 1240 228, 1040 152, 760 192 C 420 242, 160 148, -200 202 Z"/>
+    </g>
   </svg>
+
+  {%- comment -%}
+    Night sky: a field of twinkling stars, plus meteors added by the script.
+  {%- endcomment -%}
+  <div class="hy-sky" aria-hidden="true"></div>
 
   <svg class="hy-hero__scene" viewBox="0 60 1440 240" preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">
     {%- comment -%}
