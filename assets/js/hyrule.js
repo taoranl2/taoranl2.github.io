@@ -14,7 +14,51 @@
      Day / night toggle
      ---------------------------------------------------------------------- */
 
-  function buildThemeToggle() {
+  /* The dock is the one fixed control in the corner: a stamina-style ring that
+     tracks reading progress, wrapped around the day/night button so the two
+     don't compete for the same corner. */
+  function buildDock() {
+    var dock = document.createElement("div");
+    dock.className = "hy-dock";
+
+    var RADIUS = 25;
+    var CIRC = 2 * Math.PI * RADIUS;
+    dock.innerHTML =
+      '<svg class="hy-stamina" viewBox="0 0 60 60" aria-hidden="true" focusable="false">' +
+        '<circle class="hy-stamina__track" cx="30" cy="30" r="' + RADIUS + '"></circle>' +
+        '<circle class="hy-stamina__fill" cx="30" cy="30" r="' + RADIUS + '" ' +
+          'stroke-dasharray="' + CIRC.toFixed(2) + '" stroke-dashoffset="' + CIRC.toFixed(2) + '"></circle>' +
+      '</svg>';
+
+    var fill = dock.querySelector(".hy-stamina__fill");
+    var ticking = false;
+
+    function update() {
+      ticking = false;
+      var doc = document.documentElement;
+      var scrollable = doc.scrollHeight - window.innerHeight;
+      /* A page shorter than the viewport has nothing to track — show it full
+         rather than stuck at zero, which would read as "you've read none of it". */
+      var progress = scrollable > 8 ? Math.min(Math.max(window.scrollY / scrollable, 0), 1) : 1;
+      fill.style.strokeDashoffset = (CIRC * (1 - progress)).toFixed(2);
+      dock.classList.toggle("is-full", progress > 0.995);
+    }
+
+    function request() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    }
+
+    window.addEventListener("scroll", request, { passive: true });
+    window.addEventListener("resize", request);
+    update();
+
+    document.body.appendChild(dock);
+    return dock;
+  }
+
+  function buildThemeToggle(dock) {
     var btn = document.createElement("button");
     btn.className = "hy-theme-toggle";
     btn.type = "button";
@@ -36,7 +80,7 @@
       if (meta) meta.setAttribute("content", next === "night" ? "#16202b" : "#fdf7ea");
     });
 
-    document.body.appendChild(btn);
+    dock.appendChild(btn);
   }
 
   /* ----------------------------------------------------------------------
@@ -161,8 +205,11 @@
   /* ----------------------------------------------------------------------
      Hidden forest sprites
 
-     An original little leaf-hooded character, hidden somewhere on each page.
-     Click it for a sparkle; the tally is kept in localStorage.
+     An original little leaf-hooded character. Six of them are hidden at fixed
+     spots across the site; each has a stable id, and the ids you have found are
+     kept as a set in localStorage. Storing the set rather than a running count
+     is what makes the tally honest — revisiting a page you have already cleared
+     can't inflate it.
      ---------------------------------------------------------------------- */
 
   var SPRITE_SVG =
@@ -177,57 +224,145 @@
       '<path d="M20 14.6V9.4" stroke="#4a7d38" stroke-width="1.5" stroke-linecap="round"/>' +
     '</svg>';
 
-  /* Spots are expressed as [selector, corner] so a sprite tucks itself into a
-     real element on the page rather than floating at a random offset. */
-  var SPOTS = [
-    [".hy-section:nth-of-type(1)", "right"],
-    [".hy-map", "left"],
-    [".pub-list", "right"],
-    [".page__content h2", "right"],
-    [".page__footer footer", "left"]
+  /* id, where it hides, and which corner it peeks from. Every id must appear on
+     exactly one page, or the same sprite could be found twice in one visit. */
+  var SPRITE_SPOTS = [
+    { id: "hero",     sel: ".hy-hero__inner",        side: "left",  top: "34%" },
+    { id: "log",      sel: ".hy-section:last-of-type", side: "right" },
+    { id: "about",    sel: ".hy-edu",                side: "left"  },
+    { id: "pubs",     sel: ".pub-list",              side: "right" },
+    { id: "map",      sel: ".hy-map",                side: "left"  },
+    { id: "footer",   sel: ".page__footer footer",   side: "left"  }
   ];
 
-  function placeSprite() {
-    var host = null;
-    var side = "right";
+  var SPRITE_TOTAL = SPRITE_SPOTS.length;
+  var SPRITE_KEY = "hy-sprites-found";
 
-    for (var i = 0; i < SPOTS.length; i++) {
-      var el = document.querySelector(SPOTS[i][0]);
-      if (el) { host = el; side = SPOTS[i][1]; break; }
-    }
-    if (!host) return;
-
-    if (getComputedStyle(host).position === "static") host.style.position = "relative";
-
-    var btn = document.createElement("button");
-    btn.className = "hy-sprite";
-    btn.type = "button";
-    btn.setAttribute("aria-label", "A hidden forest sprite");
-    btn.innerHTML = SPRITE_SVG;
-    btn.style.top = "-14px";
-    btn.style[side] = "-6px";
-
-    btn.addEventListener("click", function (event) {
-      if (btn.classList.contains("is-found")) return;
-      btn.classList.add("is-found");
-      sparkle(event.clientX, event.clientY, 12);
-      toast(bumpCount());
-    });
-
-    host.appendChild(btn);
+  function loadFound() {
+    try {
+      var raw = localStorage.getItem(SPRITE_KEY);
+      if (!raw) return [];
+      var list = JSON.parse(raw);
+      /* Ignore ids that no longer exist, so removing a spot can't leave the
+         counter permanently above the total. */
+      return Array.isArray(list) ? list.filter(function (id) {
+        return SPRITE_SPOTS.some(function (spot) { return spot.id === id; });
+      }) : [];
+    } catch (e) { return []; }
   }
 
-  function bumpCount() {
-    var n = 1;
-    try {
-      n = (parseInt(localStorage.getItem("hy-sprites"), 10) || 0) + 1;
-      localStorage.setItem("hy-sprites", String(n));
-    } catch (e) { /* private mode */ }
-    return n;
+  function saveFound(list) {
+    try { localStorage.setItem(SPRITE_KEY, JSON.stringify(list)); } catch (e) { /* private mode */ }
+  }
+
+  function placeSprites() {
+    var found = loadFound();
+    var counter = buildSpriteCounter(found.length);
+
+    SPRITE_SPOTS.forEach(function (spot) {
+      if (found.indexOf(spot.id) !== -1) return;   /* already caught on a past visit */
+      var host = document.querySelector(spot.sel);
+      if (!host) return;
+
+      if (getComputedStyle(host).position === "static") host.style.position = "relative";
+
+      var btn = document.createElement("button");
+      btn.className = "hy-sprite";
+      btn.type = "button";
+      btn.setAttribute("aria-label", "A hidden forest sprite — click to catch it");
+      btn.innerHTML = SPRITE_SVG;
+      btn.style.top = spot.top || "-14px";
+      btn.style[spot.side] = "-6px";
+
+      btn.addEventListener("click", function (event) {
+        if (btn.classList.contains("is-found")) return;
+        btn.classList.add("is-found");
+
+        found = loadFound();
+        if (found.indexOf(spot.id) === -1) found.push(spot.id);
+        saveFound(found);
+
+        sparkle(event.clientX, event.clientY, 12);
+        counter.set(found.length);
+
+        if (found.length >= SPRITE_TOTAL) {
+          celebrate();
+        } else {
+          toast("呀哈哈！ " + found.length + " / " + SPRITE_TOTAL + " 🍃");
+        }
+      });
+
+      host.appendChild(btn);
+    });
+  }
+
+  /* A small tally by the dock, shown only once the hunt has started. */
+  function buildSpriteCounter(initial) {
+    var el = document.createElement("div");
+    el.className = "hy-tally";
+    el.setAttribute("role", "status");
+    document.body.appendChild(el);
+
+    function set(n) {
+      el.innerHTML = '<span class="hy-tally__leaf" aria-hidden="true">' + SPRITE_SVG + '</span>' +
+        '<span class="hy-tally__count">' + n + " / " + SPRITE_TOTAL + "</span>";
+      el.classList.toggle("is-on", n > 0);
+      el.classList.toggle("is-complete", n >= SPRITE_TOTAL);
+    }
+
+    set(initial);
+    return { set: set };
+  }
+
+  /* Reward for finding every sprite. */
+  function celebrate() {
+    var card = document.createElement("div");
+    card.className = "hy-cheer";
+    card.setAttribute("role", "dialog");
+    card.setAttribute("aria-modal", "true");
+    card.setAttribute("aria-label", "You found every sprite");
+    card.innerHTML =
+      '<div class="hy-cheer__panel hy-runed">' +
+        '<div class="hy-cheer__sprite">' + SPRITE_SVG + '</div>' +
+        "<h2>呀哈哈！ All " + SPRITE_TOTAL + " found</h2>" +
+        "<p>You combed through every corner of this little world. " +
+          "Thanks for wandering so thoroughly.</p>" +
+        '<div class="hy-cheer__actions">' +
+          '<button class="hy-cheer__close" type="button">Close</button>' +
+          '<button class="hy-cheer__reset" type="button">Hide them again</button>' +
+        "</div>" +
+      "</div>";
+    document.body.appendChild(card);
+
+    var closeBtn = card.querySelector(".hy-cheer__close");
+    closeBtn.focus({ preventScroll: true });
+
+    /* A burst from the middle of the card, then a few stragglers. */
+    var box = card.querySelector(".hy-cheer__panel").getBoundingClientRect();
+    sparkle(box.left + box.width / 2, box.top + box.height / 2, 18);
+    if (!reduceMotion) {
+      [180, 380, 620].forEach(function (delay, i) {
+        setTimeout(function () {
+          sparkle(box.left + (i + 1) * box.width / 4, box.top + box.height / 3, 10);
+        }, delay);
+      });
+    }
+
+    function close() { card.remove(); }
+    closeBtn.addEventListener("click", close);
+    card.addEventListener("click", function (e) { if (e.target === card) close(); });
+    card.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { e.stopPropagation(); close(); }
+    });
+    card.querySelector(".hy-cheer__reset").addEventListener("click", function () {
+      saveFound([]);
+      close();
+      location.reload();
+    });
   }
 
   var toastTimer;
-  function toast(count) {
+  function toast(message) {
     var el = document.querySelector(".hy-toast");
     if (!el) {
       el = document.createElement("div");
@@ -235,7 +370,7 @@
       el.setAttribute("role", "status");
       document.body.appendChild(el);
     }
-    el.textContent = "呀哈哈！Found " + count + (count === 1 ? " sprite" : " sprites") + " 🍃";
+    el.textContent = message;
     /* restart the transition */
     void el.offsetWidth;
     el.classList.add("is-on");
@@ -716,11 +851,11 @@
 
   function init() {
     guardGreedyNav();
-    buildThemeToggle();
+    buildThemeToggle(buildDock());
     revealOnScroll();
     revealVisitorMap();
     buildParkMap();
-    placeSprite();
+    placeSprites();
     settleNav();
 
     if (document.fonts && document.fonts.ready) {

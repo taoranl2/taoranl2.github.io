@@ -23,13 +23,71 @@ layout: default
     </g>
   </svg>
 
-  <svg class="hy-hero__scene" viewBox="0 100 1440 200" preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">
+  {%- comment -%}
+    Aurora ribbons, night only. Drawn behind the ridges so they sit in the sky.
+  {%- endcomment -%}
+  <svg class="hy-hero__aurora hy-sky-night" viewBox="0 0 1440 260" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="hy-aurora-a" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"   stop-color="#5cdad6" stop-opacity="0"/>
+        <stop offset="35%"  stop-color="#5cdad6" stop-opacity=".34"/>
+        <stop offset="65%"  stop-color="#8f7ff0" stop-opacity=".3"/>
+        <stop offset="100%" stop-color="#8f7ff0" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="hy-aurora-b" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"   stop-color="#7ce8b0" stop-opacity="0"/>
+        <stop offset="50%"  stop-color="#7ce8b0" stop-opacity=".24"/>
+        <stop offset="100%" stop-color="#5cdad6" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <path class="hy-aurora__band" fill="url(#hy-aurora-a)"
+          d="M-200 92 C 120 24, 380 140, 700 78 C 980 24, 1180 128, 1500 66 L1500 138 C 1180 200, 980 96, 700 150 C 380 212, 120 96, -200 164 Z"/>
+    <path class="hy-aurora__band" fill="url(#hy-aurora-b)"
+          d="M-200 150 C 160 96, 420 190, 760 140 C 1040 100, 1240 176, 1560 124 L1560 176 C 1240 228, 1040 152, 760 192 C 420 242, 160 148, -200 202 Z"/>
+  </svg>
+
+  <svg class="hy-hero__scene" viewBox="0 60 1440 240" preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">
+    {%- comment -%}
+      Floating islands: a rounded grass cap over a rock that tapers to a point,
+      drawn once around the origin and placed with transforms.
+    {%- endcomment -%}
+    <defs>
+      <g id="hy-isle-shape">
+        <path fill="var(--hy-hill-mid)"
+              d="M-30 0 h60 c-3 9 -9 14 -15 20 c-5 5 -9 12 -15 24 c-6 -12 -10 -19 -15 -24 c-6 -6 -12 -11 -15 -20 z"/>
+        <path fill="var(--hy-hill-near)"
+              d="M-30 0 c0 -9 13 -15 30 -15 s30 6 30 15 z"/>
+      </g>
+    </defs>
+
+    <g class="hy-isles">
+      <g class="hy-isle"><use href="#hy-isle-shape" transform="translate(336 126) scale(1)"/></g>
+      <g class="hy-isle"><use href="#hy-isle-shape" transform="translate(1006 100) scale(.66)"/></g>
+      <g class="hy-isle"><use href="#hy-isle-shape" transform="translate(719 148) scale(.48)"/></g>
+    </g>
+
     <!-- far ridge -->
     <path fill="var(--hy-hill-far)" d="M0 196 C 150 150, 300 214, 452 178 C 610 140, 742 202, 900 172 C 1060 142, 1200 200, 1440 162 L1440 300 L0 300 Z"/>
+
+    <!-- a watchtower on the far ridge, drawn dark so it reads as a silhouette -->
+    <g transform="translate(1124 180)" fill="var(--hy-tree)">
+      <path d="M-9 0 l3 -58 h12 l3 58 z"/>
+      <rect x="-15" y="-68" width="30" height="9" rx="4"/>
+      <path d="M-9 -68 l9 -9 l9 9 z"/>
+      <circle class="hy-tower__light" cx="0" cy="-80" r="4" fill="var(--hy-glow)"/>
+    </g>
+
     <!-- mid ridge -->
     <path fill="var(--hy-hill-mid)" d="M0 232 C 190 196, 348 250, 520 220 C 700 188, 848 244, 1024 216 C 1200 188, 1330 238, 1440 214 L1440 300 L0 300 Z"/>
     <!-- near ridge -->
     <path fill="var(--hy-hill-near)" d="M0 268 C 220 240, 420 282, 640 260 C 880 236, 1080 280, 1440 254 L1440 300 L0 300 Z"/>
+
+    <!-- glowing spring in a hollow of the near ridge -->
+    <g class="hy-spring">
+      <ellipse class="hy-spring__glow" cx="768" cy="276" rx="54" ry="13" fill="var(--hy-glow)"/>
+      <ellipse cx="768" cy="276" rx="34" ry="8" fill="var(--hy-glow)" opacity=".85"/>
+      <ellipse cx="768" cy="275" rx="18" ry="4" fill="#fbfffe" opacity=".8"/>
+    </g>
 
     <!-- little trees on the near ridge -->
     <g fill="var(--hy-tree)">
@@ -41,6 +99,17 @@ layout: default
       <rect x="1012" y="259" width="6" height="13" rx="2"/>
       <path d="M1238 268c7 0 12-6 12-12 0-7-5-14-12-14s-12 7-12 14c0 6 5 12 12 12z"/>
       <rect x="1235" y="265" width="5" height="11" rx="2"/>
+      <path d="M560 272c7 0 12-6 12-12 0-7-5-14-12-14s-12 7-12 14c0 6 5 12 12 12z"/>
+      <rect x="557" y="269" width="5" height="11" rx="2"/>
+      <path d="M880 266c6 0 11-5 11-11 0-7-5-13-11-13s-11 6-11 13c0 6 5 11 11 11z"/>
+      <rect x="877" y="263" width="5" height="10" rx="2"/>
+    </g>
+
+    <!-- birds, day only -->
+    <g class="hy-birds hy-sky-day" fill="none" stroke="var(--hy-tree)" stroke-width="2.4" stroke-linecap="round" opacity=".55">
+      <path class="hy-bird" d="M470 118 q9 -7 18 0 q9 -7 18 0"/>
+      <path class="hy-bird" d="M540 96 q7 -6 14 0 q7 -6 14 0"/>
+      <path class="hy-bird" d="M418 142 q6 -5 12 0 q6 -5 12 0"/>
     </g>
 
     <!-- drifting motes -->
@@ -50,6 +119,8 @@ layout: default
       <circle cx="880" cy="164" r="3.2"/>
       <circle cx="1130" cy="140" r="2.2"/>
       <circle cx="430" cy="186" r="2.6"/>
+      <circle cx="760" cy="238" r="2.8"/>
+      <circle cx="330" cy="112" r="2"/>
     </g>
   </svg>
 

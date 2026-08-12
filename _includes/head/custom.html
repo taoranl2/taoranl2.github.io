@@ -21,16 +21,27 @@
 <link rel="stylesheet" href="{{ base_path }}/assets/css/academicons.css"/>
 <link rel="stylesheet" href="{{ base_path }}/assets/css/hyrule.css"/>
 
-<!-- Apply the stored day/night choice before first paint so the page never flashes. -->
+<!-- Pick day or night before first paint, so the page never flashes the wrong one.
+     Precedence: an explicit choice the visitor made, then the clock on their own
+     device, then their OS setting. The OS setting can still force night even at
+     midday — someone who runs dark mode for eye strain should never be handed a
+     bright page — but it can no longer force day on someone visiting at night. -->
 <script>
   (function () {
+    var theme = 'day';
     try {
       var stored = localStorage.getItem('hy-theme');
-      var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.setAttribute('data-hy-theme', stored || (prefersDark ? 'night' : 'day'));
-    } catch (e) {
-      document.documentElement.setAttribute('data-hy-theme', 'day');
-    }
+      if (stored === 'day' || stored === 'night') {
+        theme = stored;
+      } else {
+        var hour = new Date().getHours();
+        var afterDark = hour >= 19 || hour < 7;
+        var prefersDark = window.matchMedia &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches;
+        theme = (afterDark || prefersDark) ? 'night' : 'day';
+      }
+    } catch (e) { /* private mode, exotic locale — fall back to day */ }
+    document.documentElement.setAttribute('data-hy-theme', theme);
   })();
 </script>
 

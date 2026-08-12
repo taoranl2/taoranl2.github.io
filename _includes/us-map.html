@@ -26,7 +26,7 @@
   {%- endunless -%}
 {%- endfor -%}
 
-<figure class="hy-map" data-hy-map data-parks='{{ site.data.parks | jsonify | escape }}'>
+<figure class="hy-map hy-runed" data-hy-map data-parks='{{ site.data.parks | jsonify | escape }}'>
   <div class="hy-map__canvas">
     {%- comment -%}
       The pins are HTML buttons layered over this SVG rather than <g> elements

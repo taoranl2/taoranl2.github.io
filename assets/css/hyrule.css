@@ -259,11 +259,48 @@ a:focus-visible {
 
 /* Day / night switch ------------------------------------------------------ */
 
-.hy-theme-toggle {
+/* Dock: stamina ring + day/night button, sharing one corner. */
+.hy-dock {
   position: fixed;
   right: 1.1rem;
   bottom: 1.1rem;
   z-index: 60;
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+}
+
+.hy-stamina {
+  position: absolute;
+  inset: 0;
+  width: 60px;
+  height: 60px;
+  /* Start the fill at 12 o'clock and run clockwise. */
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+
+.hy-stamina__track,
+.hy-stamina__fill {
+  fill: none;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+}
+
+.hy-stamina__track { stroke: var(--hy-line-strong); opacity: .55; }
+
+.hy-stamina__fill {
+  stroke: var(--hy-green);
+  transition: stroke-dashoffset .12s linear, stroke .3s ease;
+}
+
+/* Full ring when the page has been read to the bottom. */
+.hy-dock.is-full .hy-stamina__fill { stroke: var(--hy-gold); }
+
+.hy-theme-toggle {
+  position: relative;
+  z-index: 1;
   width: 46px;
   height: 46px;
   display: grid;
@@ -349,8 +386,86 @@ body:not(:has(.hy-hero)) #main {
 
 /* Sun by day, moon and stars by night. */
 .hy-sky-night { display: none; }
+.hy-hero__aurora.hy-sky-night { display: none; }
+:root[data-hy-theme="night"] .hy-hero__aurora.hy-sky-night { display: block; }
 :root[data-hy-theme="night"] .hy-sky-day   { display: none; }
 :root[data-hy-theme="night"] .hy-sky-night { display: block; }
+
+/* Aurora ribbons, night sky only. */
+.hy-hero__aurora {
+  position: absolute;
+  inset: 0 0 auto 0;
+  width: 100%;
+  /* Kept to the upper sky: any lower and the ribbons run behind the name and
+     the link buttons, which have to stay the brightest thing in the hero. */
+  height: 46%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: .85;
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+}
+
+.hy-aurora__band {
+  animation: hy-aurora 26s ease-in-out infinite;
+  transform-origin: 50% 50%;
+}
+
+.hy-aurora__band:nth-child(2) {
+  animation-duration: 34s;
+  animation-delay: -9s;
+}
+
+@keyframes hy-aurora {
+  0%, 100% { transform: translateX(-3%) scaleY(1);    opacity: .75; }
+  50%      { transform: translateX(3%)  scaleY(1.22); opacity: 1; }
+}
+
+/* Floating islands */
+.hy-isle {
+  animation: hy-isle-drift 15s ease-in-out infinite;
+}
+
+.hy-isle:nth-child(2) { animation-duration: 19s; animation-delay: -5s; }
+.hy-isle:nth-child(3) { animation-duration: 12s; animation-delay: -8s; }
+
+@keyframes hy-isle-drift {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-9px); }
+}
+
+/* The lamp at the top of the tower */
+.hy-tower__light {
+  animation: hy-beacon 4.5s ease-in-out infinite;
+}
+
+@keyframes hy-beacon {
+  0%, 100% { opacity: .55; r: 4; }
+  50%      { opacity: 1;   r: 5.4; }
+}
+
+/* Glowing spring */
+.hy-spring__glow {
+  animation: hy-spring-pulse 6s ease-in-out infinite;
+}
+
+@keyframes hy-spring-pulse {
+  0%, 100% { opacity: .22; }
+  50%      { opacity: .42; }
+}
+
+/* Birds drift slowly across the daytime sky. */
+.hy-bird {
+  animation: hy-bird-glide 30s linear infinite;
+}
+
+.hy-bird:nth-child(2) { animation-duration: 38s; animation-delay: -12s; }
+.hy-bird:nth-child(3) { animation-duration: 44s; animation-delay: -25s; }
+
+@keyframes hy-bird-glide {
+  from { transform: translate(-8%, 6px); }
+  to   { transform: translate(112%, -10px); }
+}
 
 .hy-motes circle {
   opacity: .55;
@@ -574,6 +689,56 @@ body:not(:has(.hy-hero)) #main {
   height: 3px;
   border-radius: 3px;
   background: linear-gradient(90deg, var(--hy-line) 0%, transparent 100%);
+}
+
+/* Rune ornaments ---------------------------------------------------------
+   Original geometry only: brackets, concentric rings and radiating ticks.
+   Used sparingly, so the page reads as framed rather than decorated. */
+
+/* Corner brackets, as if the panel were a plate set into a frame. */
+.hy-runed {
+  position: relative;
+}
+
+.hy-runed::before,
+.hy-runed::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--hy-teal);
+  opacity: .38;
+  pointer-events: none;
+}
+
+.hy-runed::before {
+  top: 8px;
+  left: 8px;
+  border-right: 0;
+  border-bottom: 0;
+  border-top-left-radius: 7px;
+}
+
+.hy-runed::after {
+  bottom: 8px;
+  right: 8px;
+  border-left: 0;
+  border-top: 0;
+  border-bottom-right-radius: 7px;
+}
+
+/* A halo behind the section gems. */
+.hy-section__head .hy-gem {
+  position: relative;
+}
+
+.hy-section__head .hy-gem::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  opacity: .22;
 }
 
 /* Small rotated diamond used as a bullet / ornament */
@@ -1182,6 +1347,8 @@ body:not(:has(.hy-hero)) #main {
 @media (prefers-reduced-motion: reduce) {
   .hy-map__shot,
   .hy-lightbox button { transition: none; }
+  /* The ring still tracks scrolling; it just stops easing between values. */
+  .hy-stamina__fill { transition: none; }
 }
 
 /* Legend ----------------------------------------------------------------- */
@@ -1667,6 +1834,114 @@ body:not(:has(.hy-hero)) #main {
   100% { transform: scale(0)   rotate(40deg); opacity: 0; }
 }
 
+/* Sprite tally, sitting just above the dock. */
+.hy-tally {
+  position: fixed;
+  right: 1.1rem;
+  bottom: 4.9rem;
+  z-index: 59;
+  display: none;
+  align-items: center;
+  gap: .32em;
+  padding: .28em .7em .28em .45em;
+  font-family: var(--hy-font-display);
+  font-weight: 800;
+  font-size: .8rem;
+  color: var(--hy-ink);
+  background: var(--hy-card);
+  border: 2px solid var(--hy-line);
+  border-radius: 999px;
+  box-shadow: var(--hy-shadow-soft);
+}
+
+.hy-tally.is-on { display: flex; }
+
+.hy-tally__leaf svg { display: block; width: 20px; height: 20px; }
+
+.hy-tally.is-complete {
+  border-color: var(--hy-gold);
+  background: var(--hy-gold-soft);
+  color: var(--hy-ink);
+}
+
+/* Completion card */
+.hy-cheer {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(30, 22, 8, .68);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+:root[data-hy-theme="night"] .hy-cheer { background: rgba(4, 8, 12, .78); }
+
+.hy-cheer__panel {
+  max-width: 24em;
+  padding: 1.8em 1.7em 1.5em;
+  text-align: center;
+  background: var(--hy-card);
+  border: 2px solid var(--hy-gold);
+  border-radius: var(--hy-radius);
+  box-shadow: var(--hy-shadow-lift);
+}
+
+.hy-cheer__sprite svg {
+  width: 68px;
+  height: 68px;
+  display: block;
+  margin: 0 auto .4em;
+}
+
+.hy-cheer__panel h2 {
+  font-family: var(--hy-font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin: 0 0 .35em;
+  color: var(--hy-ink);
+}
+
+.hy-cheer__panel p {
+  font-size: .92rem;
+  color: var(--hy-ink-soft);
+  margin: 0 0 1.2em;
+}
+
+.hy-cheer__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5em;
+  justify-content: center;
+}
+
+.hy-cheer__actions button {
+  font-family: var(--hy-font-display);
+  font-weight: 700;
+  font-size: .88rem;
+  padding: .45em 1.1em;
+  border-radius: 999px;
+  border: 2px solid var(--hy-line);
+  background: var(--hy-paper-deep);
+  color: var(--hy-ink);
+  cursor: pointer;
+  transition: transform .16s ease, border-color .16s ease;
+}
+
+.hy-cheer__close {
+  border-color: var(--hy-gold) !important;
+  background: var(--hy-gold-soft) !important;
+}
+
+.hy-cheer__actions button:hover,
+.hy-cheer__actions button:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--hy-teal);
+  outline: none;
+}
+
 .hy-toast {
   position: fixed;
   left: 50%;
@@ -1742,7 +2017,8 @@ body:not(:has(.hy-hero)) #main {
   .hy-hero { padding: 5.4em 1em 2.4em; }
   .hy-panel { padding: 1.2em 1.15em; }
   .pub-card { padding: 1.05em 1.15em 1.15em; }
-  .hy-theme-toggle { right: .75rem; bottom: .75rem; }
+  .hy-dock { right: .75rem; bottom: .75rem; }
+  .hy-tally { right: .75rem; bottom: 4.5rem; }
 }
 
 /* --------------------------------------------------------------------------
@@ -1754,7 +2030,12 @@ body:not(:has(.hy-hero)) #main {
   .hy-scroll-cue,
   .hy-hearts svg,
   .hy-hero__orb,
-  .hy-motes circle {
+  .hy-motes circle,
+  .hy-aurora__band,
+  .hy-isle,
+  .hy-tower__light,
+  .hy-spring__glow,
+  .hy-bird {
     animation: none;
   }
   .hy-reveal {
