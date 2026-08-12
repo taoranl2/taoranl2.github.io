@@ -10,6 +10,21 @@
   var reduceMotion = window.matchMedia &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* Same boundaries as the pre-paint script in _includes/head/custom.html.
+     If you change them, change them in both places. */
+  function clockSky() {
+    var hour = new Date().getHours();
+    if (hour < 5) return "night";
+    if (hour < 8) return "dawn";
+    if (hour < 17) return "day";
+    if (hour < 20) return "dusk";
+    return "night";
+  }
+
+  function skyState() {
+    return root.getAttribute("data-hy-sky") || "day";
+  }
+
   /* ----------------------------------------------------------------------
      Day / night toggle
      ---------------------------------------------------------------------- */
@@ -75,9 +90,13 @@
     btn.addEventListener("click", function () {
       var next = root.getAttribute("data-hy-theme") === "night" ? "day" : "night";
       root.setAttribute("data-hy-theme", next);
+      /* The sky has to follow, or the toggle leaves a night sky over light
+         chrome. Going back to light restores whichever daytime sky the
+         visitor's own clock says it is. */
+      root.setAttribute("data-hy-sky", next === "night" ? "night" : clockSky());
       try { localStorage.setItem("hy-theme", next); } catch (e) { /* private mode */ }
       var meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute("content", next === "night" ? "#16202b" : "#fdf7ea");
+      if (meta) meta.setAttribute("content", next === "night" ? "#201826" : "#fff7fb");
     });
 
     dock.appendChild(btn);
@@ -296,19 +315,40 @@
     });
   }
 
-  /* A small tally by the dock, shown only once the hunt has started. */
+  /* A small tally by the dock, shown only once the hunt has started. The chip
+     is itself the reset control, so the hunt can be restarted at any point
+     rather than only from the completion card. */
   function buildSpriteCounter(initial) {
-    var el = document.createElement("div");
+    var el = document.createElement("button");
+    el.type = "button";
     el.className = "hy-tally";
-    el.setAttribute("role", "status");
     document.body.appendChild(el);
+
+    var live = document.createElement("div");
+    live.className = "screen-reader-text";
+    live.setAttribute("role", "status");
+    document.body.appendChild(live);
 
     function set(n) {
       el.innerHTML = '<span class="hy-tally__leaf" aria-hidden="true">' + SPRITE_SVG + '</span>' +
-        '<span class="hy-tally__count">' + n + " / " + SPRITE_TOTAL + "</span>";
+        '<span class="hy-tally__count">' + n + " / " + SPRITE_TOTAL + "</span>" +
+        '<span class="hy-tally__reset" aria-hidden="true">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" ' +
+            'stroke-linecap="round" stroke-linejoin="round">' +
+            '<path d="M20 11A8 8 0 1 0 18 16.5"></path><polyline points="20 5 20 11 14 11"></polyline>' +
+          "</svg></span>";
       el.classList.toggle("is-on", n > 0);
       el.classList.toggle("is-complete", n >= SPRITE_TOTAL);
+      el.setAttribute("aria-label",
+        "Sprites found: " + n + " of " + SPRITE_TOTAL + ". Activate to hide them all again and start over.");
+      el.title = "Hide them all again and start over";
+      live.textContent = n + " of " + SPRITE_TOTAL + " sprites found";
     }
+
+    el.addEventListener("click", function () {
+      saveFound([]);
+      location.reload();
+    });
 
     set(initial);
     return { set: set };
@@ -881,7 +921,7 @@
      ---------------------------------------------------------------------- */
 
   function isNight() {
-    return root.getAttribute("data-hy-theme") === "night";
+    return skyState() === "night";
   }
 
   function buildNightSky() {
@@ -907,7 +947,133 @@
     }
     sky.appendChild(frag);
 
+    buildFireflies(sky);
+    buildConstellations(sky);
     scheduleMeteor(sky);
+  }
+
+  /* Fireflies drift between the hills at dusk. Each gets its own wander path
+     and blink period so they never move as a group. */
+  function buildFireflies(sky) {
+    var count = window.innerWidth < 700 ? 6 : 11;
+    var frag = document.createDocumentFragment();
+
+    for (var i = 0; i < count; i++) {
+      var fly = document.createElement("span");
+      fly.className = "hy-fly";
+      fly.style.left = (6 + Math.random() * 88).toFixed(2) + "%";
+      /* Anchored to the bottom of the sky layer, which sits just above the
+         ridges — measuring from the top put them up among the hero text. */
+      fly.style.bottom = (Math.random() * 24).toFixed(2) + "%";
+      for (var leg = 1; leg <= 3; leg++) {
+        fly.style.setProperty("--x" + leg, (Math.random() * 120 - 60).toFixed(0) + "px");
+        fly.style.setProperty("--y" + leg, (Math.random() * 70 - 35).toFixed(0) + "px");
+      }
+      fly.style.animationDuration =
+        (16 + Math.random() * 14).toFixed(1) + "s, " + (2.4 + Math.random() * 3).toFixed(1) + "s";
+      fly.style.animationDelay =
+        (-Math.random() * 20).toFixed(1) + "s, " + (-Math.random() * 5).toFixed(1) + "s";
+      frag.appendChild(fly);
+    }
+    sky.appendChild(frag);
+  }
+
+  /* Constellations: as the pointer moves through the star field, the nearest
+     stars are joined up, and the lines fade out behind it. */
+  function buildConstellations(sky) {
+    if (!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", "hy-constel");
+    svg.setAttribute("aria-hidden", "true");
+    sky.appendChild(svg);
+
+    var LINES = 5;
+    var lines = [];
+    for (var i = 0; i < LINES; i++) {
+      var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      svg.appendChild(line);
+      lines.push(line);
+    }
+
+    var stars = [];
+    var pending = false;
+    var px = 0, py = 0;
+
+    /* Star positions are read once per pointer burst, not per star per move. */
+    function measure() {
+      var box = sky.getBoundingClientRect();
+      stars = Array.prototype.map.call(sky.querySelectorAll(".hy-star"), function (s) {
+        var r = s.getBoundingClientRect();
+        return { x: r.left + r.width / 2 - box.left, y: r.top + r.height / 2 - box.top };
+      });
+    }
+
+    function draw() {
+      pending = false;
+      if (!stars.length) measure();
+
+      var pool = stars.filter(function (s) {
+        var dx = s.x - px, dy = s.y - py;
+        return dx * dx + dy * dy < 190 * 190;
+      });
+
+      /* Walk nearest-neighbour from the star closest to the pointer. Chaining
+         them in order of distance from the pointer instead makes the path
+         zig-zag back and forth, which reads as scribble rather than a figure. */
+      var path = [];
+      if (pool.length > 1) {
+        var best = 0;
+        pool.forEach(function (s, i) {
+          var d = (s.x - px) * (s.x - px) + (s.y - py) * (s.y - py);
+          var bd = (pool[best].x - px) * (pool[best].x - px) + (pool[best].y - py) * (pool[best].y - py);
+          if (d < bd) best = i;
+        });
+        var current = pool.splice(best, 1)[0];
+        path.push(current);
+
+        while (path.length <= LINES && pool.length) {
+          var nearestAt = 0;
+          var nearestD = Infinity;
+          for (var i = 0; i < pool.length; i++) {
+            var ddx = pool[i].x - current.x, ddy = pool[i].y - current.y;
+            var dd = ddx * ddx + ddy * ddy;
+            if (dd < nearestD) { nearestD = dd; nearestAt = i; }
+          }
+          current = pool.splice(nearestAt, 1)[0];
+          path.push(current);
+        }
+      }
+
+      lines.forEach(function (line, i) {
+        var a = path[i], b = path[i + 1];
+        if (!a || !b) { line.classList.remove("is-on"); return; }
+        line.setAttribute("x1", a.x.toFixed(1));
+        line.setAttribute("y1", a.y.toFixed(1));
+        line.setAttribute("x2", b.x.toFixed(1));
+        line.setAttribute("y2", b.y.toFixed(1));
+        line.classList.add("is-on");
+      });
+    }
+
+    var hero = sky.parentNode;
+    hero.addEventListener("pointermove", function (event) {
+      if (event.pointerType && event.pointerType !== "mouse") return;
+      if (skyState() !== "night") return;
+      var box = sky.getBoundingClientRect();
+      px = event.clientX - box.left;
+      py = event.clientY - box.top;
+      if (pending) return;
+      pending = true;
+      window.requestAnimationFrame(draw);
+    }, { passive: true });
+
+    hero.addEventListener("pointerleave", function () {
+      lines.forEach(function (l) { l.classList.remove("is-on"); });
+    });
+
+    /* Positions are percentage-based, so a resize invalidates the cache. */
+    window.addEventListener("resize", function () { stars = []; });
   }
 
   var meteorTimer = null;

@@ -406,17 +406,24 @@ body:not(:has(.hy-hero)) #main {
 
 /* Night sky: star field + meteors. Sits above the sky gradient but below the
    ridges and the hero text. */
+/* The container is always live; each inhabitant decides which sky it belongs
+   to. Gating the container instead put stars in the dusk sky. */
 .hy-sky {
   position: absolute;
   inset: 0 0 30% 0;
   overflow: hidden;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity .6s ease;
   transform: translate3d(var(--px, 0), var(--py, 0), 0);
 }
 
-:root[data-hy-theme="night"] .hy-sky { opacity: 1; }
+.hy-star,
+.hy-constel,
+.hy-fly { display: none; }
+
+:root[data-hy-sky="night"] .hy-star,
+:root[data-hy-sky="night"] .hy-constel { display: block; }
+
+:root[data-hy-sky="dusk"] .hy-fly { display: block; }
 
 .hy-star {
   position: absolute;
@@ -492,6 +499,127 @@ body:not(:has(.hy-hero)) #main {
 @keyframes hy-rays-shift {
   0%, 100% { transform: translateX(-1.5%) scaleY(1);    opacity: .12; }
   50%      { transform: translateX(1.5%)  scaleY(1.12); opacity: .3; }
+}
+
+/* Four skies -------------------------------------------------------------
+   data-hy-sky is separate from data-hy-theme: it repaints only the hero, so
+   adding dawn and dusk costs two gradients rather than two whole palettes. */
+
+:root[data-hy-sky="dawn"] {
+  --hy-hero-sky-1: #b9b6e8;
+  --hy-hero-sky-2: #ffd2c2;
+  --hy-hero-sky-3: #fff0e4;
+  --hy-sun-core:   #ffb37a;
+  --hy-sun-halo:   #ffd0a0;
+}
+
+:root[data-hy-sky="day"] {
+  --hy-sun-core: #ffd07a;
+  --hy-sun-halo: #ffd98a;
+}
+
+:root[data-hy-sky="dusk"] {
+  --hy-hero-sky-1: #6f5a94;
+  --hy-hero-sky-2: #ffb08c;
+  --hy-hero-sky-3: #ffe0cd;
+  --hy-sun-core:   #ff8f5e;
+  --hy-sun-halo:   #ffab74;
+}
+
+/* The sun sinks toward the ridge at dawn and dusk. */
+:root[data-hy-sky="dawn"] .hy-hero__orb,
+:root[data-hy-sky="dusk"] .hy-hero__orb { top: 30%; }
+
+/* Clouds catch the low light. */
+:root[data-hy-sky="dawn"] .hy-hero__clouds g,
+:root[data-hy-sky="dusk"] .hy-hero__clouds g { fill: #ffe8dc; }
+
+/* Hero text has to stay legible over any of the four skies. A scrim alone
+   can't do it without washing the sky out — at the alpha it would take, dusk
+   is flat — so the hero carries its own darker tones as well. Both numbers
+   were derived from a contrast check against the worst band of each sky. */
+.hy-hero__inner::before {
+  content: "";
+  position: absolute;
+  inset: -6% -8%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center,
+    color-mix(in srgb, var(--hy-card) 40%, transparent) 0%,
+    color-mix(in srgb, var(--hy-card) 28%, transparent) 48%,
+    transparent 78%);
+  pointer-events: none;
+}
+
+:root:not([data-hy-theme="night"]) .hy-hero__inner .hy-role { color: #6a5462; }
+:root:not([data-hy-theme="night"]) .hy-hero__inner .hy-tagline { color: #6f5a68; }
+:root:not([data-hy-theme="night"]) .hy-hero__inner .hy-role a { color: #a52a60; }
+
+/* Fireflies — dusk only, wandering between the hills. */
+.hy-fly {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fff3b0;
+  box-shadow: 0 0 8px 2px rgba(255, 226, 120, .8);
+  opacity: 0;
+  animation-name: hy-fly-wander, hy-fly-blink;
+  animation-timing-function: ease-in-out, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+}
+
+@keyframes hy-fly-wander {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(var(--x1), var(--y1)); }
+  50%  { transform: translate(var(--x2), var(--y2)); }
+  75%  { transform: translate(var(--x3), var(--y3)); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes hy-fly-blink {
+  0%, 100% { opacity: 0; }
+  20%, 80% { opacity: .95; }
+}
+
+/* Constellation lines, drawn between nearby stars as the pointer passes. */
+.hy-constel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.hy-constel line {
+  stroke: #ffffff;
+  stroke-width: 1;
+  stroke-linecap: round;
+  opacity: 0;
+  transition: opacity .45s ease;
+}
+
+.hy-constel line.is-on { opacity: .5; }
+
+/* Spring ripples */
+.hy-ripple {
+  fill: none;
+  transform-box: fill-box;
+  transform-origin: center;
+  stroke: var(--hy-glow);
+  stroke-width: 1.6;
+  opacity: 0;
+  animation: hy-ripple-out 4.6s ease-out infinite;
+}
+
+.hy-ripple:nth-of-type(2) { animation-delay: 1.55s; }
+.hy-ripple:nth-of-type(3) { animation-delay: 3.1s; }
+
+@keyframes hy-ripple-out {
+  0%   { transform: scale(.25); opacity: 0; }
+  18%  { opacity: .75; }
+  100% { transform: scale(1.9); opacity: 0; }
 }
 
 /* Puffy clouds, day sky only. */
@@ -1972,7 +2100,8 @@ body:not(:has(.hy-hero)) #main {
   display: none;
   align-items: center;
   gap: .32em;
-  padding: .28em .7em .28em .45em;
+  margin: 0;
+  padding: .28em .55em .28em .45em;
   font-family: var(--hy-font-display);
   font-weight: 800;
   font-size: .8rem;
@@ -1981,9 +2110,41 @@ body:not(:has(.hy-hero)) #main {
   border: 2px solid var(--hy-line);
   border-radius: 999px;
   box-shadow: var(--hy-shadow-soft);
+  cursor: pointer;
+  transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
 }
 
 .hy-tally.is-on { display: flex; }
+
+.hy-tally:hover,
+.hy-tally:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--hy-pink);
+  box-shadow: var(--hy-shadow);
+  outline: none;
+}
+
+/* The restart arrow only asks for attention on hover, so the chip reads as a
+   score most of the time rather than as a button. */
+.hy-tally__reset {
+  display: grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  margin-left: .1em;
+  color: var(--hy-ink-faint);
+  opacity: .5;
+  transition: opacity .16s ease, color .16s ease, transform .3s ease;
+}
+
+.hy-tally__reset svg { width: 100%; height: 100%; }
+
+.hy-tally:hover .hy-tally__reset,
+.hy-tally:focus-visible .hy-tally__reset {
+  opacity: 1;
+  color: var(--hy-pink);
+  transform: rotate(-160deg);
+}
 
 .hy-tally__leaf svg { display: block; width: 20px; height: 20px; }
 
@@ -2355,6 +2516,8 @@ body:not(:has(.hy-hero)) #main {
   .hy-aurora__rays,
   .hy-star,
   .hy-meteor,
+  .hy-fly,
+  .hy-ripple,
   .hy-cloud,
   .hy-isle,
   .hy-tower__light,

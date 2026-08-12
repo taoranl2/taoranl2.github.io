@@ -8,7 +8,7 @@ redirect_from:
   - /about.html
 
 eyebrow: "PhD Student · Computer Science"
-role: 'First-year PhD student at <a href="https://engineering.tamu.edu/cse/index.html">Texas A&amp;M University</a>, advised by Prof. <a href="https://zhiyuanyu.org/">Zhiyuan Yu</a>'
+role: 'Second-year PhD student at <a href="https://engineering.tamu.edu/cse/index.html">Texas A&amp;M University</a>'
 cv: "/files/Taoran_Resume.pdf"
 news_limit: 6
 
@@ -25,7 +25,7 @@ news_title: "Adventure Log"
 
 ## About Me
 
-I am currently a first-year PhD student in [Computer Science](https://engineering.tamu.edu/cse/index.html) at [Texas A&M University](https://www.tamu.edu/index.html), advised by Prof. [Zhiyuan Yu](https://zhiyuanyu.org/). My research interests include Trustworthy ML, AI Safety and Applied Cryptography.
+I am currently a second-year PhD student in [Computer Science](https://engineering.tamu.edu/cse/index.html) at [Texas A&M University](https://www.tamu.edu/index.html), advised by Prof. [Zhiyuan Yu](https://zhiyuanyu.org/). My research interests include Trustworthy ML, AI Safety and Applied Cryptography.
 
 Previously, I earned my Master's degree in [Computer Engineering](https://ece.illinois.edu/) at [University of Illinois Urbana-Champaign](https://illinois.edu/), advised by Prof. [Varun Chandrasekaran](https://chandrasekaran-group.github.io/), whose mentorship has been invaluable in shaping my early academic journey. I also had the privilege of working closely with Prof. [Yupeng Zhang](https://zhangyp.web.illinois.edu/) and Prof. [David Heath](https://daheath.web.illinois.edu/), whose guidance introduced me to the fascinating world of cryptography.
 

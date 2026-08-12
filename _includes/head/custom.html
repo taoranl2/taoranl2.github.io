@@ -28,20 +28,37 @@
      bright page — but it can no longer force day on someone visiting at night. -->
 <script>
   (function () {
+    /* Two separate things:
+         data-hy-theme  light or dark chrome for the whole site — binary, and
+                        what the toggle button controls.
+         data-hy-sky    dawn | day | dusk | night, purely the hero's sky. Kept
+                        apart so four skies don't mean four palettes to keep
+                        legible; only the artwork changes.                     */
     var theme = 'day';
+    var sky = 'day';
     try {
+      var hour = new Date().getHours();
+      var clockSky = hour < 5 ? 'night'
+                   : hour < 8 ? 'dawn'
+                   : hour < 17 ? 'day'
+                   : hour < 20 ? 'dusk'
+                   : 'night';
+
       var stored = localStorage.getItem('hy-theme');
       if (stored === 'day' || stored === 'night') {
         theme = stored;
+        /* An explicit choice wins, but keep the sky the clock's when that
+           agrees with it, so a daytime visitor still gets dawn or dusk. */
+        sky = theme === 'night' ? 'night' : (clockSky === 'night' ? 'day' : clockSky);
       } else {
-        var hour = new Date().getHours();
-        var afterDark = hour >= 19 || hour < 7;
         var prefersDark = window.matchMedia &&
           window.matchMedia('(prefers-color-scheme: dark)').matches;
-        theme = (afterDark || prefersDark) ? 'night' : 'day';
+        theme = (clockSky === 'night' || prefersDark) ? 'night' : 'day';
+        sky = theme === 'night' ? 'night' : clockSky;
       }
-    } catch (e) { /* private mode, exotic locale — fall back to day */ }
+    } catch (e) { /* private mode, exotic locale — fall back to plain day */ }
     document.documentElement.setAttribute('data-hy-theme', theme);
+    document.documentElement.setAttribute('data-hy-sky', sky);
   })();
 </script>
 

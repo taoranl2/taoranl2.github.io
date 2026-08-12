@@ -142,11 +142,16 @@ layout: default
     <!-- near ridge -->
     <path fill="var(--hy-hill-near)" d="M0 268 C 220 240, 420 282, 640 260 C 880 236, 1080 280, 1440 254 L1440 300 L0 300 Z"/>
 
-    <!-- glowing spring in a hollow of the near ridge -->
+    <!-- glowing spring in a hollow of the near ridge, with spreading ripples -->
     <g class="hy-spring">
       <ellipse class="hy-spring__glow" cx="768" cy="276" rx="54" ry="13" fill="var(--hy-glow)"/>
       <ellipse cx="768" cy="276" rx="34" ry="8" fill="var(--hy-glow)" opacity=".85"/>
       <ellipse cx="768" cy="275" rx="18" ry="4" fill="#fbfffe" opacity=".8"/>
+      <g>
+        <ellipse class="hy-ripple" cx="768" cy="276" rx="30" ry="7"/>
+        <ellipse class="hy-ripple" cx="768" cy="276" rx="30" ry="7"/>
+        <ellipse class="hy-ripple" cx="768" cy="276" rx="30" ry="7"/>
+      </g>
     </g>
 
     <!-- little trees on the near ridge -->
