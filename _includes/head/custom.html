@@ -44,17 +44,26 @@
                    : hour < 20 ? 'dusk'
                    : 'night';
 
-      var stored = localStorage.getItem('hy-theme');
+      /* An earlier build kept the toggle's choice in localStorage, which pinned
+         the site to whatever was clicked once — for good, on that browser. Drop
+         any leftover so the clock takes over again. */
+      try { localStorage.removeItem('hy-theme'); } catch (e) { /* private mode */ }
+
+      /* The override now lasts one visit. Toggling still works across pages in
+         the same tab, but a fresh visit always starts from the clock, which is
+         the whole point of having four skies. */
+      var stored = sessionStorage.getItem('hy-theme');
       if (stored === 'day' || stored === 'night') {
         theme = stored;
-        /* An explicit choice wins, but keep the sky the clock's when that
-           agrees with it, so a daytime visitor still gets dawn or dusk. */
+        /* Keep the sky the clock's when that agrees, so someone who picked the
+           light theme at 18:00 still gets dusk rather than flat midday. */
         sky = theme === 'night' ? 'night' : (clockSky === 'night' ? 'day' : clockSky);
       } else {
-        var prefersDark = window.matchMedia &&
-          window.matchMedia('(prefers-color-scheme: dark)').matches;
-        theme = (clockSky === 'night' || prefersDark) ? 'night' : 'day';
-        sky = theme === 'night' ? 'night' : clockSky;
+        /* The clock decides, full stop. prefers-color-scheme used to be OR'd in
+           here, which meant a visitor on a dark OS got night at every hour and
+           never saw dawn, day or dusk at all. */
+        theme = clockSky === 'night' ? 'night' : 'day';
+        sky = clockSky;
       }
     } catch (e) { /* private mode, exotic locale — fall back to plain day */ }
     document.documentElement.setAttribute('data-hy-theme', theme);

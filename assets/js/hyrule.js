@@ -103,7 +103,9 @@
       /* Native UI — scrollbars, form controls — follows color-scheme, which a
          data-attribute theme doesn't set on its own. */
       root.style.colorScheme = next === "night" ? "dark" : "light";
-      try { localStorage.setItem("hy-theme", next); } catch (e) { /* private mode */ }
+      /* sessionStorage, not localStorage: the choice should hold for this visit
+         and then let the clock have the site back. */
+      try { sessionStorage.setItem("hy-theme", next); } catch (e) { /* private mode */ }
       var meta = document.querySelector('meta[name="theme-color"]');
       if (meta) meta.setAttribute("content", next === "night" ? "#201826" : "#fff7fb");
     });
