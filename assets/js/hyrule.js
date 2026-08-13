@@ -300,7 +300,10 @@
       btn.setAttribute("aria-label", "A hidden forest sprite — click to catch it");
       btn.innerHTML = SPRITE_SVG;
       btn.style.top = spot.top || "-14px";
-      btn.style[spot.side] = "-6px";
+      /* The horizontal offset lives in CSS so it can be pulled inside the
+         viewport on narrow screens — at -6px the sprite is half off the edge
+         of a phone, and so is its tap target. */
+      btn.classList.add("hy-sprite--" + spot.side);
 
       btn.addEventListener("click", function (event) {
         if (btn.classList.contains("is-found")) return;

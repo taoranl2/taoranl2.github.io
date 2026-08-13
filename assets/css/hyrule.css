@@ -2088,6 +2088,15 @@ body:not(:has(.hy-hero)) #main {
    13. Hidden forest sprite (click-to-find easter egg)
    -------------------------------------------------------------------------- */
 
+.hy-sprite--left  { left: -6px; }
+.hy-sprite--right { right: -6px; }
+
+@media (max-width: 700px) {
+  /* Keep the whole sprite, and its tap target, on screen. */
+  .hy-sprite--left  { left: 2px; }
+  .hy-sprite--right { right: 2px; }
+}
+
 .hy-sprite {
   position: absolute;
   z-index: 20;
