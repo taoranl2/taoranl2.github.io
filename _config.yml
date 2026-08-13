@@ -23,7 +23,10 @@ author:
   # Biographic information
   avatar           : "../images/profile.png"
   name             : "Taoran Li"
-  pronouns         : "he/his"  
+  # Left blank on purpose so no pronouns are shown anywhere. Must have no value
+  # at all rather than "": Liquid treats an empty string as truthy, which would
+  # render an empty pill in the hero and an empty line in the sidebar.
+  pronouns         :
   bio              : "The world is changing. Reforming. This is your moment."
   location         : "College Station, TX"
   employer         : "Texas A&M University"
