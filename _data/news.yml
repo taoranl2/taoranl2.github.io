@@ -5,19 +5,22 @@
 #
 # Newest entry first. `date` is free text (whatever reads well) and `text`
 # accepts Markdown, so [links](https://…), *italics* and **bold** all work.
-# The homepage shows the first `news_limit` entries (set in _pages/about.md).
+# The list scrolls, so there's no need to prune old entries.
+#
+# Voice: first person, warm and a little playful — how you'd tell a friend,
+# not how you'd write an abstract. One emoji per entry is plenty.
 
 - date: "Summer 2026"
-  text: "Attended **CVPR 2026** in Denver, Colorado."
+  text: "Off to **CVPR 2026** in Denver! 🏔️ If you're going too, come find me — I'd love to say hi."
 
 - date: "May 2026"
-  text: "Named a **Gold Reviewer** for the 43rd International Conference on Machine Learning (**ICML 2026**). 🏅"
+  text: "Named a **Gold Reviewer** for **ICML 2026** — I may have squealed a little. 🏅"
 
 - date: "Fall 2025"
-  text: "Started my PhD in Computer Science at **Texas A&M University**, advised by Prof. [Zhiyuan Yu](https://zhiyuanyu.org/). 🎉"
+  text: "Started my PhD in Computer Science at **Texas A&M University** with Prof. [Zhiyuan Yu](https://zhiyuanyu.org/). New city, new chapter! 🎉"
 
 - date: "May 2025"
-  text: "Received my M.S. in Computer Engineering from **UIUC**, advised by Prof. [Varun Chandrasekaran](https://chandrasekaran-group.github.io/)."
+  text: "Picked up my M.S. in Computer Engineering from **UIUC** — endless thanks to Prof. [Varun Chandrasekaran](https://chandrasekaran-group.github.io/) for all the guidance along the way. 🌸"
 
 - date: "Jun 2023"
-  text: "Graduated with a B.S. in Computer Engineering from **UIUC** and a B.E. in Computer Engineering from **Zhejiang University**, through their joint program. 🎓"
+  text: "Graduated with a B.S. in Computer Engineering from **UIUC** and a B.E. in Computer Engineering from **Zhejiang University** — two diplomas in one very happy summer! 🎓"
