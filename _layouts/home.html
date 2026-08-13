@@ -250,12 +250,21 @@ layout: default
         <span class="hy-gem hy-gem--pink" aria-hidden="true"></span>
         <h2 id="hy-log-head">{{ page.news_title | default: 'Adventure Log' }}</h2>
       </div>
-      {% assign news_limit = page.news_limit | default: 6 %}
-      <ul class="hy-log">
-        {% for entry in site.data.news limit: news_limit %}
-          <li><span class="hy-log__date">{{ entry.date }}</span>{{ entry.text | markdownify | remove: '<p>' | remove: '</p>' }}</li>
-        {% endfor %}
-      </ul>
+      {%- comment -%}
+        The list scrolls inside this box once it outgrows it, showing the newest
+        few. The <ul> stays the positioned element so its timeline spine spans
+        the whole list — on the scroll box it would be clipped to the visible
+        height and slide away as you scroll. The script adds the scrollability
+        classes and the tab stop, so a short list gets neither.
+      {%- endcomment -%}
+      {% assign news_limit = page.news_limit | default: 20 %}
+      <div class="hy-log-scroll" data-hy-log>
+        <ul class="hy-log">
+          {% for entry in site.data.news limit: news_limit %}
+            <li><span class="hy-log__date">{{ entry.date }}</span>{{ entry.text | markdownify | remove: '<p>' | remove: '</p>' }}</li>
+          {% endfor %}
+        </ul>
+      </div>
     </section>
   {% endif %}
 

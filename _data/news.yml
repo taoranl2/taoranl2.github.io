@@ -7,9 +7,6 @@
 # accepts Markdown, so [links](https://…), *italics* and **bold** all work.
 # The homepage shows the first `news_limit` entries (set in _pages/about.md).
 
-- date: "2025"
-  text: "*MedGUIDE: Benchmarking Clinical Decision-Making in Large Language Models* was accepted to the **NeurIPS GenAI4Health Workshop 2025**."
-
 - date: "Fall 2025"
   text: "Started my PhD in Computer Science at **Texas A&M University**, advised by Prof. [Zhiyuan Yu](https://zhiyuanyu.org/). 🎉"
 

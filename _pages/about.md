@@ -10,7 +10,7 @@ redirect_from:
 eyebrow: "PhD Student · Computer Science"
 role: 'Second-year PhD student at <a href="https://engineering.tamu.edu/cse/index.html">Texas A&amp;M University</a>'
 cv: "/files/Taoran_Resume.pdf"
-news_limit: 6
+news_limit: 20
 
 focus:
   - label: "Trustworthy ML"

@@ -933,6 +933,43 @@
   }
 
   /* ----------------------------------------------------------------------
+     Adventure log: scrolls once it outgrows its box
+     ---------------------------------------------------------------------- */
+
+  function setupLogScroll() {
+    var box = document.querySelector("[data-hy-log]");
+    if (!box) return;
+
+    function update() {
+      var overflowing = box.scrollHeight > box.clientHeight + 1;
+      box.classList.toggle("is-scrollable", overflowing);
+      box.classList.toggle("at-top", box.scrollTop <= 1);
+      box.classList.toggle("at-bottom",
+        box.scrollTop + box.clientHeight >= box.scrollHeight - 1);
+
+      /* A scrollable region has to be reachable by keyboard, but a list that
+         fits would just be a tab stop that does nothing — so the tab stop and
+         the label appear and disappear with the scrollbar. */
+      if (overflowing) {
+        box.setAttribute("tabindex", "0");
+        box.setAttribute("role", "region");
+        box.setAttribute("aria-label", "Adventure log, scrollable");
+      } else {
+        box.removeAttribute("tabindex");
+        box.removeAttribute("role");
+        box.removeAttribute("aria-label");
+      }
+    }
+
+    box.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    /* Entry text wraps differently once the web font lands, which changes the
+       height and therefore whether it scrolls at all. */
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(update);
+    update();
+  }
+
+  /* ----------------------------------------------------------------------
      Night sky: twinkling stars and the occasional meteor
      ---------------------------------------------------------------------- */
 
@@ -1375,6 +1412,7 @@
     buildParkMap();
     placeSprites();
     buildFlower();
+    setupLogScroll();
     buildWeather();
     buildNightSky();
     heroParallax();

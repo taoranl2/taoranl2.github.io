@@ -1062,6 +1062,56 @@ body:not(:has(.hy-hero)) #main {
    7. Adventure log (news timeline)
    -------------------------------------------------------------------------- */
 
+/* Scrollable adventure log ------------------------------------------------
+   Sized to show roughly the newest three or four entries; the rest are a
+   scroll away. max-height means a short list simply doesn't scroll, so this
+   costs nothing until there is something to scroll to. */
+
+.hy-log-scroll {
+  max-height: 14rem;
+  overflow-y: auto;
+  /* Room for the timeline spine and the diamonds, which sit left of the text. */
+  padding-left: 2px;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--hy-line-strong) transparent;
+}
+
+.hy-log-scroll::-webkit-scrollbar { width: 8px; }
+.hy-log-scroll::-webkit-scrollbar-track { background: transparent; }
+
+.hy-log-scroll::-webkit-scrollbar-thumb {
+  background: var(--hy-line-strong);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.hy-log-scroll::-webkit-scrollbar-thumb:hover { background: var(--hy-pink); background-clip: content-box; }
+
+/* Fade the cut-off edge so it reads as "there is more", but only on the side
+   that actually has more. Both classes come from the script. */
+.hy-log-scroll.is-scrollable:not(.at-bottom) {
+  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+}
+
+.hy-log-scroll.is-scrollable:not(.at-top):not(.at-bottom) {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 78%, transparent 100%);
+}
+
+.hy-log-scroll.is-scrollable:not(.at-top).at-bottom {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 14%);
+}
+
+.hy-log-scroll:focus-visible {
+  outline: 3px solid var(--hy-pink-deep);
+  outline-offset: 4px;
+  border-radius: var(--hy-radius-sm);
+}
+
 .hy-log {
   position: relative;
   margin: 0;
