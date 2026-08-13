@@ -11,7 +11,7 @@
 <meta name="msapplication-TileColor" content="#fdf7ea">
 <meta name="msapplication-TileImage" content="{{ base_path }}/images/mstile-144x144.png">
 <meta name="msapplication-config" content="{{ base_path }}/images/browserconfig.xml">
-<meta name="theme-color" content="#fdf7ea">
+<meta name="theme-color" content="#fff7fb">
 
 <!-- Typography -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -59,6 +59,11 @@
     } catch (e) { /* private mode, exotic locale — fall back to plain day */ }
     document.documentElement.setAttribute('data-hy-theme', theme);
     document.documentElement.setAttribute('data-hy-sky', sky);
+    /* Both of these were previously only updated by the toggle's click
+       handler, so every load in night mode shipped the light values. */
+    document.documentElement.style.colorScheme = theme === 'night' ? 'dark' : 'light';
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute('content', theme === 'night' ? '#201826' : '#fff7fb');
   })();
 </script>
 

@@ -211,13 +211,14 @@ a:focus-visible {
 }
 
 .greedy-nav {
-  background: color-mix(in srgb, var(--hy-card) 88%, transparent);
+  /* Opaque rather than blurred: the bar is position:fixed, so a
+     backdrop-filter re-blurs the strip behind it on every scrolled frame for
+     an effect that was barely visible at this opacity. */
+  background: var(--hy-card);
   border: 2px solid var(--hy-line);
   border-radius: 999px;
   box-shadow: var(--hy-shadow-soft);
   padding: .28em .5em;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
 }
 
 .greedy-nav a {
@@ -294,7 +295,7 @@ a:focus-visible {
   stroke-linecap: round;
 }
 
-.hy-stamina__track { stroke: var(--hy-line-strong); opacity: .55; }
+.hy-stamina__track { stroke: var(--hy-line-strong); }
 
 .hy-stamina__fill {
   stroke: var(--hy-green);
@@ -484,6 +485,9 @@ body:not(:has(.hy-hero)) #main {
 
 .hy-hero__clouds { transform: translate3d(var(--px, 0), var(--py, 0), 0); }
 .hy-hero__aurora { transform: translate3d(var(--px, 0), var(--py, 0), 0); }
+/* The orb was given the transition but never a transform to run, so the layer
+   with the largest parallax depth was the one that never moved. */
+.hy-hero__orb   { transform: translate3d(var(--px, 0), var(--py, 0), 0); }
 
 /* Aurora curtain: slow colour breathing plus the vertical rays. */
 .hy-aurora__band:nth-child(3) {
@@ -551,6 +555,7 @@ body:not(:has(.hy-hero)) #main {
   pointer-events: none;
 }
 
+:root:not([data-hy-theme="night"]) .hy-hero__inner .hy-eyebrow { color: #0f6360; }
 :root:not([data-hy-theme="night"]) .hy-hero__inner .hy-role { color: #6a5462; }
 :root:not([data-hy-theme="night"]) .hy-hero__inner .hy-tagline { color: #6f5a68; }
 :root:not([data-hy-theme="night"]) .hy-hero__inner .hy-role a { color: #a52a60; }
@@ -694,9 +699,16 @@ body:not(:has(.hy-hero)) #main {
   animation: hy-beacon 4.5s ease-in-out infinite;
 }
 
+/* Animating `r` re-rasterises the whole hero scene every frame; scale is
+   handed to the compositor instead. */
+.hy-tower__light {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
 @keyframes hy-beacon {
-  0%, 100% { opacity: .55; r: 4; }
-  50%      { opacity: 1;   r: 5.4; }
+  0%, 100% { opacity: .55; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.35); }
 }
 
 /* Glowing spring */
@@ -800,7 +812,7 @@ body:not(:has(.hy-hero)) #main {
   padding: .15em .7em;
   border-radius: 999px;
   background: var(--hy-pink-soft);
-  color: var(--hy-pink);
+  color: var(--hy-pink-deep);
   vertical-align: middle;
   margin-left: .5em;
   letter-spacing: .04em;
@@ -1172,6 +1184,15 @@ body:not(:has(.hy-hero)) #main {
   gap: .5em;
 }
 
+/* Badges carry white text, so they need their own darker accents — the display
+   accents are tuned for large shapes and only reach 2.6-4.1:1 behind text. */
+.pub-card { --pub-badge-bg: var(--pub-accent, var(--hy-teal)); }
+.pub-card[style*="--hy-teal"]   { --pub-badge-bg: #0f7a77; }
+.pub-card[style*="--hy-purple"] { --pub-badge-bg: #6f46bd; }
+.pub-card[style*="--hy-pink"]   { --pub-badge-bg: #b52c69; }
+.pub-card[style*="--hy-green"]  { --pub-badge-bg: #3d7d58; }
+.pub-card[style*="--hy-gold"]   { --pub-badge-bg: #94600f; }
+
 .pub-badge {
   display: inline-flex;
   align-items: center;
@@ -1183,7 +1204,7 @@ body:not(:has(.hy-hero)) #main {
   padding: .24em .8em;
   border-radius: 999px;
   color: #fff;
-  background: var(--pub-accent, var(--hy-teal));
+  background: var(--pub-badge-bg, var(--hy-teal-deep));
   white-space: nowrap;
 }
 
@@ -1227,7 +1248,7 @@ body:not(:has(.hy-hero)) #main {
 }
 
 .pub-card__link:hover {
-  color: var(--pub-accent, var(--hy-teal-deep));
+  color: var(--pub-badge-bg, var(--hy-teal-deep));
   border-color: var(--pub-accent, var(--hy-teal));
   background: var(--hy-teal-soft);
   transform: translateY(-2px);
@@ -2042,7 +2063,8 @@ body:not(:has(.hy-hero)) #main {
 
 .page__footer-copyright {
   font-size: .78rem;
-  color: var(--hy-ink-faint);
+  /* --hy-ink-faint is only 4.32:1 on the footer's deeper surface. */
+  color: var(--hy-ink-soft);
 }
 
 .hy-footer-sig {
@@ -2075,9 +2097,17 @@ body:not(:has(.hy-hero)) #main {
   transition: opacity .25s ease, transform .25s ease;
 }
 
-.hy-sprite:hover {
+.hy-sprite:hover,
+.hy-sprite:focus-visible {
   opacity: 1;
   transform: scale(1.18) rotate(-8deg);
+}
+
+/* Keyboard users need to see where focus is; at .28 the sprite was invisible. */
+.hy-sprite:focus-visible {
+  outline: 3px solid var(--hy-pink-deep);
+  outline-offset: 3px;
+  border-radius: 50%;
 }
 
 .hy-sprite.is-found {
@@ -2225,11 +2255,17 @@ body:not(:has(.hy-hero)) #main {
   background: var(--hy-gold-soft) !important;
 }
 
-.hy-cheer__actions button:hover,
-.hy-cheer__actions button:focus-visible {
+.hy-cheer__actions button:hover {
   transform: translateY(-2px);
   border-color: var(--hy-teal);
-  outline: none;
+}
+
+/* The dialog opens with Close focused, so it must show a ring rather than
+   suppress it. */
+.hy-cheer__actions button:focus-visible {
+  transform: translateY(-2px);
+  outline: 3px solid var(--hy-pink-deep);
+  outline-offset: 2px;
 }
 
 .hy-toast {
@@ -2439,8 +2475,8 @@ body:not(:has(.hy-hero)) #main {
 }
 
 @keyframes hy-petal-open {
-  from { transform: rotate(var(--a, 0)) scale(.2); opacity: 0; }
-  to   { opacity: 1; }
+  from { transform: rotate(var(--a, 0deg)) scale(.2); opacity: 0; }
+  to   { transform: rotate(var(--a, 0deg)) scale(1); opacity: 1; }
 }
 
 .hy-flower__heart { fill: var(--hy-gold); }
@@ -2511,6 +2547,7 @@ body:not(:has(.hy-hero)) #main {
   .hy-scroll-cue,
   .hy-hearts svg,
   .hy-hero__orb,
+  .hy-hero__orb > g,
   .hy-motes circle,
   .hy-aurora__band,
   .hy-aurora__rays,

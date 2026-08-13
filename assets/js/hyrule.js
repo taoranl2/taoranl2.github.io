@@ -78,6 +78,7 @@
     btn.className = "hy-theme-toggle";
     btn.type = "button";
     btn.setAttribute("aria-label", "Switch between day and night");
+    btn.setAttribute("aria-pressed", String(root.getAttribute("data-hy-theme") === "night"));
     btn.innerHTML =
       '<svg class="hy-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">' +
         '<circle cx="12" cy="12" r="4.2"></circle>' +
@@ -93,7 +94,15 @@
       /* The sky has to follow, or the toggle leaves a night sky over light
          chrome. Going back to light restores whichever daytime sky the
          visitor's own clock says it is. */
-      root.setAttribute("data-hy-sky", next === "night" ? "night" : clockSky());
+      /* clockSky() returns "night" after 20:00, so switching *to* light in the
+         evening would otherwise leave a night sky over light chrome. Same
+         guard the pre-paint script already has. */
+      var daySky = clockSky() === "night" ? "day" : clockSky();
+      root.setAttribute("data-hy-sky", next === "night" ? "night" : daySky);
+      btn.setAttribute("aria-pressed", String(next === "night"));
+      /* Native UI — scrollbars, form controls — follows color-scheme, which a
+         data-attribute theme doesn't set on its own. */
+      root.style.colorScheme = next === "night" ? "dark" : "light";
       try { localStorage.setItem("hy-theme", next); } catch (e) { /* private mode */ }
       var meta = document.querySelector('meta[name="theme-color"]');
       if (meta) meta.setAttribute("content", next === "night" ? "#201826" : "#fff7fb");
@@ -581,7 +590,11 @@
       if (event.target === root) close();
     });
 
-    root.addEventListener("keydown", function (event) {
+    /* Bound to the document, not to root: root is a plain <div> and never
+       focusable, so clicking the photo moves focus to <body> and keydown no
+       longer bubbles through it — Escape went dead and the scroll lock stuck. */
+    document.addEventListener("keydown", function (event) {
+      if (root.hidden) return;
       if (event.key === "Escape") { event.stopPropagation(); close(); }
       else if (event.key === "ArrowLeft") step(-1);
       else if (event.key === "ArrowRight") step(1);
@@ -1315,7 +1328,11 @@
       petals +=
         '<ellipse class="hy-flower__petal' + (i < found ? " is-open" : "") + '" ' +
           'cx="0" cy="-15" rx="7" ry="12" ' +
-          'transform="rotate(' + angle + ')" style="--i:' + i + '"></ellipse>';
+          'transform="rotate(' + angle + ')" ' +
+          /* --a feeds the keyframes; without it every petal animated from
+             rotate(0) and swung in from twelve o'clock instead of blooming
+             where it belongs. */
+          'style="--i:' + i + ';--a:' + angle + 'deg"></ellipse>';
     }
 
     wrap.innerHTML =
