@@ -464,7 +464,11 @@ body:not(:has(.hy-hero)) #main {
   width: var(--len, 150px);
   height: 2px;
   transform-origin: 100% 50%;
-  transform: translateY(-50%) rotate(38deg);
+  /* The bar is laid out pointing left (180deg) from the head, so rotating it by
+     the travel angle puts it at travel+180 — straight behind. The old fixed
+     38deg left the tail 104deg off, pointing roughly where the meteor was
+     heading rather than where it had been. */
+  transform: translateY(-50%) rotate(var(--angle, 142deg));
   background: linear-gradient(to left, rgba(255, 255, 255, .9), rgba(255, 214, 240, .35), transparent);
   border-radius: 2px;
 }
@@ -473,7 +477,7 @@ body:not(:has(.hy-hero)) #main {
   0%   { transform: translate3d(0, 0, 0); opacity: 0; }
   12%  { opacity: 1; }
   80%  { opacity: 1; }
-  100% { transform: translate3d(calc(var(--fall, 200px) * -1.28), var(--fall, 200px), 0); opacity: 0; }
+  100% { transform: translate3d(var(--dx, -256px), var(--dy, 200px), 0); opacity: 0; }
 }
 
 /* Parallax offsets. The scene keeps its own bottom anchoring. */

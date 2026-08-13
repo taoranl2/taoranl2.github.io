@@ -1106,12 +1106,26 @@
   function launchMeteor(sky) {
     var meteor = document.createElement("span");
     meteor.className = "hy-meteor";
-    /* Start high and anywhere along the width, then fall down-left. */
-    meteor.style.left = (18 + Math.random() * 78).toFixed(1) + "%";
-    meteor.style.top = (Math.random() * 34).toFixed(1) + "%";
+
+    /* Travel angle in screen coordinates, where y grows downward: 125deg-165deg
+       is down-and-left, steep to shallow. Picking it per meteor stops them all
+       running on the same diagonal. */
+    var angle = 125 + Math.random() * 40;
+    var rad = angle * Math.PI / 180;
+    var distance = 190 + Math.random() * 210;
+
+    /* The streak is derived from this same angle, so the tail can never end up
+       pointing somewhere other than straight behind the head. */
+    meteor.style.setProperty("--dx", (Math.cos(rad) * distance).toFixed(1) + "px");
+    meteor.style.setProperty("--dy", (Math.sin(rad) * distance).toFixed(1) + "px");
+    meteor.style.setProperty("--angle", angle.toFixed(1) + "deg");
     meteor.style.setProperty("--len", (110 + Math.random() * 130).toFixed(0) + "px");
-    meteor.style.setProperty("--fall", (150 + Math.random() * 170).toFixed(0) + "px");
+
+    /* Start high, and to the right of where it will end up. */
+    meteor.style.left = (26 + Math.random() * 68).toFixed(1) + "%";
+    meteor.style.top = (Math.random() * 30).toFixed(1) + "%";
     meteor.style.animationDuration = (0.75 + Math.random() * 0.55).toFixed(2) + "s";
+
     sky.appendChild(meteor);
     setTimeout(function () { meteor.remove(); }, 1800);
   }
